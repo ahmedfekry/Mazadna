@@ -1,5 +1,6 @@
-app.controller('MainController', function ($scope) {
- 	$scope.fun = function () {
- 		$scope.ful = $scope.username+ " " + $scope.password;
- 	}
-});
+app.controller('MainController', ['$scope', '$rootScope',function($scope, $rootScope) {
+      $rootScope.mainInfo = {
+      		user:{},
+      };
+    
+}]);
