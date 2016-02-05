@@ -4,7 +4,7 @@ app.config(['$routeProvider',
   function($routeProvider) {
     $routeProvider.
       when('/', {
-        templateUrl: 'app/partials/signIn.html',
+        templateUrl: 'app/partials/signUp.html',
         controller: 'authController'
       });
   }]);
