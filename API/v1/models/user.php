@@ -10,10 +10,7 @@
 		protected $email;
 		protected $password;
 		protected $facebook_key;
-		function __construct($id,$name,$user_name,$email,$password,$facebook_key)
-		{	
-
-		}
+		
 	}
 
  ?>

@@ -1,6 +1,8 @@
 <?php
 require '.././libs/Slim/Slim.php';
 require_once 'dbHelper.php';
+require_once './models/user.php';
+require_once './models/registered_user.php';
 
 \Slim\Slim::registerAutoloader();
 $app = new \Slim\Slim();
@@ -23,20 +25,11 @@ delete(table name, where clause as array)
 // $rows = $db->update("customers_php",array('name' => 'Ipsita Sahoo', 'email'=>'email'),array('id'=>'170'), array('name', 'email'));
 // $rows = $db->delete("customers_php", array('name' => 'Ipsita Sahoo', 'id'=>'227'));
 
-
-// Products
-$app->get('/users', function() { 
-    global $db;
-    $rows = $db->select("users","user_id,username",array());
-    echoResponse(200, $rows);
+$app->get('/hello/:name', function ($name) {
+    echo "Hello, " . $name;
+    $var = new ReRegisteredUser();
 });
 
-
-$app->get('/hello/:first/:last',function($first,$last){
-	echo "Hello $first $last";
-});
-
-$app->run();
 
 // $app->post('/products', function() use ($app) { 
 //     $data = json_decode($app->request->getBody());
@@ -67,16 +60,15 @@ $app->run();
 //     echoResponse(200, $rows);
 // });
 
-// function echoResponse($status_code, $response) {
-//     global $app;
-//     $app->status($status_code);
-//     $app->contentType('application/json');
-//     echo json_encode($response,JSON_NUMERIC_CHECK);
-// }
+function echoResponse($status_code, $response) {
+    global $app;
+    $app->status($status_code);
+    $app->contentType('application/json');
+    echo json_encode($response,JSON_NUMERIC_CHECK);
+}
 
-	// echo "string";
-	$var = get_included_files();
-	foreach ($var as  $value) {
-		echo "$value";
-	}
+$app->run();
+
+echo "string";
+
 ?>
