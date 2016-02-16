@@ -21,10 +21,11 @@
 		<script src="assets/js/angular.min.js"></script>
 		<script src="assets/js/angular-route.min.js"></script>
 		<script src="assets/js/angular-animate.min.js" ></script>
-
+		<script src="assets/js/toaster.js"></script>
 		<!-- include the JavaScript files here -->
 		<script type="text/javascript" src="app/app.js"></script>
 		
+		<script type="text/javascript" src="app/services/userService.js"></script>
 		<!-- Controllers -->
 		<script type="text/javascript" src="app/controllers/mainController.js"></script>
 		<script type="text/javascript" src="app/controllers/authController.js"></script>
@@ -33,6 +34,5 @@
 		<script type="text/javascript" src="app/directives/mainDirective.js"></script>
 		
 		<!-- Services -->
-		<script type="text/javascript" src="app/services/userService.js"></script>
 	</body>
 </html>

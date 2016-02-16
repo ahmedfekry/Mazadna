@@ -6,5 +6,10 @@ app.config(['$routeProvider',
       when('/', {
         templateUrl: 'app/partials/signUp.html',
         controller: 'authController'
-      });
+      })
+      .when('/dashboard', {
+                title: 'Dashboard',
+                templateUrl: 'app/partials/dashboard.html',
+                controller: 'authController'
+		 });
   }]);

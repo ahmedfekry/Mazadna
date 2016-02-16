@@ -3,6 +3,7 @@ require '.././libs/Slim/Slim.php';
 require_once 'dbHelper.php';
 require_once './models/user.php';
 require_once './models/registered_user.php';
+require_once 'passwordHash.php'
 
 \Slim\Slim::registerAutoloader();
 $app = new \Slim\Slim();
