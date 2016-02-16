@@ -21,7 +21,7 @@
 		<script src="assets/js/angular.min.js"></script>
 		<script src="assets/js/angular-route.min.js"></script>
 		<script src="assets/js/angular-animate.min.js" ></script>
-		<script src="assets/js/toaster.js"></script>
+
 		<!-- include the JavaScript files here -->
 		<script type="text/javascript" src="app/app.js"></script>
 		

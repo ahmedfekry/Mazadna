@@ -15,9 +15,10 @@
     // }
 
     
-    // $app->get('/hello/{name}', function ($request, $response, $args) {
-    //     return $response->write("Hello " . $args['name']);
-    // });
+    $app->get('/hello/{name}', function ($request, $response, $args) use ($app){
+        return $response->write("Hello " . $args['name']);
+        // echoResponse(200,$args['name']);
+    });
 	
 
         // first_name:'',
@@ -27,23 +28,24 @@
         // phone_number:'',
         // password:'',
 
-$app->post('/signUp', function() use ($app) {
-    $response = array();
-    $r = json_decode($app->request->getBody());
+$app->post('/signUp', function(Request $request, Response $response) use ($app) {
+    // $response = array();
+    // $r = json_decode($app->request->getBody());
 
-    require_once 'passwordHash.php';
-    $db = new DbHandler();
-    
-    $first_name = $r->customer->first_name;
-    $last_name = $r->customer->last_name;
-    $username = $r->customer->name;
-    $email = $r->customer->email;
-    $phone_number = $r->customer->phone_number;
-    $password = $r->customer->password;
+    // require_once 'passwordHash.php';
+    // $db = new DbHandler();
+    //     // $name = $request->getAttribute('name');
 
-    $var = new RegisteredUser();
-    $response = (array) $var->signUp($first_name,$last_name,$username,$email,$phone_number,$password);
-    echoResponse($response['status'],$response['response']);
+    // $first_name = $request->getAttribute('first_name');
+    // $last_name = $request->getAttribute('last_name');
+    // $username = $request->getAttribute('username');
+    // $email = $request->getAttribute('email');
+    // $phone_number = $request->getAttribute('phone_number');
+    // $password = $request->getAttribute('password');
+
+    echoResponse(200,"sdf");
+    // $var = new RegisteredUser();
+    // $response = (array) $var->signUp($first_name,$last_name,$username,$email,$phone_number,$password);
     // echoResponse(200,"ahmed");
 });
 

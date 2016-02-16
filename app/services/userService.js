@@ -1,10 +1,10 @@
 app.factory('myService', ['$http', function($http) {
 
-    var urlBase = '/API/v1/user.php';
+    var urlBase = 'API/v1/user.php/';
     var myService = {};
 
     myService.post = function (q, object) {
-            return $http.post(serviceBase + q, object).then(function (results) {
+            return $http.post(urlBase + q, object).then(function (results) {
                 return results.data;
             });
         };
