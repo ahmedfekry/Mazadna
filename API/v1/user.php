@@ -15,11 +15,23 @@
     // }
 
     
-    $app->get('/hello/{name}', function ($request, $response, $args) use ($app){
-        return $response->write("Hello " . $args['name']);
-        // echoResponse(200,$args['name']);
+    $app->post('/sign_up', function ($request, $response) use ($app){
+        $json = $request->getBody();
+        $data = json_decode($json, true); // parse the JSON into an assoc. array
+        $first_name = $data["first_name"];
+        $last_name = $data["last_name"];
+        $username = $data["username"];
+        $email = $data["email"]; 
+        $phone_number = $data["phone_number"];
+        $password = $data["password"];
+        $result = array();
+        $var = new RegisteredUser();
+        $result = $var->signUp($first_name,$last_name,$username,$email,$phone_number,$password);
+        
+
+        return $response->write( json_encode($result) );
     });
-	
+    
 
         // first_name:'',
         // last_name:'',
@@ -27,36 +39,21 @@
         // email:'',
         // phone_number:'',
         // password:'',
+// $app->post('/signUp', function ($request,$response) use ($app){
+        
+    //     $first_name = $data['first_name'];
+    //     $last_name = $data('last_name');
+    //     $username = $data('username');
+    //     $email = $data('email');
+    //     $phone_number = $data('phone_number');
+    //     $password = $data('password');
+        
+    //     return $response->write( json_encode($response) );
 
-$app->post('/signUp', function(Request $request, Response $response) use ($app) {
-    // $response = array();
-    // $r = json_decode($app->request->getBody());
-
-    // require_once 'passwordHash.php';
-    // $db = new DbHandler();
-    //     // $name = $request->getAttribute('name');
-
-    // $first_name = $request->getAttribute('first_name');
-    // $last_name = $request->getAttribute('last_name');
-    // $username = $request->getAttribute('username');
-    // $email = $request->getAttribute('email');
-    // $phone_number = $request->getAttribute('phone_number');
-    // $password = $request->getAttribute('password');
-
-    echoResponse(200,"sdf");
-    // $var = new RegisteredUser();
-    // $response = (array) $var->signUp($first_name,$last_name,$username,$email,$phone_number,$password);
-    // echoResponse(200,"ahmed");
-});
+    // });
 
 
 	$app->run();
 
-	function echoResponse($status_code, $response) {
-	    global $app;
-	    $app->status($status_code);
-	    $app->contentType('application/json');
-	    echo json_encode($response,JSON_NUMERIC_CHECK);
-	}
  
 ?>
