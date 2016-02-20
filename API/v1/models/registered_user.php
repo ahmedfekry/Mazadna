@@ -1,10 +1,11 @@
 <?php 
 	// require_once '../passwordHash.php';
-	require_once 'user.php';
+	require_once '/var/www/html/mazadna/API/v1/passwordHash.php';
+	require_once '/var/www/html/mazadna/API/v1/models/user.php';
 	/**
 	* 
 	*/
-	class RegisteredUser extends user
+	class RegisteredUser extends User
 	{
 		private $followers; // array of users id 
 		private $following; // array of users id
@@ -31,7 +32,6 @@
 
 		public function sign_up($first_name,$last_name,$username,$email,$phone_number,$password)
 		{
-			require_once '../passwordHash.php';
 			$response = array();
 			try{
 			    $stmt = $this->conn->prepare("SELECT 1 FROM `user` WHERE username=:username or email=:email or phone_number=:phone_number "); 
@@ -65,30 +65,79 @@
 			            }
 			            $_SESSION['uid'] = $response["uid"];
 			            $_SESSION['first_name'] = $first_name;
-			            $_SESSION['last_name'] = $first_name;
+			            $_SESSION['last_name'] = $last_name;
 			            $_SESSION['username'] = $username;
 			            $_SESSION['email'] = $email;
-			            return array('status' => 200,'response' => $response );
+			            return $response;
 			        } else {
 			            $response["status"] = "error";
 			            $response["message"] = "Failed to create customer. Please try again";
-			            return array('status' => 201,'response' => $response );
+			            return $response;
 			        }            
 			    }else{
 			        $response["status"] = "error";
 			        $response["message"] = "An user with the provided phone or email or username exists!";
-			        return array('status' => 201,'response' => $response );
+			        return $response ;
 			    }
 		    }catch(PDOException $e) {
-    			echo "Error: " . $e->getMessage();
+    			return "Error: " . $e->getMessage();
 			}			
 		}
+
+
+		public function sign_in($username,$password)
+		{
+			$response = array();
+			try {
+				$stmt = $this->conn->prepare("SELECT * FROM `user` WHERE username=:username"); 
+			    $stmt->bindParam(':username',$username);
+
+			    $stmt->execute();
+
+			    $isUserExists = $stmt->fetch(PDO::FETCH_ASSOC);
+			    if ($isUserExists != NULL) {
+			    	if (passwordHash::check_password($isUserExists['password'],$password)) {
+			    		# code...
+				    	$response["status"] = "success";
+				    	$response["message"] = "Loging successfully";
+				    	$response["uid"] = $isUserExists['id'];
+				    	$response["first_name"] = $isUserExists['first_name'];
+				    	if (!isset($_SESSION)) {
+				            session_start();
+			            }
+			            $_SESSION['uid'] = $isUserExists["id"];
+			            $_SESSION['first_name'] = $isUserExists["first_name"] ;
+			            $_SESSION['last_name'] = $isUserExists["last_name"];
+			            $_SESSION['username'] = $isUserExists["username"];
+			            $_SESSION['email'] = $isUserExists["email"];
+			            return $response;
+			    	} else {
+			    		$response["status"] = "Failed";
+			    		$response["message"] =" Wrong password";
+			    		return $response;
+			    	}
+			    	
+			    } else {
+			    	$response["status"] = "Failed";
+			    	$response["message"] = "No such user exists";
+			    	return $response;
+			    }
+			} catch (PDOException $e) {
+				return "Error: ".$e->getMessage();
+			}
+		}
 	}
-
-
+	
+	// $first_name="Ahmed";
+	// $last_name="Fekry";
+	// $username="ahmedsaasid";
+	// $email="ahmed1fe@mai.com";
+	// $phone_number="01234555142";
+	// $password="123451";
+        
 	// $var = new RegisteredUser();
-	// $response = (array) $var->sign_up("Ahmed","fekry","ahmedfekry11","ahmed11@mail.com","01120203911","123145");
-	$res =  array('name' => 'fekry');
-	// echo
-       
+	// $response = $var->sign_up($first_name,$last_name,$username,$email,$phone_number,$password);
+	// $response = $var->sign_in($username,$password);
+
+	// echo $response['message'];	   
  ?>

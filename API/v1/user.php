@@ -2,11 +2,11 @@
 	// require '.././libs/Slim/Slim.php';
 	require '/var/www/html/mazadna/vendor/autoload.php';
     require_once 'dbHelper.php';
-	require_once './models/user.php';
 	require_once './models/registered_user.php';
     require_once 'passwordHash.php';
 
-	$app = new \Slim\App;
+    $app = new \Slim\App;
+    $registerdUser = new RegisteredUser();
     
     // $included_files = get_included_files();
 
@@ -14,45 +14,47 @@
     //     echo "$filename\n";
     // }
 
-    
-    $app->post('/sign_up', function ($request, $response) use ($app){
-        $json = $request->getBody();
-        $data = json_decode($json, true); // parse the JSON into an assoc. array
-        $first_name = $data["first_name"];
-        $last_name = $data["last_name"];
-        $username = $data["username"];
-        $email = $data["email"]; 
-        $phone_number = $data["phone_number"];
-        $password = $data["password"];
-        $result = array();
-        $var = new RegisteredUser();
-        $result = $var->signUp($first_name,$last_name,$username,$email,$phone_number,$password);
-        
-
-        return $response->write( json_encode($result) );
-    });
-    
-
         // first_name:'',
         // last_name:'',
         // username:'',
         // email:'',
         // phone_number:'',
         // password:'',
-// $app->post('/signUp', function ($request,$response) use ($app){
+    
+    $app->post('/signUp', function ($request, $response) use ($app){
         
-    //     $first_name = $data['first_name'];
-    //     $last_name = $data('last_name');
-    //     $username = $data('username');
-    //     $email = $data('email');
-    //     $phone_number = $data('phone_number');
-    //     $password = $data('password');
+        global $registerdUser;
         
-    //     return $response->write( json_encode($response) );
+        $r = json_decode($request->getBody());
+        
+        // get the data from the parsed object
+        $first_name =  $r->user->first_name;
+        $last_name =  $r->user->last_name;
+        $username =  $r->user->username;
+        $email =  $r->user->email; 
+        $phone_number =  $r->user->phone_number;
+        $password =  $r->user->password;
 
-    // });
+        // $result = array('first_name' => $first_name,'last_name' => $last_name,'username' => $username,'email'=>$email,'phone_number'=>$phone_number,'password'=>$password );
+        $result = $registerdUser->sign_up($first_name,$last_name,$username,$email,$phone_number,$password);
 
+        return $response->write( json_encode($result) );
+    });
 
+    $app->post('/signIn',function ($request,$response) use ($app){
+        # code...
+        global $registerdUser;
+
+        $header = json_decode($request->getBody());
+
+        $username = $header->user->username;
+        $password = $header->user->password;
+        $result = array('message' => "success", );
+        // $result = $registerdUser->sign_in($username,$password);
+
+        return $response->write(json_encode($result) );
+    });
+    
 	$app->run();
 
  

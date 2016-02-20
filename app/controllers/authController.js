@@ -1,46 +1,53 @@
- app.controller('authController', ['myService','$scope', function (myService,$scope) {
-  // Do something with myService
-		$scope.login = {};
- 	   	$scope.signup = {};
-	    $scope.signup = {
-	        first_name:'',
-	        last_name:'',
-	        username:'',
-	        email:'',
-	        phone_number:'',
-	        password:'',
-	    };
-    $scope.signUp = function (customer) {
-        alert(customer.first_name)
+app.controller('authController', function ($scope, $rootScope, $routeParams, $location, $http, myService) {
+    //initially set those objects to null to avoid undefined error
+    $scope.login = {};
+    $scope.signup = {};
+    
+    $scope.signup = {
+        first_name:'',
+        last_name:'',
+        username:'',
+        email:'',
+        password:'',
+        phone_number:''
+    };
+
+    $scope.signUp = function (user) {
+        var postObject = new Object();
+        
+        postObject.first_name = user['first_name'];
+        postObject.last_name = user['last_name'];
+        postObject.username = user['username'];
+        postObject.email = user['email'];
+        postObject.password = user['password'];
+        postObject.phone_number = user['phone_number'];
+
         myService.post('signUp', {
-            customer: customer
+            user: postObject
         }).then(function (results) {
             if (results.status == "success") {
-                alert(results.uid);
+                alert(results.message);
+                $location.path('/home');
             }
         });
     };
 
-}]);
+    $scope.login = {
+        username:'',
+        password:''
+    };
+    $scope.signIn = function (user) {
+        var postObject = new Object();
+        postObject.username = user['username'];
+        postObject.password = user['password'];
 
-// // app.controller('authController', ['$scope', '$rootScope', '$routeParams', '$location', '$http', 'userService',function($scope, $rootScope, $routeParams, $location, $http, Data) {
-   
-    
+        myService.post('signIn',{
+            user: postObject
+        }).then(function (results) {
+            if (results.status == "success") {
+                $location.path('/home')
+            }
+        });
+    }
 
-//     // $scope.doLogin = function (customer) {
-//     //     Data.post('login', {
-//     //         customer: customer
-//     //     }).then(function (results) {
-//     //         Data.toast(results);
-//     //         if (results.status == "success") {
-//     //             $location.path('dashboard');
-//     //         }
-//     //     });
-//     // };
-//     // $scope.logout = function () {
-//     //     Data.get('logout').then(function (results) {
-//     //         Data.toast(results);
-//     //         $location.path('login');
-//     //     });
-//     // }
-// }]);
+});

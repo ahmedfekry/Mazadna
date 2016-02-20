@@ -1,11 +1,10 @@
-<form ng-controller="authController">
-	<input type="text" placeholder="First Name" ng-model="signup.first_name" required> <br>
+<form>
+	<input type="text" placeholder="First Name" ng-model="signup.first_name" required><br>
 	<input type="text" placeholder="Last Name" ng-model="signup.last_name" required><br>
-
 	<input type="text" placeholder="User Name" ng-model="signup.username" required><br>
 	<input type="email" placeholder="Email" ng-model="signup.email" required><br>
-
-	<input type="text" placeholder="Phone Number" ng-model="signup.phone_number" required><br>
+	<input type="text" placeholder="phone number" ng-model="signup.phone_number" required><br>
 	<input type="password" placeholder="Password" ng-model="signup.password" required><br>
-	<button type="submit" class="" ng-click="signUp(signup)"> Sign Up </button>
+	
+	<button type="submit" ng-click="signUp(signup)"> Sign Up </button>
 </form>
