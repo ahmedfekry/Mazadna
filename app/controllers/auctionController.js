@@ -1,0 +1,3 @@
+app.controller('auctionController',['$scope',function ($scope) {
+	// body...
+}])
