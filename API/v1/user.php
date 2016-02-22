@@ -49,8 +49,8 @@
 
         $username = $header->user->username;
         $password = $header->user->password;
-        $result = array('message' => "success", );
-        // $result = $registerdUser->sign_in($username,$password);
+        // $result = array('message' => "success", );
+        $result = $registerdUser->sign_in($username,$password);
 
         return $response->write(json_encode($result) );
     });
