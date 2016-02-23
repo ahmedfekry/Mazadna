@@ -1,0 +1,21 @@
+		<!-- title:'',
+		starting_price:'',
+		privacy: '',
+		start_date:'',
+		end_date:'',
+		description:'' -->
+<form>
+	<input type="text" placeholder="Title" ng-model="auction.title" required><br>
+	<input type="number" placeholder="Starting Price" ng-model="auction.starting_price" required><br>
+
+	<!-- <input type="text" placeholder="privacy" ng-model="auction.privacy" required><br> -->
+	<select ng-model="auction.privacy">
+		<option value="public">Public</option>
+		<option value="private">Private</option>
+	</select>
+	<br>
+	<input type="text" placeholder="End Date" ng-model="auction.end_date" required><br>
+	<input type="text" placeholder="Description" ng-model="auction.description" required><br>
+	<button ng-click="create(auction)">Submit</button><br>
+	{{message}}
+</form>
