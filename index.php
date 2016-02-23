@@ -1,6 +1,13 @@
 <!DOCTYPE html>
 <html ng-app="mazadna">
 	<head>
+
+	    <meta charset="UTF-8">
+	    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+	    <meta name="viewport" content="width=device-width, initial-scale=1">
+	    <link rel="stylesheet" href="assets/css/bootstrap.min.css">
+	    <link rel="stylesheet" href="assets/css/font-awesome.min.css">
+	    <link rel="stylesheet" href="assets/css/styles.css">
 		<title>Mazadna</title>
 		<script src = "assets/js/jquery.min.js"></script>
 		<script src = "http://ajax.googleapis.com/ajax/libs/angularjs/1.3.14/angular.min.js"></script>
@@ -18,10 +25,14 @@
 
 
 
-		
+
 		<div ng-view></div> 
 		
 		<div ng-controller="MainController"></div>
+		<script src="assets/js/jquery-2.1.4.min.js"></script>
+      	<script src="assets/js/bootstrap.min.js"></script>
+      	<script src="assets/js/script.js"></script>
+
 		<!-- include all the library here -->
 		<script src="assets/js/angular.min.js"></script>
 		<script src="assets/js/angular-route.min.js"></script>
