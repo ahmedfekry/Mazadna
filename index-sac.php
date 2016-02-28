@@ -13,8 +13,8 @@
 	// 	echo "string";	
 	// 	echo "\n";
 	// }
-	$objDateTime = new DateTime('NOW');
+	$datetime2 = new DateTime('2017-10-13');
 
-	echo $objDateTime->format('c'); // ISO8601 formated datetime
+	echo date("Y-m-d H:i:s",$datetime2); // ISO8601 formated datetime
  ?>
  
