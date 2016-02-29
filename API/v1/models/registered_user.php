@@ -1,7 +1,7 @@
 <?php 
 	// require_once '../passwordHash.php';
-	require_once '/var/www/html/mazadna/API/v1/passwordHash.php';
-	require_once '/var/www/html/mazadna/API/v1/models/user.php';
+	require_once '/xampp/htdocs/Mazadna/API/v1/passwordHash.php';
+	require_once '/xampp/htdocs/Mazadna/API/v1/models/user.php';
 	/**
 	* 
 	*/
