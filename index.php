@@ -42,6 +42,7 @@
 		<script type="text/javascript" src="app/app.js"></script>
 		
 		<script type="text/javascript" src="app/services/userService.js"></script>
+		<script type="text/javascript" src="app/services/sessionService.js"></script>
 		<!-- Controllers -->
 		<script type="text/javascript" src="app/controllers/mainController.js"></script>
 		<script type="text/javascript" src="app/controllers/authController.js"></script>
@@ -51,5 +52,6 @@
 		<script type="text/javascript" src="app/directives/mainDirective.js"></script>
 		
 		<!-- Services -->
+
 	</body>
 </html>
