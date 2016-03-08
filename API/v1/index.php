@@ -4,6 +4,7 @@
     require_once 'dbHelper.php';
     require_once './models/registered_user.php';
     require_once 'passwordHash.php';
+    //require 'auction.php';
     $app = new \Slim\App;
     $registerdUser = new RegisteredUser();
 /**
@@ -23,7 +24,7 @@ delete(table name, where clause as array)
 // $rows = $db->delete("customers_php", array('name' => 'Ipsita Sahoo', 'id'=>'227'));
     // require_once '';
     require_once 'user.php';
-
+    
 $app->run();
 
 

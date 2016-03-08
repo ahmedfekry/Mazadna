@@ -1,3 +1,5 @@
- app.controller('homeController', function ($scope , sessionService) {
-    
-});
+ app.controller('homeController',['$scope' , '$location' , '$rootScope' , '$routeParams', function ($scope , $location ,  $rootScope, $routeParams) {
+    $scope.createAuction = function(){
+    	$location.path('/createAuction');
+    }
+}]);
