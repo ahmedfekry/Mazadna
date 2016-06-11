@@ -2,7 +2,7 @@ app.controller('authController', function ($scope, $rootScope, $routeParams, $lo
     //initially set those objects to null to avoid undefined error
     $scope.login = {};
     $scope.signup = {};
-    
+
     $scope.signup = {
         first_name:'',
         last_name:'',
@@ -14,7 +14,7 @@ app.controller('authController', function ($scope, $rootScope, $routeParams, $lo
 
     $scope.signUp = function (user) {
         var postObject = new Object();
-        
+
         postObject.first_name = user['first_name'];
         postObject.last_name = user['last_name'];
         postObject.username = user['username'];
@@ -22,7 +22,7 @@ app.controller('authController', function ($scope, $rootScope, $routeParams, $lo
         postObject.password = user['password'];
         postObject.phone_number = user['phone_number'];
 
-        myService.post('signUp', {
+        myService.post('user.php/signUp', {
             user: postObject
         }).then(function (results) {
             if (results.status == "success") {
@@ -41,7 +41,7 @@ app.controller('authController', function ($scope, $rootScope, $routeParams, $lo
         postObject.username = user['username'];
         postObject.password = user['password'];
 
-        myService.post('signIn',{
+        myService.post('user.php/signIn',{
             user: postObject
         }).then(function (results) {
             if (results.status == "success") {

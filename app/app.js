@@ -2,7 +2,7 @@ var app = angular.module('mazadna', ['ngRoute'])
 
 .config(function($routeProvider,$locationProvider) {
         $routeProvider
-            
+
             // www.example.com/signUp
 
             // route for the home page
@@ -21,7 +21,12 @@ var app = angular.module('mazadna', ['ngRoute'])
                 templateUrl : 'app/partials/sign_in.html',
                 controller : 'authController'
             })
-            
+
+            .when('/AdminSignIn',{
+                templateUrl : 'app/partials/signInAdmin.html',
+                controller : 'adminController'
+            })
+
             .otherwise({
                 redirectTo:'signIn'
             });
@@ -30,4 +35,3 @@ var app = angular.module('mazadna', ['ngRoute'])
 
             // $locationProvider.html5Mode(true);
     });
-
