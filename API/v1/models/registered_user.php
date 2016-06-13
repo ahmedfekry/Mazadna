@@ -1,13 +1,18 @@
-<?php 
-	// require_once '../passwordHash.php';
-	require_once '/var/www/html/mazadna/API/v1/passwordHash.php';
-	require_once '/var/www/html/mazadna/API/v1/models/user.php';
+<?php
+	// require '../passwordHash.php';
+	require_once 'user.php';
 	/**
-	* 
+	*
 	*/
-	class RegisteredUser extends User
+	class RegisteredUser
 	{
-		private $followers; // array of users id 
+		private $id;
+		private $name;
+		private $user_name;
+		private $email;
+		private $password;
+		private $facebook_key;
+		private $followers; // array of users id
 		private $following; // array of users id
 		private $conn;
 		public function __construct($id='',$name='',$user_name='',$email='',$password='',$facebook_key='',$followers='',$following='')
@@ -22,40 +27,33 @@
 			$this->conn = new PDO("mysql:host=localhost;dbname=Mazadna", "root", "Ahmed2512011");
 			$this->conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 		}
-		
-		// first_name:'',
-        // last_name:'',
-        // username:'',
-        // email:'',
-        // phone_number:'',
-        // password:'',
 
 		public function sign_up($first_name,$last_name,$username,$email,$phone_number,$password)
 		{
 			$response = array();
 			try{
-			    $stmt = $this->conn->prepare("SELECT 1 FROM `user` WHERE username=:username or email=:email or phone_number=:phone_number "); 
+			    $stmt = $this->conn->prepare("SELECT 1 FROM `user` WHERE username=:username or email=:email or phone_number=:phone_number ");
 			    $stmt->bindParam(':username',$username);
 			    $stmt->bindParam(':email',$email);
 			    $stmt->bindParam(':phone_number',$phone_number);
 			    $stmt->execute();
 
 			    $isUserExists = $stmt->fetch(PDO::FETCH_ASSOC);
-			    			    
+
 			    if(!$isUserExists){
 			        $password = passwordHash::hash($password);
-			        
-			        $stmt = $this->conn->prepare("INSERT INTO user (first_name, last_name, username,email,phone_number,password) 
+
+			        $stmt = $this->conn->prepare("INSERT INTO user (first_name, last_name, username,email,phone_number,password)
 				    						VALUES (:first_name, :last_name,:username, :email, :phone_number,:password)");
 				    $stmt->bindParam(':first_name', $first_name);
 				    $stmt->bindParam(':last_name', $last_name);
-				    $stmt->bindParam(':username', $username); 
+				    $stmt->bindParam(':username', $username);
 				    $stmt->bindParam(':email', $email);
 				    $stmt->bindParam(':phone_number', $phone_number);
 				    $stmt->bindParam(':password', $password);
 
 			        $result = $stmt->execute();
-			        
+
 			        if ($result != NULL) {
 			        	$response["status"] = "success";
 			            $response["message"] = "User account created successfully";
@@ -73,7 +71,7 @@
 			            $response["status"] = "error";
 			            $response["message"] = "Failed to create customer. Please try again";
 			            return $response;
-			        }            
+			        }
 			    }else{
 			        $response["status"] = "error";
 			        $response["message"] = "An user with the provided phone or email or username exists!";
@@ -81,7 +79,7 @@
 			    }
 		    }catch(PDOException $e) {
     			return "Error: " . $e->getMessage();
-			}			
+			}
 		}
 
 
@@ -89,7 +87,7 @@
 		{
 			$response = array();
 			try {
-				$stmt = $this->conn->prepare("SELECT * FROM `user` WHERE username=:username"); 
+				$stmt = $this->conn->prepare("SELECT * FROM `user` WHERE username=:username");
 			    $stmt->bindParam(':username',$username);
 
 			    $stmt->execute();
@@ -116,7 +114,7 @@
 			    		$response["message"] =" Wrong password";
 			    		return $response;
 			    	}
-			    	
+
 			    } else {
 			    	$response["status"] = "Failed";
 			    	$response["message"] = "No such user exists";
@@ -127,17 +125,5 @@
 			}
 		}
 	}
-	
-	// $first_name="Ahmed";
-	// $last_name="Fekry";
-	// $username="ahmedsaasid";
-	// $email="ahmed1fe@mai.com";
-	// $phone_number="01234555142";
-	// $password="123451";
-        
-	// $var = new RegisteredUser();
-	// $response = $var->sign_up($first_name,$last_name,$username,$email,$phone_number,$password);
-	// $response = $var->sign_in($username,$password);
 
-	// echo $response['message'];	   
  ?>

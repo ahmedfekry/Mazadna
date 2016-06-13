@@ -1,73 +1,93 @@
 <?php 
-	require_once '../dbHelper.php';
-	/**
-	* 
-	*/
-		// owner:'',
-		// title:'',
-		// starting_price:'',
-		// privacy: '',
-		// end_date:'',
-		// description:''
 	class Auction 
 	{
 		private $id;
-		private $owner;
-		private $title;
-		private $starting_price;
-		private $privacy;
-		private $end_date;
+		private $user_id;
 		private $description;
+		private $start_time;
+		private $end_time;
+		private $on_site;
+		private $privacy;
+		private $title;
+		private $category_id;
+		private $highest_bid_id;
+		private $highest_bider_id;
+		private $starting_price;
 		private $conn;
-		function __construct($id=0,$owner=0,$title="",$starting_price=0,$privacy="",$end_date="",$description="")
+		function __construct($id=0,$user_id=0,$description="",$start_time=0,$end_time=0,$on_site=false,$privacy="public",
+							$title="",$category_id=0,$highest_bid_id=0,$highest_bider_id=0,$starting_price=0,$description="")
 		{
 			# code...
 			$this->id = $id;
-			$this->owner = $owner;
-			$this->title = $title;
-			$this->starting_price = $starting_price;
-			$this->privacy = $privacy;
-			$this->end_date = $end_date;
+			$this->user_id = $user_id;
 			$this->description = $description;
+			$this->start_time = $start_time;
+			$this->end_time = $end_time;
+			$this->on_site = $on_site;
+			$this->privacy = $privacy;
+			$this->title = $title;
+			$this->category_id = $category_id;
+			$this->highest_bid_id = $highest_bid_id;
+			$this->highest_bider_id = $highest_bider_id;
+			$this->starting_price = $starting_price;
+
+
 			$this->conn = new PDO("mysql:host=localhost;dbname=Mazadna", "root", "Ahmed2512011");
 			$this->conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);			
 		}
-		// $rows = $db->insert("customers_php",array('name' => 'Ipsita Sahoo', 'email'=>'ipi@angularcode.com'), array('name', 'email'));
 
-		public function create($owner,$title,$starting_price,$privacy,$end_date,$description)
+		public function create($user_id,$description,$title,$starting_price,$privacy,$end_time,$on_site,$category_id)
 		{	
 			$response = array();
-			
-			$objDateTime = new DateTime('NOW');
-			$duration = $objDateTime->diff($end_date);
-			try {
-				 $result = $app->insert( "auction", 
-				 	array('user_id' =>$owner ,'title'=>$title,'starting_price'=>$starting_price,'start_time'=>date("Y-m-d H:i:s"),'duration'=>$duration,'privacy'=>$privacy,'category_id'=>$category_id),
-				  	array('user_id','title','starting_price','start_time','duration','privacy'));
-				if ($result['status'] == 'success') {
-					$response['status'] = 'success';
-					$response['message'] = 'Auction Created successfully';
-					$response['aid'] = $result['data'];
-				} else {
-					$response['status'] = 'faild';
-				}
-				
+			$start_time = date("Y-m-d H:i:s");
+			if ($end_time <= $start_time) {
+				$response["status"] = $end_time;
+			    $response["message"] = "Failed to create auction. the end_time is less than the start_time";
 
-			} catch(PDOException $e) {
+			    return $response;
+			}
+
+			try {
+					$stmt = $this->conn->prepare("INSERT INTO auction (user_id, description, title,starting_price,privacy,end_time,start_time,on_site,category_id)
+				    						VALUES (:user_id, :description,:title, :starting_price, :privacy,:end_time,:start_time,:on_site,:category_id)");
+				    
+				    $stmt->bindParam(':user_id', $user_id);
+				    $stmt->bindParam(':description', $description);
+				    $stmt->bindParam(':title', $title);
+				    $stmt->bindParam(':starting_price', $starting_price);
+				    $stmt->bindParam(':privacy', $privacy);
+				    $stmt->bindParam(':end_time', $end_time);
+				    $stmt->bindParam(':start_time', $start_time);
+				    $stmt->bindParam(':on_site', $on_site);
+				    $stmt->bindParam(':category_id', $category_id);
+
+			        $result = $stmt->execute();
+
+			        if ($result != NULL) {
+			        	$response["status"] = "success";
+			            $response["message"] = "Auction created successfully";
+			            $response["aid"] = $this->conn->lastInsertId();
+			            return $response;
+			        } else {
+			            $response["status"] = "error";
+			            $response["message"] = "Failed to create auction. Please try again";
+			            return $response;
+			        }
+			    } catch(PDOException $e) {
     			return "Error: " . $e->getMessage();
 			}	
 			
 		}
 
 	}
-	echo "string";
-	$var = new Auction();
-	$response = $var->create(6,"first",20,"public",date("Y-m-d H:i:s"),"Simple Aucation");
-	if ($response['status'] == 'success') {
-		echo "string1";
-	} else {
-		echo "string2";
-	}
+	// $user_id,$description,$title,$starting_price,$privacy,$end_time,$on_site,$category_id
+	// $var = new Auction();
+	// $response = $var->create(1,"firstDDD","title",20,"public",date("2016-06-20 14:44:39"),1,1);
+	// if ($response['status'] == 'success') {
+	// 	echo "string1";
+	// } else {
+	// 	echo "string2";
+	// }
 	
 
  ?>

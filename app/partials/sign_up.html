@@ -1,4 +1,4 @@
-<form>
+<!-- <form>
 	<input type="text" placeholder="First Name" ng-model="signup.first_name" required><br>
 	<input type="text" placeholder="Last Name" ng-model="signup.last_name" required><br>
 	<input type="text" placeholder="User Name" ng-model="signup.username" required><br>
@@ -7,4 +7,231 @@
 	<input type="password" placeholder="Password" ng-model="signup.password" required><br>
 	
 	<button type="submit" ng-click="signUp(signup)"> Sign Up </button>
-</form>
+</form> -->
+<!-- MyFooter<nav class="navbar navbar-default navbar-fixed-top"> -->
+      <!-- navbar -->
+      <nav class="navbar navbar-default">
+         <div class="container">
+            <div class="navbar-header">
+               <a href="#" class="navbar-brand">
+               <img id="brand-image pull-left" style="margin-top:-11px;" src="assets/img/logo_i.png" width="90" alt="logo">
+               <small class="Mysmall">Online Auction</small>
+               </a>
+               <!-- <p class="navbar-text">pet care</p> -->
+            </div>
+            <form class="navbar-form navbar-right " role="Search">
+               <div >
+                  <div class="input-group" >
+                     <div class="input-group-btn search-panel">
+                        <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
+                        <span id="search_concept">All</span> <span class="caret"></span>
+                        </button>
+                        <ul class="dropdown-menu" role="menu">
+                           <li><a href="#contains">Example 1</a></li>
+                           <li><a href="#its_equal">Example 2</a></li>
+                           <li><a href="#greather_than">Example 3</a></li>
+                           <li><a href="#less_than">Example 4</a></li>
+                           <li class="divider"></li>
+                           <li><a href="#all">All</a></li>
+                        </ul>
+                     </div>
+                     <input type="hidden" name="search_param" value="all" id="search_param">         
+                     <input type="text" class="form-control" style="width:400px;" name="x" placeholder="Search">
+                     <span class="input-group-btn">
+                     <button class="btn btn-default" type="button"><span class="glyphicon glyphicon-search"></span></button>
+                     </span>
+                  </div>
+               </div>
+            </form>
+            <ul class="nav navbar-nav navbar-left">
+               <li><a href="#">Home</a></li>
+               <li><a href="#">Mission</a></li>
+               <li>
+                  <a
+                     class="dropdown-toggle"
+                     data-toggle="dropdown" role="button"
+                     aria-haspopup="true"
+                     aria-expanded="false"
+                     href="#">Products
+                  <span class="caret"></span>
+                  </a>
+                  <ul class="dropdown-menu">
+                     <li><a href="#">Most Recent</a></li>
+                     <li><a href="#">Most Popular</a></li>
+                     <li><a href="#">Most Downloaded</a></li>
+                  </ul>
+               </li>
+               <li ><a href="#">About</a></li>
+               <li class="active"><a href="#">Sign up</a></li>
+            </ul>
+         </div>
+      </nav>
+      <!-- Content -->
+      <div class="content container">
+         <div class="row">
+            <div class="col-xs-3"></div>
+            <section class="col-xs-6">
+               <h2 class="text-left">Sign up</h2>
+               <form class="form-horizontal">
+                  <fieldset >
+                     <legend>Personal Info.</legend>
+                     <div class="form-group">
+                        <label class="col-sm-3 control-label"
+                           for="firstName">First Name</label>
+                        <div class="col-sm-9 input-group">
+                           <input class="form-control" type="text"
+                              id="firstName" placeholder="First Name" ng-model="signup.first_name" required>
+                        </div>
+                     </div>
+                     <div class="form-group">
+                        <label class="col-sm-3 control-label"
+                           for="lastName">Last Name</label>
+                        <div class="col-sm-9 input-group">
+                           <input class="form-control" type="text"
+                              id="lastName" placeholder="Last Name" ng-model="signup.last_name" required>
+                        </div>
+                     </div>
+                     <div class="form-group">
+                        <label class="col-sm-3 control-label"
+                           for="inputName">Username</label>
+                        <div class="col-sm-9 input-group">
+                           <input class="form-control" type="text"
+                              id="inputName" placeholder="Username" ng-model="signup.username" required>
+                        </div>
+                     </div>
+                     <div class="form-group">
+                        <label class="col-sm-3 control-label"
+                           for="inputName">Password</label>
+                        <div class="col-sm-9 input-group">
+                           <input class="form-control" type="password"
+                              placeholder="Password" ng-model="signup.password" required>
+                        </div>
+                     </div>
+                     <!-- <div class="form-group">
+                        <label class="col-sm-3 control-label"
+                           for="inputName">Confirm Password</label>
+                        <div class="col-sm-9 input-group">
+                           <input class="form-control" type="password"
+                              placeholder="Password">
+                        </div>
+                     </div> -->
+                     <!-- <div class="form-group">
+                        <label class="col-sm-3 control-label" 
+                           for="NationalID">National ID</label>
+                        <div class="col-sm-9 input-group">
+                           <input class="form-control" type="text"
+                              id="NationalID" placeholder="National ID Number">
+                        </div>
+                     </div> -->
+                     <!-- <div class="form-group">
+                        <label class="col-sm-3 control-label"
+                           for="selectSite">Gender</label>
+                        <div class="col-sm-9 input-group">
+                           <select class="form-control" id="selectSite">
+                              <option>Male</option>
+                              <option>Female</option>
+                           </select>
+                        </div>
+                     </div> -->
+                     <!-- <div class="form-group">
+                        <label class="col-sm-3 control-label" for="selectSite">Birtyday</label>
+                        <div class="col-sm-9 input-group date" id="datetimepicker1">
+                           <input type="text" class="form-control" />
+                           <span class="input-group-addon"> <span class="glyphicon glyphicon-calendar"></span> </span> 
+                        </div>
+                     </div> -->
+                  </fieldset>
+                  <fieldset >
+                     <legend>Contact Info.</legend>
+                     <div class="form-group">
+                        <label class="col-sm-3 control-label" 
+                           for="Email">Email</label>
+                        <div class="col-sm-9 input-group">
+                           <input class="form-control" type="text"
+                              id="Email" placeholder="Email" ng-model="signup.email" required>
+                        </div>
+                     </div>
+                     <div class="form-group">
+                        <label class="col-sm-3 control-label" 
+                           for="Phone">Phone</label>
+                        <div class="col-sm-9 input-group">
+                           <input class="form-control" type="text"
+                              id="Phone" placeholder="Phone" ng-model="signup.phone_number" required>
+                        </div>
+                     </div>
+                     <!-- <div class="form-group">
+                        <label class="col-sm-3 control-label"
+                           for="inputComments">Comments</label>
+                        <div class="col-sm-9 input-group">
+                           <textarea class="form-control" 
+                              id="inputComments"></textarea>
+                        </div>
+                     </div> -->
+                     <!-- <div class="form-group">
+                        <div class="col-sm-9 col-sm-offset-3">
+                           <div class="checkbox">
+                              <label>
+                              <input id="inputAddList"
+                                 type="checkbox" checked>
+                              Add me to e-mail blast </label>
+                           </div>
+                        </div>
+                     </div> -->
+                  </fieldset>
+                  <div class="form-group">
+                     <div class="col-sm-9 col-sm-offset-2">
+                        <!-- <input type="submit" class="btn btn-default"  
+                           value="submit"> -->
+                         <button type="submit" class="btn btn-default" ng-click="signUp(signup)"> Sign Up </button>
+                     </div>
+                  </div>
+               </form>
+            </section>
+         </div>
+         <!-- row --> 
+      </div>
+      <hr>
+      <div class="section well MyWell">
+         <div class="container">
+            <div class="row">
+               <div class="col-lg-4 col-md-4">
+                  <h3 class="text-center">WHO WE ARE</h3>
+                  <h5>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Repellendus, ducimus, sit, quibusdam quidem recusandae veniam eos quod error nisi repellat excepturi laboriosam aspernatur suscipit possimus consectetur dolores nihil labore quas eius illo accusamus nulla sed blanditiis porro accusantium. Perspiciatis, perferendis!</h5>
+               </div>
+               <div class="col-lg-4 col-md-4">
+                  <h3 class="text-center">GET IN TOUCH</h3>
+                  <address class="text-center">
+                     <strong>Mazadna, Inc.</strong><br>
+                     Faculty of computers, Cairo University,<br>
+                     CA, 91308-4075, EGY<br>
+                     <abbr title="Phone">P:</abbr> (123) 456-7890
+                  </address>
+               </div>
+               <div class="col-lg-4 col-md-4">
+                  <h3 class="text-center">NEWSLETTER</h3>
+                  <form>
+                     <div class="form-group col-lg-9 col-md-8 col-sm-10 col-xs-10">
+                        <input type="email" class="form-control" id="exampleInputEmail1" placeholder="Enter email">
+                     </div>
+                     <button type="submit" class="btn btn-default">Subscribe<br>
+                     </button>
+                  </form>
+                  <div class="row">
+                     <h2 class="text-center"> <a><i class="col-lg-4 fa fa-facebook-official" style="color:#44619d;"></i></a>
+                        <a><i class="col-lg-4 fa fa-twitter" style="color:#1da1f2;"></i></a>  
+                        <a><i class="col-lg-4 fa fa-google-plus" style="color:red;"></i></a> 
+                     </h2>
+                  </div>
+               </div>
+            </div>
+         </div>
+      </div>
+      <footer class="text-center MyFooter">
+         <div class="container">
+            <div class="row">
+               <div class="col-xs-12">
+                  <p>Copyright © Mazadna. All rights reserved.</p>
+               </div>
+            </div>
+         </div>
+      </footer>

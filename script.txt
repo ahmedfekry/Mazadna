@@ -1,0 +1,151 @@
+CREATE TABLE `admin` (
+  `id` INTEGER PRIMARY KEY AUTO_INCREMENT,
+  `username` VARCHAR(255) NOT NULL,
+  `password` VARCHAR(255) NOT NULL
+);
+
+CREATE TABLE `category` (
+  `id` INTEGER PRIMARY KEY AUTO_INCREMENT,
+  `name` VARCHAR(255) NOT NULL,
+  `description` LONGTEXT NOT NULL
+);
+
+CREATE TABLE `user` (
+  `id` INTEGER PRIMARY KEY AUTO_INCREMENT,
+  `username` VARCHAR(255) UNIQUE NOT NULL,
+  `email` VARCHAR(255) UNIQUE NOT NULL,
+  `phone_number` VARCHAR(255) UNIQUE,
+  `password` VARCHAR(255) NOT NULL,
+  `first_name` VARCHAR(255) NOT NULL,
+  `last_name` VARCHAR(255) NOT NULL,
+  `gender` VARCHAR(255) NOT NULL,
+  `date_of_birth` DATETIME,
+  `image` VARCHAR(255) NOT NULL,
+  `national_id` VARCHAR(255) NOT NULL,
+  `deactivated` BOOLEAN,
+  `privacy` BOOLEAN,
+  `commuliteve_stars` INTEGER
+);
+
+CREATE TABLE `auction` (
+  `id` INTEGER PRIMARY KEY AUTO_INCREMENT,
+  `user_id` INTEGER NOT NULL,
+  `start_time` DATETIME NOT NULL,
+  `on_site` BOOLEAN NOT NULL,
+  `duration` INTEGER NOT NULL,
+  `privacy` VARCHAR(255) NOT NULL,
+  `highest_bid_id` INTEGER,
+  `highest_bider_id` INTEGER,
+  `category_id` INTEGER NOT NULL
+);
+
+CREATE INDEX `idx_auction__category_id` ON `auction` (`category_id`);
+
+CREATE INDEX `idx_auction__user_id` ON `auction` (`user_id`);
+
+ALTER TABLE `auction` ADD CONSTRAINT `fk_auction__category_id` FOREIGN KEY (`category_id`) REFERENCES `category` (`id`);
+
+ALTER TABLE `auction` ADD CONSTRAINT `fk_auction__user_id` FOREIGN KEY (`user_id`) REFERENCES `user` (`id`);
+
+CREATE TABLE `auctioninvitation` (
+  `id` INTEGER PRIMARY KEY AUTO_INCREMENT,
+  `inviter_id` INTEGER,
+  `invitee_id` INTEGER NOT NULL
+);
+
+CREATE INDEX `idx_auctioninvitation__inviter_id` ON `auctioninvitation` (`inviter_id`);
+
+ALTER TABLE `auctioninvitation` ADD CONSTRAINT `fk_auctioninvitation__inviter_id` FOREIGN KEY (`inviter_id`) REFERENCES `user` (`id`);
+
+CREATE TABLE `auctionreview` (
+  `id` INTEGER PRIMARY KEY AUTO_INCREMENT,
+  `auction_id` INTEGER NOT NULL,
+  `user_id` INTEGER NOT NULL,
+  `title` VARCHAR(255) NOT NULL,
+  `description` LONGTEXT NOT NULL
+);
+
+CREATE INDEX `idx_auctionreview__auction_id` ON `auctionreview` (`auction_id`);
+
+CREATE INDEX `idx_auctionreview__user_id` ON `auctionreview` (`user_id`);
+
+ALTER TABLE `auctionreview` ADD CONSTRAINT `fk_auctionreview__auction_id` FOREIGN KEY (`auction_id`) REFERENCES `auction` (`id`);
+
+ALTER TABLE `auctionreview` ADD CONSTRAINT `fk_auctionreview__user_id` FOREIGN KEY (`user_id`) REFERENCES `user` (`id`);
+
+CREATE TABLE `bid` (
+  `id` INTEGER PRIMARY KEY AUTO_INCREMENT,
+  `auction_id` INTEGER NOT NULL,
+  `user_id` INTEGER NOT NULL,
+  `price` DOUBLE NOT NULL,
+  `up_votes` INTEGER
+);
+
+CREATE INDEX `idx_bid__auction_id` ON `bid` (`auction_id`);
+
+CREATE INDEX `idx_bid__user_id` ON `bid` (`user_id`);
+
+ALTER TABLE `bid` ADD CONSTRAINT `fk_bid__auction_id` FOREIGN KEY (`auction_id`) REFERENCES `auction` (`id`);
+
+ALTER TABLE `bid` ADD CONSTRAINT `fk_bid__user_id` FOREIGN KEY (`user_id`) REFERENCES `user` (`id`);
+
+CREATE TABLE `following` (
+  `id` INTEGER PRIMARY KEY AUTO_INCREMENT,
+  `being_followd_id` INTEGER NOT NULL,
+  `follower_id` INTEGER NOT NULL,
+  `status` INTEGER NOT NULL
+);
+
+CREATE INDEX `idx_following__being_followd_id` ON `following` (`being_followd_id`);
+
+ALTER TABLE `following` ADD CONSTRAINT `fk_following__being_followd_id` FOREIGN KEY (`being_followd_id`) REFERENCES `user` (`id`);
+
+CREATE TABLE `item` (
+  `id` INTEGER PRIMARY KEY AUTO_INCREMENT,
+  `auction_id` INTEGER NOT NULL,
+  `name` VARCHAR(255) NOT NULL,
+  `description` LONGTEXT NOT NULL,
+  `image` VARCHAR(255) NOT NULL
+);
+
+CREATE INDEX `idx_item__auction_id` ON `item` (`auction_id`);
+
+ALTER TABLE `item` ADD CONSTRAINT `fk_item__auction_id` FOREIGN KEY (`auction_id`) REFERENCES `auction` (`id`);
+
+CREATE TABLE `reqest` (
+  `id` INTEGER PRIMARY KEY AUTO_INCREMENT,
+  `auction_id` INTEGER NOT NULL,
+  `accepted` BOOLEAN NOT NULL,
+  `user` INTEGER NOT NULL
+);
+
+CREATE INDEX `idx_reqest__auction_id` ON `reqest` (`auction_id`);
+
+CREATE INDEX `idx_reqest__user` ON `reqest` (`user`);
+
+ALTER TABLE `reqest` ADD CONSTRAINT `fk_reqest__auction_id` FOREIGN KEY (`auction_id`) REFERENCES `auction` (`id`);
+
+ALTER TABLE `reqest` ADD CONSTRAINT `fk_reqest__user` FOREIGN KEY (`user`) REFERENCES `user` (`id`);
+
+CREATE TABLE `userreport` (
+  `id` INTEGER PRIMARY KEY AUTO_INCREMENT,
+  `user_reporter_id` INTEGER NOT NULL,
+  `user_reported_id` INTEGER,
+  `reason` LONGTEXT NOT NULL
+);
+
+CREATE INDEX `idx_userreport__user_reporter_id` ON `userreport` (`user_reporter_id`);
+
+ALTER TABLE `userreport` ADD CONSTRAINT `fk_userreport__user_reporter_id` FOREIGN KEY (`user_reporter_id`) REFERENCES `user` (`id`);
+
+CREATE TABLE `userreview` (
+  `id` INTEGER PRIMARY KEY AUTO_INCREMENT,
+  `reviewer_id` INTEGER NOT NULL,
+  `reviewee_id` INTEGER NOT NULL,
+  `comment` VARCHAR(255) NOT NULL,
+  `starts` INTEGER NOT NULL
+);
+
+CREATE INDEX `idx_userreview__reviewer_id` ON `userreview` (`reviewer_id`);
+
+ALTER TABLE `userreview` ADD CONSTRAINT `fk_userreview__reviewer_id` FOREIGN KEY (`reviewer_id`) REFERENCES `user` (`id`)

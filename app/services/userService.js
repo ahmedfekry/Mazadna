@@ -1,9 +1,9 @@
 app.factory('myService', ['$http', function($http) {
 
-    var urlBase = 'API/v1/index.php/';
+    var urlBase = 'API/v1/';
     var myService = {};
 
-    // signUp, signIn
+    // user.php/signUp , admin.php/signIn
     myService.post = function (q, object) {
             return $http.post(urlBase + q, object).then(function (results) {
                 return results.data;
@@ -11,10 +11,10 @@ app.factory('myService', ['$http', function($http) {
         };
 
     myService.get = function (q) {
-    	// body...
-    	return $http.post(urlBase + q).then(function(results){
-    		return results.data;
-    	});
+        // body...
+        return $http.post(urlBase + q).then(function(results){
+            return results.data;
+        });
     };
     return myService;
 }]);

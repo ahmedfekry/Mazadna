@@ -1,8 +1,8 @@
 <?php
 // require '.././libs/Slim/Slim.php';
-    require '/var/www/html/mazadna/vendor/autoload.php';
+    require '../../vendor/autoload.php';
     require_once 'dbHelper.php';
-    require_once './models/registered_user.php';
+    require_once '/models/registered_user.php';
     require_once 'passwordHash.php';
     $app = new \Slim\App;
     $registerdUser = new RegisteredUser();

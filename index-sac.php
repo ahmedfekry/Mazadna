@@ -13,8 +13,8 @@
 	// 	echo "string";	
 	// 	echo "\n";
 	// }
-	$datetime2 = new DateTime('2017-10-13');
-
-	echo date("Y-m-d H:i:s",$datetime2); // ISO8601 formated datetime
+	if (date("Y-m-d H:i:s") > date("2016-06-12 14:44:39")){
+			echo "fekrys";
+	}
  ?>
  
