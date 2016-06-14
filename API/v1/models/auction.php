@@ -18,6 +18,7 @@
 		private $privacy;
 		private $end_date;
 		private $description;
+		private $conn;
 		function __construct($id=0,$owner=0,$title="",$starting_price=0,$privacy="",$end_date="",$description="")
 		{
 			# code...
@@ -33,11 +34,10 @@
 		}
 		// $rows = $db->insert("customers_php",array('name' => 'Ipsita Sahoo', 'email'=>'ipi@angularcode.com'), array('name', 'email'));
 
-		public function create($owner,$title,$starting_price,$privacy="public",$end_date,$description)
+		public function create($owner,$title,$starting_price,$privacy,$end_date,$description)
 		{	
-			echo "string3";
 			$response = array();
-			$app = new dbHelper();
+			
 			$objDateTime = new DateTime('NOW');
 			$duration = $objDateTime->diff($end_date);
 			try {
