@@ -11,10 +11,10 @@ app.factory('myService', ['$http', function($http) {
         };
 
     myService.get = function (q) {
-    	// body...
-    	return $http.post(urlBase + q).then(function(results){
-    		return results.data;
-    	});
+        // body...
+        return $http.post(urlBase + q).then(function(results){
+            return results.data;
+        });
     };
     return myService;
 }]);
