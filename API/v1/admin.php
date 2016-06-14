@@ -1,6 +1,6 @@
 <?php
     require '../../vendor/autoload.php';
-    require '/models/admin.php';
+    require 'models/admin.php';
     require_once 'passwordHash.php';
 
     $app = new \Slim\App;
