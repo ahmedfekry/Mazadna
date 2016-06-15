@@ -45,6 +45,7 @@ app.controller('authController', function ($scope, $rootScope, $routeParams, $lo
             user: postObject
         }).then(function (results) {
             if (results.status == "success") {
+                alert(results.message);
                 $location.path('/home')
             }
         });
