@@ -40,6 +40,7 @@
 		{	
 			$response = array();
 			$start_time = date("Y-m-d H:i:s");
+			$active = 1;
 			if ($end_time <= $start_time) {
 				$response["status"] = "failed";
 			    $response["message"] = "Failed to create auction. the end_time is less than the start_time";
@@ -48,8 +49,8 @@
 			}
 
 			try {
-					$stmt = $this->conn->prepare("INSERT INTO auction (user_id, description, title,starting_price,privacy,end_time,start_time,on_site,category_id)
-				    						VALUES (:user_id, :description,:title, :starting_price, :privacy,:end_time,:start_time,:on_site,:category_id)");
+					$stmt = $this->conn->prepare("INSERT INTO auction (user_id, description, title,starting_price,privacy,end_time,start_time,on_site,category_id,active)
+				    						VALUES (:user_id, :description,:title, :starting_price, :privacy,:end_time,:start_time,:on_site,:category_id,:active)");
 				    
 				    $stmt->bindParam(':user_id', $user_id);
 				    $stmt->bindParam(':description', $description);
@@ -60,6 +61,7 @@
 				    $stmt->bindParam(':start_time', $start_time);
 				    $stmt->bindParam(':on_site', $on_site);
 				    $stmt->bindParam(':category_id', $category_id);
+				    $stmt->bindParam(':active', $active);
 
 			        $result = $stmt->execute();
 
@@ -78,11 +80,52 @@
 			}	
 			
 		}
+		public function delete($auction_id)
+		{
+			$response = array();
+			try {
+				
+				$sql = "DELETE FROM auction WHERE id=".$auction_id;
+				if ($this->conn->exec($sql)) {
+					$sql = "DELETE FROM item WHERE auction_id=".$auction_id;	
+					$this->conn->exec($sql);
+					$response["status"] = "success";
+				    $response["message"] = "Auction deleted successfully";
+				}else{
+					$response["status"] = "failed";
+				    $response["message"] = "Failed to delete auction. Please try again";
+				}
+			} catch (PDOException $e) {
+				$response["status"] = "failed";
+				$response["message"] = $e->getMessage();
+			}
+			return $response;
+		}
 
+		public function deactivate($auction_id)
+		{
+			$response = array();
+			try {
+				$stmt = $this->conn->prepare("UPDATE auction SET active=0 WHERE id=".$auction_id);
+				
+				if ($stmt->execute()) {
+					$response["status"] = "success";
+				    $response["message"] = "Auction deactivated successfully";
+				}else{
+					$response["status"] = "failed";
+				    $response["message"] = "Failed to deactivate auction. Please try again";
+				}
+			} catch (PDOException $e) {
+				$response["status"] = "failed";
+				$response["message"] = $e->getMessage();
+			}
+			return $response;
+		}
 	}
+
 	// // $user_id,$description,$title,$starting_price,$privacy,$end_time,$on_site,$category_id
 	// $var = new Auction();
-	// $response = $var->create(4,"firstDDD","title",20,"public",date("2016-06-20 14:44:39"),1,1);
+	// $response = $var->deactivate(6);
 	// if ($response["status"] == "success") {
 	// 	echo "string1";
 	// } else {

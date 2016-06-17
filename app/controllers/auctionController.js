@@ -21,4 +21,20 @@ app.controller('auctionController', function ($scope, $rootScope, $routeParams, 
         });
     };
 
+    $scope.delete = function (auction) {
+        var postObject = new Object();
+
+        postObject.auction_id = auction['id'];
+        myService.post('auction.php/deleteAuction', {
+            auction: postObject
+        }).then(function (results) {
+            if (results.status == "success") {
+                alert(results.message);
+                $location.path('/home');
+            }
+        });
+    };
+
+
+
 });

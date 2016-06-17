@@ -29,6 +29,33 @@
         return $response->write(json_encode($result) );
     });
 
+    $app->post('/deleteAuction',function ($request,$response) use ($app){
+        # code...
+        global $auction;
+
+        $header = json_decode($request->getBody());
+
+        $auction_id = $header->auction->auction_id;
+        // $result = array('message' => $user_id);
+        $result = $auction->delete($auction_id);
+
+        return $response->write(json_encode($result) );
+    });
+
+    $app->post('/deactivateAuction',function ($request,$response) use ($app){
+        # code...
+        global $auction;
+        $header = json_decode($request->getBody());
+
+        $auction_id = $header->auction->auction_id;
+        // $result = array('message' => $user_id);
+        $result = $auction->deactivate($auction_id);
+
+        return $response->write(json_encode($result) );
+    });
+
+
+
     $app->run();
 
 ?>
