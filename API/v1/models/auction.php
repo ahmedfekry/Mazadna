@@ -36,10 +36,13 @@
 			$this->conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);			
 		}
 
-		public function create($user_id,$description,$title,$starting_price,$privacy,$end_time,$on_site,$category_id)
+		public function create($user_id,$description,$title,$starting_price,$privacy,$end_time,$start_time,$on_site=0,$category_id)
 		{	
 			$response = array();
-			$start_time = date("Y-m-d H:i:s");
+			$start_time = date_create($start_time);	
+			$start_time = date_format($start_time,"Y-m-d H:i:s");
+			$end_time = date_create($end_time);
+			$end_time = date_format($end_time,"Y-m-d H:i:s");
 			$active = 1;
 			if ($end_time <= $start_time) {
 				$response["status"] = "failed";
@@ -123,13 +126,13 @@
 		}
 	}
 
-	// // $user_id,$description,$title,$starting_price,$privacy,$end_time,$on_site,$category_id
+	// $user_id,$description,$title,$starting_price,$privacy,$end_time,$on_site,$category_id
 	// $var = new Auction();
-	// $response = $var->deactivate(6);
+	// $response = $var->create(1,"description","title",4,"public","2016/06/18 23:05","2016/06/2 23:05",1,1);
 	// if ($response["status"] == "success") {
-	// 	echo "string1";
+		// echo "string1";
 	// } else {
-	// 	echo $response["message"]."\n";
+		// echo $response["message"]."\n";
 	// }
 	
 

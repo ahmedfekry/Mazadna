@@ -18,13 +18,15 @@
         $title = $header->auction->title;
         $starting_price = $header->auction->starting_price;
         $privacy = $header->auction->privacy;
-        $end_time = $header->auction->end_time;
+        $start_time = (string)$header->auction->start_time;
+        $end_time = (string)$header->auction->end_time;
         // echo $end_time;
         $on_site = $header->auction->on_site;
         $category_id = $header->auction->category_id;
 
-        // $result = array('message' => $user_id);
-        $result = $auction->create($user_id,$description,$title,$starting_price,$privacy,$end_time,$on_site,$category_id);
+        // $result = array('message' => $category_id);
+        // ($user_id,$description,$title,$starting_price,$privacy,$end_time,$start_time,$on_site=0,$category_id
+        $result = $auction->create($user_id,$description,$title,$starting_price,$privacy,$end_time,$start_time,0,$category_id);
 
         return $response->write(json_encode($result) );
     });
