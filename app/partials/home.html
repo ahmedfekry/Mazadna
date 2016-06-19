@@ -1,5 +1,16 @@
-<div>
-	<h1>
-		Home Page
-	</h1>
+ <div ng-controller="homeController" ng-init="init()">
+<div id="auction">
+    <div class="column" ng-repeat="column in auction">
+        <div class="cell" ng-repeat="cell in column"></div>
+    </div>
 </div>
+ 	<!--{{auction.name}}
+ 	{{auction.item}}
+ 	{{auction.start_time}}
+ 	{{auction.duration}}
+ 	{{auction.privacy}}
+ 	{{auction.onsite}}
+-->
+
+ </div> 
+ 
