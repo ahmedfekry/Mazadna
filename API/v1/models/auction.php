@@ -42,10 +42,18 @@
         $temp2 = $result2->fetch(PDO::FETCH_ASSOC);
         $item_name =$temp2['name'];
 
-        $auction = array('username'=>$name,'item' => $item_name,'start_time' => $row['start_time'],
-        'duration' => $row['duration'],'status' => "success",'massege'=>"this is auction",
-        'highest_bid_id'=>$row['highest_bid_id'],'highest_bider_id'=>$row['highest_bider_id'],'category_id'=>$row['category_id'],
-        'onsite'=>$onsite,'privacy'=>$private,'num'=>$i);
+        $auction = array('id'=>$id,
+        'username'=>$name,
+        'item' => $item_name,
+        'start_time' => $row['start_time'],
+        'duration' => $row['duration'],
+        'status' => "success",
+        'massege'=>"this is auction",
+        'highest_bid_id'=>$row['highest_bid_id'],
+        'highest_bider_id'=>$row['highest_bider_id'],
+        'category_id'=>$row['category_id'],
+        'onsite'=>$onsite,
+        'privacy'=>$private);
          
          $response1[$i] = $auction;
          $i++; 
