@@ -37,6 +37,38 @@
 
         return $response->write(json_encode($result) );
     });
+    $app->post('/getUser',function ($request,$response) use ($app){
+        # code...
+        global $registerdUser;
+
+        $header = json_decode($request->getBody());
+
+        $user_id = $header->user->user_id;
+        // $result = array('message' => "success", );
+        $result = $registerdUser->getUser($user_id);
+
+        return $response->write(json_encode($result) );
+    });
+    
+    $app->post('/updateUser',function ($request,$response) use ($app){
+        # code...
+        global $registerdUser;
+
+        $header = json_decode($request->getBody());
+
+        $first_name = $header->user->first_name;
+        $last_name = $header->user->last_name;
+        $username = $header->user->user_name;
+        $email = $header->user->email;
+        $phone_number = $header->user->phone_number;
+        $new_password = $header->user->new_password;
+        $old_password = $header->user->old_password;
+        // $result = array('message' => "success", );
+        $result = $registerdUser->updateUser($first_name,$last_name,$username,$email,$phone_number,$new_password,$old_password);
+
+        return $response->write(json_encode($result) );
+    });
+
 
     $app->run();
 

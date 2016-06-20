@@ -27,6 +27,11 @@ var app = angular.module('mazadna', ['ngRoute'])
                 controller : 'adminController'
             })
 
+            .when('/editAccount',{
+                templateUrl : 'app/partials/editAccount.html',
+                controller : 'userController'
+            })
+
             .otherwise({
                 redirectTo:'signIn'
             });
