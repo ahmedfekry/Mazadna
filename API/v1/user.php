@@ -38,6 +38,17 @@
         return $response->write(json_encode($result) );
     });
 
+    $app->post('/viewUserProfile',function($request,$response) use ($app){
+        global $registerdUser;
+        $header = json_decode($request->getBody());
+
+        $userId = $header->id;
+
+        $result = $registerdUser->view_user_profile($id);
+
+        return $response->write( json_encode($result) );
+    });
+
     $app->run();
 
 ?>

@@ -131,6 +131,40 @@
 				return "Error: ".$e->getMessage();
 			}
 		}
+
+		public function view_user_profile($id)
+		{
+			$response =array();
+			try {
+
+				$numOfRows = $this->conn->query("SELECT COUNT(*) FROM `auction` WHERE user_id=".$id."")->fetchColumn();
+
+				if($numOfRows > 0)
+				{
+					$response["status"] = "success";
+					$stmt = $this->conn->prepare("SELECT * FROM `auction` WHERE user_id=:userid");
+					$stmt->bindParam(':userid' , $id);
+
+					$stmt->execute();
+
+					$i = 0;
+					while($row = $stmt->fetch(PDO::FETCH_ASSOC))
+					{
+						$response["auctions"][i] = $row;
+						$i = $i + 1;
+					}
+					return $response;
+				}
+				else
+				{
+					$response["status"] = "failed";
+					$response["message"] = "No records found";
+					return $response;
+				}
+			} catch (Exception $e) {
+				return "Error: ".$e->getMessage();
+			}
+		}
 	}
 
  ?>
