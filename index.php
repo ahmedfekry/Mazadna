@@ -29,7 +29,7 @@
 		<div ng-view></div>
 
 		<div ng-controller="MainController"></div>
-		<script src="assets/js/jquery-2.1.4.min.js"></script>
+		<!-- <script src="assets/js/jquery-2.1.4.min.js"></script> -->
       	<script src="assets/js/bootstrap.min.js"></script>
       	<script src="assets/js/script.js"></script>
 
@@ -47,7 +47,7 @@
 		<script type="text/javascript" src="app/controllers/authController.js"></script>
 		<script type="text/javascript" src="app/controllers/homeController.js"></script>
 		<script type="text/javascript" src="app/controllers/adminController.js"></script>
-
+		<script type="text/javascript" src="app/controllers/homeController.js"></script>
 		<!-- Directives -->
 		<script type="text/javascript" src="app/directives/mainDirective.js"></script>
 
