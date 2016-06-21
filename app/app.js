@@ -5,21 +5,21 @@ var app = angular.module('mazadna', ['ngRoute'])
 
             // www.example.com/signUp
 
-            // route for the home page
+            // route for the signup page
             .when('/signUp', {
                 templateUrl : 'app/partials/sign_up.html',
                 controller  : 'authController'
             })
 
-            // route for the about page
+            // route for the home page
             .when('/home', {
                 templateUrl : 'app/partials/home.html',
                 controller  : 'homeController'
             })
 
-            .when('/viewCategory',{
-                templateUrl : 'app/partials/search.html',
-                controller : 'homeController'
+            .when('/viewAuction',{
+                templateUrl : 'app/partials/viewAuction.html',
+                controller : 'auctionController'
             })
 
             .when('/signIn',{
