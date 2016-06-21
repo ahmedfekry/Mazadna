@@ -137,7 +137,7 @@
 			$response =array();
 			try {
 
-				$numOfRows = $this->conn->query("SELECT COUNT(*) FROM `auction` WHERE user_id=".$id."")->fetchColumn();
+				$numOfRows = $this->conn->query("SELECT COUNT(*) FROM `auction` WHERE user_id=".$id)->fetchColumn();
 
 				if($numOfRows > 0)
 				{
@@ -150,7 +150,8 @@
 					$i = 0;
 					while($row = $stmt->fetch(PDO::FETCH_ASSOC))
 					{
-						$response["auctions"][i] = $row;
+						//print_r($row);
+						$response["auctions"][$i] = $row;
 						$i = $i + 1;
 					}
 					return $response;
@@ -165,6 +166,84 @@
 				return "Error: ".$e->getMessage();
 			}
 		}
-	}
 
+		public function deactivateAccount($id)
+		{
+			$response = array();
+			try {
+				$stmt = $this->conn->prepare("UPDATE `user` SET deactivated=1 WHERE id=:id");
+				$stmt->bindParam(':id' , $id);
+				if($stmt->execute())
+				{
+					$response["status"] = "success";
+					$response["message"] = "account deactivated successfully !";
+					return $response;
+				}
+				else
+				{
+					$response["status"] = "fail";
+					$response["message"] = "ERROR";
+					return $response;
+				}
+			} catch (Exception $e) {
+				return "Error: ".$e->getMessage();
+			}
+		}
+
+		public function deleteAccount($id)
+		{
+			$response = array();
+			try {
+
+				//delete user's auction invitations
+
+				$stmt = "DELETE FROM `auctioninvitation` WHERE inviter_id=".$id." OR invitee_id=".$id;
+				$this->conn->exec($stmt);
+
+				//delete user's auction review
+
+				$stmt = "DELETE FROM `auctionreview` WHERE user_id=".$id;
+				$this->conn->exec($stmt);
+
+
+				//delete user's bids
+				$stmt = "DELETE FROM `bid` WHERE user_id=".$id;
+				$this->conn->exec($stmt);
+
+				//delete user's requests
+				$stmt = "DELETE FROM `reqest` WHERE user=".$id;
+				$this->conn->exec($stmt);
+
+
+				//delete user's auctions
+				$stmt = "DELETE FROM `auction` WHERE user_id=".$id;
+				$this->conn->exec($stmt);
+
+				//delete users followers and following relations
+				$stmt = "DELETE FROM `following` WHERE follower_id=".$id." OR being_followd_id=".$id;
+				$this->conn->exec($stmt);
+
+				//delete user's reports made by him or on him
+				$stmt = "DELETE FROM `userreport` WHERE user_reported_id=".$id." OR user_reporter_id=".$id;
+				$this->conn->exec($stmt);
+
+				//delete user's reviews on him or made by him
+				$stmt = "DELETE FROM `userreview` WHERE reviewer_id=".$id;
+				// $stmt->bindParam(':uid' , $id);
+				$this->conn->exec($stmt);
+
+				//delete user's record in database
+				$stmt = "DELETE FROM `user` WHERE id=".$id;
+				$this->conn->exec($stmt);
+
+				$response["status"] = "success";
+				$response["message"] = "account deleted successfully !";
+				return $response;
+			} catch (Exception $e) {
+				return "Error: ".$e->getMessage();
+			}
+		}
+	}
+	$var = new RegisteredUser();
+	print_r($var->deleteAccount(2));
  ?>
