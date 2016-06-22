@@ -1,4 +1,4 @@
-app.controller('authController', function ($scope, $rootScope, $routeParams, $location, $http, myService) {
+app.controller('authController', function ($scope, $rootScope, $routeParams, $location, $http, myService,sessionService) {
     //initially set those objects to null to avoid undefined error
     $scope.login = {};
     $scope.signup = {};
@@ -45,9 +45,19 @@ app.controller('authController', function ($scope, $rootScope, $routeParams, $lo
             user: postObject
         }).then(function (results) {
             if (results.status == "success") {
+                sessionService.set("uid",results.uid);
                 $location.path('/home')
+            }else{
+                alert(results.message);
+                $location.path('/signIn');
             }
         });
     }
+    // $rootScope.text = "Fekry";
+    // $rootScope.logOut = function() {
+    
+    //     sessionService.destroy('user_id');
+    //     $location.path('/signIn');
+    // }
 
 });
