@@ -20,7 +20,6 @@ app.controller('homeController', function ($scope, $rootScope, $routeParams, $lo
                 }
                 
                 $scope.auction = auctionData;
-                   
                     	
         });
 
