@@ -38,6 +38,28 @@
         return $response->write(json_encode($result) );
     });
 
+    $app->get('/session', function($request,$response) use ($app){
+        // $db = new RegisteredUser();
+        global $registerdUser;
+
+        $session = $registerdUser->getSession();
+        $result["uid"] = $session['uid'];
+        $result["email"] = $session['email'];
+        $result["name"] = $session['name'];
+        // echoResponse(200, $session);
+        return $response->write(json_encode($result));
+    });
+
+
+    $app->get('/logout', function($request,$response) use ($app){
+        // $db = new DbHandler();
+        global $registerdUser;
+        $session = $registerdUser->destroySession();
+        $result["status"] = "info";
+        $result["message"] = "Logged out successfully";
+        return $response->write(json_encode($result));
+    });
+
     $app->run();
 
 ?>

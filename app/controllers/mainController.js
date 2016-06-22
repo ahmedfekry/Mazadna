@@ -1,3 +1,13 @@
-app.controller('MainController', ['$scope', '$rootScope',function($scope, $rootScope) {
-          
+app.controller('MainController', ['$scope', '$rootScope','sessionService','$location','myService',function($scope, $rootScope,sessionService,$location,myService) {
+    // $rootScope.text = "Fekry";
+    $rootScope.logOut = function() {
+        sessionService.destroy('uid');
+        $location.path('/signIn');
+    }
+
+    $rootScope.islogged = function() {
+    	var connected = sessionService.get();
+        return connected;
+    }
+
 }]);
