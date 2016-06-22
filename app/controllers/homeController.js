@@ -20,14 +20,7 @@ app.controller('homeController', function ($scope, $rootScope, $routeParams, $lo
                 }
                 
                 $scope.auction = auctionData;
-                      /*{
-                        name:results[i].username,
-                        item:results[i].item,
-                        start_time:results[i].start_time,
-                        duration:results[i].duration,
-                        privacy:results[i].privacy,
-                        onsite:results[i].onsite
-                      };*/
+                   
                     	
         });
 
@@ -57,17 +50,3 @@ app.controller('homeController', function ($scope, $rootScope, $routeParams, $lo
     };
    
 });
-/*
- $auction = array('id'=>$id,
-        'username'=>$name,
-        'item' => $item_name,
-        'start_time' => $row['start_time'],
-        'duration' => $row['duration'],
-        'status' => "success",
-        'massege'=>"this is auction",
-        'highest_bid_id'=>$row['highest_bid_id'],
-        'highest_bider_id'=>$row['highest_bider_id'],
-        'category_id'=>$row['category_id'],
-        'onsite'=>$onsite,
-        'privacy'=>$private); */
-// >>>>>>> 5-khaled-home
