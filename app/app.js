@@ -17,6 +17,11 @@ var app = angular.module('mazadna', ['ngRoute'])
                 controller  : 'homeController'
             })
 
+            .when('/viewCategory',{
+                templateUrl : 'app/partials/search.html',
+                controller : 'homeController'
+            })
+
             .when('/signIn',{
                 templateUrl : 'app/partials/sign_in.html',
                 controller : 'authController'
