@@ -1,11 +1,21 @@
 <?php
 // require '.././libs/Slim/Slim.php';
+<<<<<<< HEAD
     require '../../vendor/autoload.php';
     require_once 'dbHelper.php';
     require_once '/models/registered_user.php';
+=======
+	//$temp = $_Server["DOCUMENT_ROOT"];
+	require '/xampp/htdocs/Mazadna/vendor/autoload.php';
+    //require 'C:\xampp\htdocs\Mazadna\vendor\autoload.php';
+    require_once 'dbHelper.php';
+    require_once './models/registered_user.php';
+    require_once './models/get_auction.php';
+>>>>>>> 5-khaled-home
     require_once 'passwordHash.php';
     $app = new \Slim\App;
     $registerdUser = new RegisteredUser();
+    $homeData = new get_auctions(); 
 /**
  * Database Helper Function templates
  */
@@ -23,6 +33,7 @@ delete(table name, where clause as array)
 // $rows = $db->delete("customers_php", array('name' => 'Ipsita Sahoo', 'id'=>'227'));
     // require_once '';
     require_once 'user.php';
+    require_once 'home.php';
 
 $app->run();
 
