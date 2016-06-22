@@ -310,9 +310,12 @@
               <legend style="margin:5px;"><a href="#"> Latest.</a></legend>
               <div class="panel-body" >
 
-                  <section class="col-sm-2" ng-repeat="row in auction" ng-controller="homeController"> <img src="assets/images/products/furn.jpg" class="img-thumbnail img-responsive center-block" alt="Dr Chase Photo">
+                  <section class="col-sm-2" ng-repeat="row in auction" ng-controller="homeController"> 
+                  <img src="assets/images/products/furn.jpg" class="img-thumbnail img-responsive center-block" alt="Dr Chase Photo">
                   <h3>{{row[0]}}</h3>
                   <p>{{row[1]}}</p>
+                  <p>{{row[2]}}</p>
+                   <input type="button" value="join" class="btn btn-default" ng-click="join(row[2]);" >
                 </section>
        
         

@@ -17,7 +17,7 @@
 			$this->name = $name;
 			$this->categoryId = $categoryId;
 			$this->ownerId = $ownerId;
-			$this->conn = new PDO("mysql:host=localhost;dbname=mazadna", "root", "");
+			$this->conn = new PDO("mysql:host=localhost;dbname=Mazadna", "root", "91013");
 			$this->conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 		}
 
@@ -126,8 +126,19 @@
 				        $temp3 = $result3->fetch(PDO::FETCH_ASSOC);
 				        $category_name =$temp3['name'];
 				        //add the results to the an array
-				        $auction = array('username'=>$name,'item' => $item_name,'start_time' => $row['start_time'],'duration' => $row['duration'],'status' => "success",'massege'=>"this is auction",'highest_bid_id'=>$row['highest_bid_id'],'highest_bider_id'=>$row['highest_bider_id'],'category_name'=>$category_name,
-				        'onsite'=>$onsite,'privacy'=>$private);
+				        $auction = array(
+				        'id'=>$id,	
+				        'username'=>$name,
+				        'item' => $item_name,
+				        'start_time' => $row['start_time'],
+				        'duration' => $row['duration'],
+				        'status' => "success",
+				        'massege'=>"this is auction",
+				        'highest_bid_id'=>$row['highest_bid_id'],
+				        'highest_bider_id'=>$row['highest_bider_id'],
+				        'category_name'=>$category_name,
+				        'onsite'=>$onsite,
+				        'privacy'=>$private);
 				        //create 2D array
 
 				        $response1[$i] = $auction;
@@ -146,10 +157,33 @@
 			 catch(PDOException $e) {
 			    echo "Error: " . $e->getMessage();   
 			}
-
 		
 	}
 
-}
+	function joinAuction($auctionID){
+         $response = array();	
+         $userID = 1;
+        try{
+			    $stmt = "SELECT 1 FROM `bid` WHERE auction_id = '$auctionID' and user_id = '$userID' ";
+			    $exist = $this->conn->query($stmt);
 
+                if($exist){
+                	$response["status"] = "fialed";
+                    $response["message"] = "already joined";
+                }
+
+			    else{
+			        $stmt = "INSERT INTO bid (user_id, auction_id) VALUES ('$auctionID', '$userID')";
+                    $result = $this->conn->query($stmt);
+                    $response["status"] = "success";
+                    $response["message"] = "joined successfully";
+                }
+
+            return $response;
+	        }catch(PDOException $e) {
+    			return "Error: " . $e->getMessage();
+			}
+
+    }
+}
  ?>

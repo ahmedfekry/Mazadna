@@ -17,5 +17,15 @@
 
     });
 
-	$app->run();
+   
+   $app->post('/join', function ($request, $response) use ($app){
+        global $home;
+        $header = json_decode($request->getBody());
+        $auctionID = $header->postObject->auctionID;
+        $result = $home -> joinAuction($auctionID);
+        return $response-> write(json_encode($result));
+
+    });
+
+    $app->run();
 ?>
