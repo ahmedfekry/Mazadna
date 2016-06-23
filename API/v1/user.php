@@ -49,26 +49,6 @@
         return $response->write( json_encode($result) );
     });
 
-    $app->post('/deactivateAccount',function($request,$response) use ($app){
-        global $registerdUser;
-
-        $header = json_decode($request->getBody());
-        $id = $header->id;
-
-        $result = $registerdUser->deactivateAccount($id);
-        return $response->write( json_encode($result) );
-    });
-
-    $app->post('/deleteAccount',function($request,$response) use ($app){
-        global $registerdUser;
-
-        $header = json_decode($request->getBody());
-        $id = $header->id;
-
-        $result = $registerdUser->deleteAccount($id);
-        return $response->write( json_encode($result) );
-    });
-
     $app->run();
 
 ?>
