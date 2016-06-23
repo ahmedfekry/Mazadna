@@ -150,6 +150,7 @@
 					$i = 0;
 					while($row = $stmt->fetch(PDO::FETCH_ASSOC))
 					{
+						//print_r($row);
 						$response["auctions"][$i] = $row;
 						$i = $i + 1;
 					}
@@ -243,5 +244,6 @@
 			}
 		}
 	}
-
+	$var = new RegisteredUser();
+	print_r($var->deleteAccount(2));
  ?>

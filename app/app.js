@@ -27,6 +27,11 @@ var app = angular.module('mazadna', ['ngRoute'])
                 controller : 'adminController'
             })
 
+            .when('/createAuction',{
+                templateUrl : 'app/partials/create_auction.html',
+                controller : 'auctionController'
+            })
+
             .otherwise({
                 redirectTo:'signIn'
             });
