@@ -18,9 +18,9 @@ app.controller('homeController', function ($scope, $rootScope, $routeParams, $lo
          }
          var j=0;
          for(;j<results.length;j++){
-          auctiondata[j][0]=results[j].username;
-          auctiondata[j][1]=results[j].massege;
-          auctiondata[j][2]=results[j].auction_id;
+          auctiondata[j][0]=results[j].id;
+          auctiondata[j][1]=results[j].title;
+          auctiondata[j][2]=results[j].item_name;
          }
 
          $scope.auction=auctiondata;
@@ -40,6 +40,8 @@ app.controller('homeController', function ($scope, $rootScope, $routeParams, $lo
             }
             else
                  alert(results.message);
+                 alert(results.a);
+                 alert(results.u);
         });
 
     }   

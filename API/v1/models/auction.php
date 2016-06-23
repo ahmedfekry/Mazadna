@@ -61,8 +61,22 @@
 				        $temp2 = $result2->fetch(PDO::FETCH_ASSOC);
 				        $item_name =$temp2['name'];
 				        //add the results to the an array
-				        $auction = array('auction_id'=>$auction_id,'username'=>$name,'item' => $item_name,'start_time' => $row['start_time'],'duration' => $row['duration'],'status' => "success",'massege'=>"this is auction",'highest_bid_id'=>$row['highest_bid_id'],'highest_bider_id'=>$row['highest_bider_id'],'category_id'=>$row['category_id'],
-				        'onsite'=>$onsite,'privacy'=>$private);
+				        $auction = array(
+				        'id'=>$id,	
+				        'username'=>$name,
+				        'description'=>$row['description'],
+				        'item' => $item_name,
+				        'start_time' => $row['start_time'],
+				        'end_time' => $row['end_time'],
+				        'title' => $row['title'],
+				        'starting_price'=>$row['starting_price'],
+				        'active' =>$row['active'],
+				        'status' => "success",
+				        'highest_bid_id'=>$row['highest_bid_id'],
+				        'highest_bider_id'=>$row['highest_bider_id'],
+				        
+				        'onsite'=>$onsite,
+				        'privacy'=>$private);
 				        //create 2D array
 
 				        $response1[$i] = $auction;
@@ -129,11 +143,14 @@
 				        $auction = array(
 				        'id'=>$id,	
 				        'username'=>$name,
+				        'description'=>$row['description'],
 				        'item' => $item_name,
 				        'start_time' => $row['start_time'],
-				        'duration' => $row['duration'],
+				        'end_time' => $row['end_time'],
+				        'title' => $row['title'],
+				        'starting_price'=>$row['starting_price'],
+				        'active' =>$row['active'],
 				        'status' => "success",
-				        'massege'=>"this is auction",
 				        'highest_bid_id'=>$row['highest_bid_id'],
 				        'highest_bider_id'=>$row['highest_bider_id'],
 				        'category_name'=>$category_name,
@@ -168,14 +185,17 @@
 			    $exist = $this->conn->query($stmt);
 
                 if($exist){
-                	$response["status"] = "fialed";
+                	$response["status"] = "failed";
                     $response["message"] = "already joined";
+                    $response["a"]=$auctionID;
+                    $response["u"]=$userID;
                 }
 
 			    else{
 			        $stmt = "INSERT INTO bid (user_id, auction_id) VALUES ('$auctionID', '$userID')";
                     $result = $this->conn->query($stmt);
                     $response["status"] = "success";
+
                     $response["message"] = "joined successfully";
                 }
 
