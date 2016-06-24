@@ -42,6 +42,7 @@ app.controller('homeController', function ($scope, $rootScope, $routeParams, $lo
                  alert(results.message);
                  alert(results.a);
                  alert(results.u);
+                 alert(results.id);
         });
 
     }   

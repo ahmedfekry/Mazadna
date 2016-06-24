@@ -181,22 +181,21 @@
          $response = array();	
          $userID = 1;
         try{
-			    $stmt = "SELECT 1 FROM `bid` WHERE auction_id = '$auctionID' and user_id = '$userID' ";
-			    $exist = $this->conn->query($stmt);
+			    $stmt = "SELECT id FROM `bid` WHERE auction_id = '$auctionID' and user_id = '$userID' ";
+			    $temp = $this->conn->query($stmt);
+                $exist = $temp->fetch(PDO::FETCH_ASSOC);
 
-                if($exist){
-                	$response["status"] = "failed";
-                    $response["message"] = "already joined";
-                    $response["a"]=$auctionID;
-                    $response["u"]=$userID;
+                if(!$exist){
+                	$stmt = "INSERT INTO bid (user_id, auction_id) VALUES ('$auctionID', '$userID')";
+                    $result = $this->conn->query($stmt);
+                    $response["status"] = "success";
+                    $response["message"] = "joined successfully";
                 }
 
 			    else{
-			        $stmt = "INSERT INTO bid (user_id, auction_id) VALUES ('$auctionID', '$userID')";
-                    $result = $this->conn->query($stmt);
-                    $response["status"] = "success";
-
-                    $response["message"] = "joined successfully";
+			    	$response["status"] = "failed";
+                    $response["message"] = "already joined";
+			       
                 }
 
             return $response;
