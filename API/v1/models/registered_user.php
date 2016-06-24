@@ -137,37 +137,64 @@
 			$response =array();
 			try {
 
-				$numOfRows = $this->conn->query("SELECT COUNT(*) FROM `auction` WHERE user_id=".$id)->fetchColumn();
+				$stmt = $this->conn->prepare("SELECT * FROM `user` WHERE id=:uid");
+			    $stmt->bindParam(':uid',$id);
 
-				if($numOfRows > 0)
-				{
-					$response["status"] = "success";
-					$stmt = $this->conn->prepare("SELECT * FROM `auction` WHERE user_id=:userid");
-					$stmt->bindParam(':userid' , $id);
+			    $stmt->execute();
 
-					$stmt->execute();
+			    $userInfo = $stmt->fetch(PDO::FETCH_ASSOC);
 
-					$i = 0;
-					while($row = $stmt->fetch(PDO::FETCH_ASSOC))
+			    if($userInfo != NULL)
+			    {
+			    	$response["user_status"] = "success";
+			    	$response["userInfo"]["id"] = $userInfo['id'];
+			    	$response["userInfo"]["username"] = $userInfo['username'];
+			    	$response["userInfo"]["email"] = $userInfo['email'];
+			    	$response["userInfo"]["phone_number"] = $userInfo['phone_number'];
+			    	$response["userInfo"]["first_name"] = $userInfo['first_name'];
+			    	$response["userInfo"]["last_name"] = $userInfo['last_name'];
+			    	$response["userInfo"]["image"] = $userInfo['image'];
+			    	$response["userInfo"]["commuliteve_stars"] = $userInfo['commuliteve_stars'];
+
+			    	$numOfRows = $this->conn->query("SELECT COUNT(*) FROM `auction` WHERE user_id=".$id)->fetchColumn();
+
+					if($numOfRows > 0)
 					{
-						//print_r($row);
-						$response["auctions"][$i] = $row;
-						$i = $i + 1;
+						$response["auction_status"] = "success";
+						$response["message"] = "user found auctions found";
+						$stmt = $this->conn->prepare("SELECT * FROM `auction` WHERE user_id=:userid");
+						$stmt->bindParam(':userid' , $id);
+
+						$stmt->execute();
+
+						$i = 0;
+						while($row = $stmt->fetch(PDO::FETCH_ASSOC))
+						{
+							//print_r($row);
+							$response["auctions"][$i] = $row;
+							$i = $i + 1;
+						}
+						return $response;
 					}
-					return $response;
-				}
-				else
-				{
-					$response["status"] = "failed";
-					$response["message"] = "No records found";
-					return $response;
-				}
+					else
+					{
+						$response["auction_status"] = "failed";
+						$response["message"] = "No auction(s) found";
+						return $response;
+					}
+			    }
+			    else{
+			    	$response["user_status"] = "failed";
+			    	$response["message"] = "No user found";
+			    	return $response;
+			    }
+				
 			} catch (Exception $e) {
 				return "Error: ".$e->getMessage();
 			}
 		}
 
-		public function deactivateAccount($id)
+		public function deactivate_account($id)
 		{
 			$response = array();
 			try {
@@ -190,7 +217,7 @@
 			}
 		}
 
-		public function deleteAccount($id)
+		public function delete_account($id)
 		{
 			$response = array();
 			try {
@@ -244,6 +271,6 @@
 			}
 		}
 	}
-	$var = new RegisteredUser();
-	print_r($var->deleteAccount(2));
+	/*$var = new RegisteredUser();
+	print_r($var->view_user_profile(3));*/
  ?>

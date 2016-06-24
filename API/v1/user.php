@@ -42,9 +42,9 @@
         global $registerdUser;
         $header = json_decode($request->getBody());
 
-        $userId = $header->id;
+        $userId = $header->user->id;
 
-        $result = $registerdUser->view_user_profile($id);
+        $result = $registerdUser->view_user_profile($userid);
 
         return $response->write( json_encode($result) );
     });
@@ -55,7 +55,7 @@
         $header = json_decode($request->getBody());
         $id = $header->id;
 
-        $result = $registerdUser->deactivateAccount($id);
+        $result = $registerdUser->deactivate_account($id);
         return $response->write( json_encode($result) );
     });
 
@@ -65,7 +65,7 @@
         $header = json_decode($request->getBody());
         $id = $header->id;
 
-        $result = $registerdUser->deleteAccount($id);
+        $result = $registerdUser->delete_account($id);
         return $response->write( json_encode($result) );
     });
 

@@ -32,11 +32,17 @@ var app = angular.module('mazadna', ['ngRoute'])
                 controller : 'auctionController'
             })
 
+            .when('/viewUserProfile',{
+                templateUrl : 'app/partials/profile.html',
+                controller : 'homeController'
+            })
+
             .otherwise({
                 redirectTo:'signIn'
             });
 
+
             // www.example.com/signIn
 
-            // $locationProvider.html5Mode(true);
+           // $locationProvider.html5Mode(true);
     });
