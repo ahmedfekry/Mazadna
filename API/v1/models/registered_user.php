@@ -24,7 +24,7 @@
 			$this->facebook_key = $facebook_key;
 			$this->followers = $followers;
 			$this->following = $following;
-			$this->conn = new PDO("mysql:host=localhost;dbname=mazadna", "root", "91013");
+			$this->conn = new PDO("mysql:host=localhost;dbname=mazadna", "root", "");
 			$this->conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 		}
 

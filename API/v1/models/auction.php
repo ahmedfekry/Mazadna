@@ -17,7 +17,7 @@
 			$this->name = $name;
 			$this->categoryId = $categoryId;
 			$this->ownerId = $ownerId;
-			$this->conn = new PDO("mysql:host=localhost;dbname=Mazadna", "root", "91013");
+			$this->conn = new PDO("mysql:host=localhost;dbname=Mazadna", "root", "");
 			$this->conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 		}
 

@@ -47,8 +47,8 @@
 		<script type="text/javascript" src="app/controllers/authController.js"></script>
 		<script type="text/javascript" src="app/controllers/homeController.js"></script>
 		<script type="text/javascript" src="app/controllers/adminController.js"></script>
-		<script type="text/javascript" src="app/controllers/admin_homeController.js"></script>
 		<script type="text/javascript" src="app/controllers/auctionController.js"></script>
+		<script type="text/javascript" src="app/controllers/admin_homeController.js"></script>
 		<!-- Directives -->
 		<script type="text/javascript" src="app/directives/mainDirective.js"></script>
 

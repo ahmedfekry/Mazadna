@@ -1,5 +1,7 @@
 app.controller('admin_homeController', function ($scope, $rootScope, $routeParams, $location, $http, myService) {
-	 $scope.init = function() {
+    //initially set those objects to null to avoid undefined error
+    $scope.fekry = "Fekry";
+    $scope.init = function() {
         // $location.path('/viewCategory');
         var temp = new Object();
         temp.category_id = 0; 
@@ -26,6 +28,6 @@ app.controller('admin_homeController', function ($scope, $rootScope, $routeParam
          }
          $scope.auction=auctiondata;
             
-    	});
+        });
     };
-	});
+});

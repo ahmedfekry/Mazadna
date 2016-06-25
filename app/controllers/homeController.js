@@ -40,9 +40,6 @@ app.controller('homeController', function ($scope, $rootScope, $routeParams, $lo
             }
             else
                  alert(results.message);
-                 alert(results.a);
-                 alert(results.u);
-                 alert(results.id);
         });
 
     }   
