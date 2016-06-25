@@ -48,25 +48,25 @@ app.controller('auctionController', function ($scope, $rootScope, $routeParams, 
     };
     
     // $scope.fekry="fekryas";
-    $scope.create = function (auction) {
+    $scope.create = function (_auction) {
         var postObject = new Object();
-        if (auction['end_time'] == '') {
-            auction['end_time'] = $("#endDate").val();
+        if (_auction['end_time'] == '') {
+            _auction['end_time'] = $("#endDate").val();
         }
 
-        if (auction['start_time'] == '') {
-            auction['start_time'] = $("#startDate").val();
+        if (_auction['start_time'] == '') {
+            _auction['start_time'] = $("#startDate").val();
         }
 
 
-        postObject.user_id = auction['user_id'];
-        postObject.title = auction['title'];
-        postObject.starting_price = auction['starting_price'];
-        postObject.privacy = auction['privacy'];
-        postObject.start_time = auction['start_time'];
-        postObject.end_time = auction['end_time'];
-        postObject.description = auction['description'];
-        postObject.category_id =parseInt(auction['category_id']);
+        postObject.user_id = _auction['user_id'];
+        postObject.title = _auction['title'];
+        postObject.starting_price = _auction['starting_price'];
+        postObject.privacy = _auction['privacy'];
+        postObject.start_time = _auction['start_time'];
+        postObject.end_time = _auction['end_time'];
+        postObject.description = _auction['description'];
+        postObject.category_id =parseInt(_auction['category_id']);
         
 
         myService.post('auction.php/createAuction', {

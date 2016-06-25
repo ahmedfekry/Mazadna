@@ -5,7 +5,6 @@
 		private $description;
 		private $start_time;
 		private $end_time;
-		private $on_site;
 		private $privacy;
 		private $title;
 		private $category_id;
@@ -13,7 +12,7 @@
 		private $highest_bider_id;
 		private $starting_price;
 		private $conn;
-		function __construct($id=0,$user_id=0,$description="",$start_time=0,$end_time=0,$on_site=false,$privacy="public",
+		function __construct($id=0,$user_id=0,$description="",$start_time=0,$end_time=0,$privacy="public",
 							$title="",$category_id=0,$highest_bid_id=0,$highest_bider_id=0,$starting_price=0,$description="")
 		{
 			# code...
@@ -22,7 +21,6 @@
 			$this->description = $description;
 			$this->start_time = $start_time;
 			$this->end_time = $end_time;
-			$this->on_site = $on_site;
 			$this->privacy = $privacy;
 			$this->title = $title;
 			$this->category_id = $category_id;
@@ -31,7 +29,7 @@
 			$this->starting_price = $starting_price;
 
 
-			$this->conn = new PDO("mysql:host=localhost;dbname=Mazadna", "root", "Ahmed2512011");
+			$this->conn = new PDO("mysql:host=localhost;dbname=Mazadna", "root", "");
 			$this->conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);			
 		}
 
@@ -55,11 +53,8 @@
 
 				    while($row = $result->fetch(PDO::FETCH_ASSOC)) {
 				    	$auction_id = $row['id'];
-				 		$onsite ="online";
-				        $private="public";
+				 		$private="public";
 
-				         if($row['on_site'] == 1)
-				                             $onsite="onsite";
 				         if($row['privacy'] == 1)
 				                             $private="private";
 				        $id = $row['id'];
@@ -89,7 +84,6 @@
 				        'highest_bid_id'=>$row['highest_bid_id'],
 				        'highest_bider_id'=>$row['highest_bider_id'],
 				        
-				        'onsite'=>$onsite,
 				        'privacy'=>$private);
 				        //create 2D array
 
@@ -128,11 +122,8 @@
 
 				    while($row = $result->fetch(PDO::FETCH_ASSOC)) {
 				    	$category_id = $row['category_id'];
-				 		$onsite ="online";
-				        $private="public";
+				 		$private="public";
 
-				         if($row['on_site'] == 1)
-				                             $onsite="onsite";
 				         if($row['privacy'] == 1)
 				                             $private="private";
 				        $id = $row['id'];
@@ -168,7 +159,6 @@
 				        'highest_bid_id'=>$row['highest_bid_id'],
 				        'highest_bider_id'=>$row['highest_bider_id'],
 				        'category_name'=>$category_name,
-				        'onsite'=>$onsite,
 				        'privacy'=>$private);
 				        //create 2D array
 
@@ -218,7 +208,7 @@
 			}
 
     }
-    public function create($user_id,$description,$title,$starting_price,$privacy,$end_time,$start_time,$on_site=0,$category_id)
+    public function create($user_id,$description,$title,$starting_price,$privacy,$end_time,$start_time,$category_id)
 		{	
 			$response = array();
 			$start_time = date_create($start_time);	
@@ -234,8 +224,8 @@
 			}
 
 			try {
-					$stmt = $this->conn->prepare("INSERT INTO auction (user_id, description, title,starting_price,privacy,end_time,start_time,on_site,category_id,active)
-				    						VALUES (:user_id, :description,:title, :starting_price, :privacy,:end_time,:start_time,:on_site,:category_id,:active)");
+					$stmt = $this->conn->prepare("INSERT INTO auction (user_id, description, title,starting_price,privacy,end_time,start_time,category_id,active)
+				    						VALUES (:user_id, :description,:title, :starting_price, :privacy,:end_time,:start_time,:category_id,:active)");
 				    
 				    $stmt->bindParam(':user_id', $user_id);
 				    $stmt->bindParam(':description', $description);
@@ -244,7 +234,6 @@
 				    $stmt->bindParam(':privacy', $privacy);
 				    $stmt->bindParam(':end_time', $end_time);
 				    $stmt->bindParam(':start_time', $start_time);
-				    $stmt->bindParam(':on_site', $on_site);
 				    $stmt->bindParam(':category_id', $category_id);
 				    $stmt->bindParam(':active', $active);
 
@@ -307,5 +296,5 @@
 			return $response;
 		}
 }
- ?>
+?>
 	

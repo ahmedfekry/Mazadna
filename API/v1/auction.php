@@ -21,12 +21,11 @@
         $start_time = (string)$header->auction->start_time;
         $end_time = (string)$header->auction->end_time;
         // echo $end_time;
-        $on_site = $header->auction->on_site;
         $category_id = $header->auction->category_id;
 
         // $result = array('message' => $category_id);
         // ($user_id,$description,$title,$starting_price,$privacy,$end_time,$start_time,$on_site=0,$category_id
-        $result = $auction->create($user_id,$description,$title,$starting_price,$privacy,$end_time,$start_time,0,$category_id);
+        $result = $auction->create($user_id,$description,$title,$starting_price,$privacy,$end_time,$start_time,$category_id);
 
         return $response->write(json_encode($result) );
     });
