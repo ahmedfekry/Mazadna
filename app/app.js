@@ -50,3 +50,20 @@ var app = angular.module('mazadna', ['ngRoute'])
 
             // $locationProvider.html5Mode(true);
     });
+
+
+app.run(function($rootScope,$location) {
+    var routespermissions=['/home']; //routes that require login
+    $rootScope.$on('$locationChangeStart',function() {
+        // alert($rootScope.islogged());
+        if (routespermissions.indexOf($location.path()) != 1) {
+            var connected = $rootScope.islogged();
+            connected.then(function(msg) {
+                // body...
+                if(!msg.data.uid){
+                    $location.path('/signIn');
+                }
+            });
+        }
+    });
+});

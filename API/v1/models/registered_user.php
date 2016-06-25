@@ -26,6 +26,9 @@
 			$this->following = $following;
 			$this->conn = new PDO("mysql:host=localhost;dbname=mazadna", "root", "");
 			$this->conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+			if (!isset($_SESSION)) {
+				session_start();
+			    }
 		}
 
 		// first_name:'',
@@ -69,9 +72,7 @@
 			                session_start();
 			            }
 			            $_SESSION['uid'] = $response["uid"];
-			            $_SESSION['first_name'] = $first_name;
-			            $_SESSION['last_name'] = $last_name;
-			            $_SESSION['username'] = $username;
+			            $_SESSION['name'] = $first_name." ".$last_name;
 			            $_SESSION['email'] = $email;
 			            return $response;
 			        } else {
@@ -107,14 +108,12 @@
 				    	$response["message"] = "Loging successfully";
 				    	$response["uid"] = $isUserExists['id'];
 				    	$response["first_name"] = $isUserExists['first_name'];
-				    	if (!isset($_SESSION)) {
-				            session_start();
-			            }
+				    	
 			            $_SESSION['uid'] = $isUserExists["id"];
-			            $_SESSION['first_name'] = $isUserExists["first_name"] ;
-			            $_SESSION['last_name'] = $isUserExists["last_name"];
-			            $_SESSION['username'] = $isUserExists["username"];
+			            $_SESSION['name'] = $isUserExists["first_name"]." ".$isUserExists["last_name"];
 			            $_SESSION['email'] = $isUserExists["email"];
+			            session_commit();
+			            $response['session'] = $_SESSION['uid'];
 			            return $response;
 			    	} else {
 			    		$response["status"] = "Failed";
@@ -131,6 +130,69 @@
 				return "Error: ".$e->getMessage();
 			}
 		}
+		public function islogged()
+		{
+			$response = array();
+			if (isset($_SESSION['uid'])) {
+				# code...
+				$response['status'] = "success";
+			}else{
+				$response['status'] = "Failed";
+			}
+			return $response;
+		}
+		
+		public function getSession(){
+		    if (!isset($_SESSION)) {
+		        session_start();
+		    }
+		    $response = array();
+		    if(isset($_SESSION['uid']))
+		    {
+		        $response["uid"] = $_SESSION['uid'];
+		        $response["name"] = $_SESSION['name'];
+		        $response["email"] = $_SESSION['email'];
+		    }
+		    else
+		    {
+		        $response["uid"] = '';
+		        $response["name"] = 'Guest';
+		        $response["email"] = '';
+		    }
+		    return $response;
+		}
+
+		public function destroySession(){
+		    if (!isset($_SESSION)) {
+		    session_start();
+		    }
+		    if(isSet($_SESSION['uid']))
+		    {
+		        unset($_SESSION['uid']);
+		        unset($_SESSION['name']);
+		        unset($_SESSION['email']);
+		        $info='info';
+		        if(isSet($_COOKIE[$info]))
+		        {
+		            setcookie ($info, '', time() - $cookie_time);
+		        }
+		        $msg="Logged Out Successfully...";
+		    }
+		    else
+		    {
+		        $msg = "Not logged in...";
+		    }
+		    return $msg;
+		}
+
 	}
+
+	// $s = new RegisteredUser();
+	// print_r($s->islogged());
+	// // session_start();
+	// if (isset($_SESSION['uid'])) {
+	// 	echo "stringvvvvvvvvvvvvvvvvvvvvvvvv";
+	// }
+	// print_r($_SESSION)
 
  ?>
