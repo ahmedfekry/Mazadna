@@ -29,7 +29,9 @@ var app = angular.module('mazadna', ['ngRoute'])
 
             .when('/signIn',{
                 templateUrl : 'app/partials/sign_in.html',
-                controller : 'authController'
+                controller : 'authController',
+                isLogin: true
+
             })
 
             .when('/AdminSignIn',{
@@ -50,20 +52,23 @@ var app = angular.module('mazadna', ['ngRoute'])
 
             // $locationProvider.html5Mode(true);
     });
-
+ 
 
 app.run(function($rootScope,$location) {
-    var routespermissions=['/home']; //routes that require login
-    $rootScope.$on('$locationChangeStart',function() {
+    // var routespermissions = ['/home']; //routes that require login
+    $rootScope.$on('$routeChangeStart',function(event,next) {
         // alert($rootScope.islogged());
-        if (routespermissions.indexOf($location.path()) != 1) {
-            var connected = $rootScope.islogged();
+        var userAutho = false;
+        // alert("fekry");
+        var connected = $rootScope.islogged();
             connected.then(function(msg) {
-                // body...
-                if(!msg.data.uid){
-                    $location.path('/signIn');
+                if(!msg.data.uid && !next.isLogin){
+                    // alert('11'+msg.data.uid);
+                    $location.path("/signIn");
+                    userAutho = true;
+                }else if(msg.data.uid && next.isLogin){
+                    $location.path("/home")
                 }
             });
-        }
     });
 });

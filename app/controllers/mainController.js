@@ -6,6 +6,7 @@ app.controller('MainController', ['$scope', '$rootScope','sessionService','$loca
     }
 
     $rootScope.islogged = function() {
+    	// alert("fekry");
     	var connected = sessionService.get();
         return connected;
     }

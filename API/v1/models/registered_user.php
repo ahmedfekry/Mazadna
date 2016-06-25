@@ -15,6 +15,7 @@
 		private $followers; // array of users id
 		private $following; // array of users id
 		private $conn;
+
 		public function __construct($id='',$name='',$user_name='',$email='',$password='',$facebook_key='',$followers='',$following='')
 		{
 			$this->id = $id;
@@ -130,6 +131,7 @@
 				return "Error: ".$e->getMessage();
 			}
 		}
+		
 		public function islogged()
 		{
 			$response = array();

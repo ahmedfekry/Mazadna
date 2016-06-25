@@ -1,7 +1,7 @@
 <?php
 	require '../../vendor/autoload.php';
     require_once 'dbHelper.php';
-    // require_once './models/registered_user.php';
+    //require_once 'models/registered_user.php';
     require_once 'models/auction.php';
     require_once 'passwordHash.php';
     $app = new \Slim\App;
