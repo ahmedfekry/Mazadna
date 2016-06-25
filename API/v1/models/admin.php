@@ -90,8 +90,47 @@
 				return "Error: ".$e->getMessage();
 			}		
 		}
+
+		public function get_complete_auctions()
+		{
+			$response = array();
+			try {
+					$timeStamp = date("Y-m-d H:i:s");
+					$response["auctionsNum"] = $this->conn->query("SELECT COUNT(*) FROM `auction` WHERE end_time < '".$timeStamp."'")->fetchColumn();
+					return $response;
+			} catch (Exception $e) {
+				return "Error: ".$e->getMessage();
+			}		
+		}
+
+		public function auction_prices_sum()
+		{
+			$response = array();
+			try {
+				$stmt = $this->conn->prepare("SELECT * FROM `auction` WHERE 1");
+				$stmt->execute();
+				$response["auctionsSum"] = 0.0;
+
+				while($row = $stmt->fetch(PDO::FETCH_ASSOC))
+				{
+					$bidID = $row["highest_bid_id"];
+
+					$stmt2 = $this->conn->prepare("SELECT * FROM `bid` WHERE id=:id");
+					$stmt2->bindParam(':id' , $bidID);
+
+					$stmt2->execute();
+
+					$res = $stmt2->fetch(PDO::FETCH_ASSOC);
+
+					$response["auctionsSum"] = $response["auctionsSum"]  + $res["price"];
+				}
+				return $response;
+			} catch (Exception $e) {
+				return "Error: ".$e->getMessage();
+			}
+		}
 	}
 	$var = new Admin();
-	print_r($var->get_active_auctions());
+	print_r($var->auction_prices_sum());
 
  ?>
