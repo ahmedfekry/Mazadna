@@ -8,7 +8,8 @@ var app = angular.module('mazadna', ['ngRoute'])
             // route for the signup page
             .when('/signUp', {
                 templateUrl : 'app/partials/sign_up.html',
-                controller  : 'authController'
+                controller  : 'authController',
+                isSignUp : true
             })
 
             // route for the home page
@@ -36,7 +37,8 @@ var app = angular.module('mazadna', ['ngRoute'])
 
             .when('/AdminSignIn',{
                 templateUrl : 'app/partials/signInAdmin.html',
-                controller : 'adminController'
+                controller : 'adminController',
+                isAdminSignIn : true
             })
 
             .when('/createAuction',{
@@ -64,7 +66,13 @@ app.run(function($rootScope,$location) {
             connected.then(function(msg) {
                 if(!msg.data.uid && !next.isLogin){
                     // alert('11'+msg.data.uid);
-                    $location.path("/signIn");
+                    if (next.isSignUp) {
+                        $location.path("/signUp");
+                    }else if (next.isAdminSignIn){
+                        $location.path("/AdminSignIn");
+                    }else{
+                        $location.path("/signIn");
+                    }
                     userAutho = true;
                 }else if(msg.data.uid && next.isLogin){
                     $location.path("/home")
