@@ -1,5 +1,5 @@
 <?php
-    require '../../vendor/autoload.php';
+    require 'vendor/autoload.php';
     require 'models/admin.php';
     require_once 'passwordHash.php';
 
@@ -15,6 +15,13 @@
         // $result = array('message' => "success", );
         $result = $admin->sign_in($username,$password);
         return $response->write(json_encode($result) );
+    });
+
+    $app->post('/users',function($request,$response) use ($app){
+        global $admin;
+
+        $result = $admin->get_users_num();
+        return $response->write( json_encode($result) );
     });
 
     $app->run();

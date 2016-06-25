@@ -15,7 +15,7 @@
 			$this->id = $id;
 			$this->username = $username;
 			$this->password = $password;
-			$this->conn = new PDO("mysql:host=localhost;dbname=mazadna", "root", "");
+			$this->conn = new PDO("mysql:host=localhost;dbname=mazadna", "root", "Ahmed2512011");
 			$this->conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 		}
 
@@ -56,7 +56,20 @@
 				return "Error: ".$e->getMessage();
 			}
 		}
-	}
 
+		public function get_users_num()
+		{
+			$response = array();
+			try {
+				$response["usersNum"] = $this->conn->query("SELECT COUNT(*) FROM `user` WHERE 1")->fetchColumn();
+				return $response;
+			} catch (Exception $e) {
+				return "Error: ".$e->getMessage();
+			}
+		}
+
+	}
+	$var = new Admin();
+	print_r($var->get_users_num());
 
  ?>
