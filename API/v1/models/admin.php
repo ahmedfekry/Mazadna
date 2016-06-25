@@ -67,6 +67,7 @@
 				return "Error: ".$e->getMessage();
 			}
 		}
+
 		public function get_auction_num()
 		{
 			$response = array();
@@ -77,8 +78,20 @@
 				return "Error: ".$e->getMessage();
 			}
 		}
+
+		public function get_active_auctions()
+		{
+			$response = array();
+			try {
+					$timeStamp = date("Y-m-d H:i:s");
+					$response["auctionsNum"] = $this->conn->query("SELECT COUNT(*) FROM `auction` WHERE end_time > '".$timeStamp."'")->fetchColumn();
+					return $response;
+			} catch (Exception $e) {
+				return "Error: ".$e->getMessage();
+			}		
+		}
 	}
 	$var = new Admin();
-	print_r($var->get_auction_num());
+	print_r($var->get_active_auctions());
 
  ?>
