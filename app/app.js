@@ -34,7 +34,7 @@ var app = angular.module('mazadna', ['ngRoute'])
 
             .when('/viewUserProfile',{
                 templateUrl : 'app/partials/profile.html',
-                controller : 'homeController'
+                controller : 'viewUserProfileController'
             })
 
             .otherwise({
