@@ -68,7 +68,7 @@
 			}
 		}
 
-		public function get_auction_num()
+		public function get_auctions_num()
 		{
 			$response = array();
 			try {
@@ -130,7 +130,7 @@
 			}
 		}
 	}
-	$var = new Admin();
-	print_r($var->auction_prices_sum());
+	/*$var = new Admin();
+	print_r($var->auction_prices_sum());*/
 
  ?>
