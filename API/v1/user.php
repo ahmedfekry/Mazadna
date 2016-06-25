@@ -40,11 +40,12 @@
 
     $app->post('/viewUserProfile',function($request,$response) use ($app){
         global $registerdUser;
+
         $header = json_decode($request->getBody());
 
         $userId = $header->user->id;
 
-        $result = $registerdUser->view_user_profile($userid);
+        $result = $registerdUser->view_user_profile($userId);
 
         return $response->write( json_encode($result) );
     });

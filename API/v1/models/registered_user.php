@@ -146,45 +146,45 @@
 
 			    if($userInfo != NULL)
 			    {
-			    	$response["user_status"] = "success";
+			    	$response["userStatus"] = "success";
 			    	$response["userInfo"]["id"] = $userInfo['id'];
 			    	$response["userInfo"]["username"] = $userInfo['username'];
 			    	$response["userInfo"]["email"] = $userInfo['email'];
-			    	$response["userInfo"]["phone_number"] = $userInfo['phone_number'];
-			    	$response["userInfo"]["first_name"] = $userInfo['first_name'];
-			    	$response["userInfo"]["last_name"] = $userInfo['last_name'];
+			    	$response["userInfo"]["phoneNumber"] = $userInfo['phone_number'];
+			    	$response["userInfo"]["firstName"] = $userInfo['first_name'];
+			    	$response["userInfo"]["lastName"] = $userInfo['last_name'];
 			    	$response["userInfo"]["image"] = $userInfo['image'];
-			    	$response["userInfo"]["commuliteve_stars"] = $userInfo['commuliteve_stars'];
+			    	$response["userInfo"]["commuliteveStars"] = $userInfo['commuliteve_stars'];
 
 			    	$numOfRows = $this->conn->query("SELECT COUNT(*) FROM `auction` WHERE user_id=".$id)->fetchColumn();
 
 					if($numOfRows > 0)
 					{
-						$response["auction_status"] = "success";
+						$response["auctionStatus"] = "success";
 						$response["message"] = "user found auctions found";
 						$stmt = $this->conn->prepare("SELECT * FROM `auction` WHERE user_id=:userid");
 						$stmt->bindParam(':userid' , $id);
 
 						$stmt->execute();
 
-						$i = 0;
+						$response["auctions"] = array();
 						while($row = $stmt->fetch(PDO::FETCH_ASSOC))
 						{
 							//print_r($row);
-							$response["auctions"][$i] = $row;
-							$i = $i + 1;
+
+							array_push($response["auctions"], $row);
 						}
 						return $response;
 					}
 					else
 					{
-						$response["auction_status"] = "failed";
+						$response["auctionStatus"] = "failed";
 						$response["message"] = "No auction(s) found";
 						return $response;
 					}
 			    }
 			    else{
-			    	$response["user_status"] = "failed";
+			    	$response["userStatus"] = "failed";
 			    	$response["message"] = "No user found";
 			    	return $response;
 			    }
@@ -272,5 +272,5 @@
 		}
 	}
 	/*$var = new RegisteredUser();
-	print_r($var->view_user_profile(3));*/
+	print_r($var->view_user_profile(1));*/
  ?>
