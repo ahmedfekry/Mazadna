@@ -60,6 +60,20 @@
         return $response->write(json_encode($result));
     });
 
+    $app->post('/reviewUser',function($request,$response) use ($app){
+        global $registerdUser;
+        $header = json_decode($request->getBody());
+
+        $reviewer_id = $header->user->reviewer_id;
+        $reviewee_id = $header->user->reviewee_id;
+        $comment = $header->user->comment;
+        $stars = $header->user->stars;
+
+        $result = $registerdUser->review_user($reviewer_id,$reviewee_id,$comment,$stars);
+
+        return $response->write(json_encode($result));
+    });
+
     $app->run();
 
 ?>

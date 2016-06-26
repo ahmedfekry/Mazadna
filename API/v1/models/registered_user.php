@@ -186,9 +186,45 @@
 		    }
 		    return $msg;
 		}
+		public function review_user($reviewer_id,$reviewee_id,$comment,$stars)
+		{
+			$response = array();
+			try {
+				$isReviewExist = $this->conn->query("SELECT COUNT(*) FROM `userreview` WHERE reviewer_id=".$reviewer_id." AND reviewee_id= ".$reviewee_id."")->fetchColumn();
+				if($isReviewExist > 0)
+				{
+					$response["status"] = "failed";
+					$response["message"] = "review already exist";
+				}
+				else
+				{
+					$stmt = $this->conn->prepare("INSERT INTO `userreview` (reviewer_id,reviewee_id,comment,starts) VALUES (:reviewer , :reviewee , :comment , :stars)");
+					$stmt->bindParam(':reviewer' , $reviewer_id);
+					$stmt->bindParam(':reviewee' , $reviewee_id);
+					$stmt->bindParam(':comment' , $comment);
+					$stmt->bindParam(':stars' , $stars);
+
+					$res = $stmt->execute();
+					if($res != NULL)
+					{
+						$response["status"] = "success";
+						$response["message"] = "review submitted successfully";
+					}
+					else
+					{
+						$response["status"] = "failed";
+						$response["message"] = "Error in submitting the review";
+					}
+				}
+				return $response;
+			} catch (Exception $e) {
+				return "Error: ".$e->getMessage();
+			}
+		}
 
 	}
-
+	$var = new RegisteredUser();
+	print_r($var->review_user(1,2,"fair man",5));
 	// $s = new RegisteredUser();
 	// print_r($s->islogged());
 	// // session_start();
