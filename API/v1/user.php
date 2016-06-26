@@ -60,6 +60,19 @@
         return $response->write(json_encode($result));
     });
 
+    $app->post('/auctionRequest',function($request,$response) use ($app){
+        global $registerdUser;
+        $header = json_decode($request->getBody());
+
+        $user_id = $header->user->$user_id;
+        $auction_id = $header->user->auction_id;
+
+        $result = $registerdUser->auction_request($user_id,$auction_id);
+
+        return $response->write(json_encode($result));
+
+    });
+
     $app->run();
 
 ?>

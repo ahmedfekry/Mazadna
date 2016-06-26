@@ -187,7 +187,45 @@
 		    return $msg;
 		}
 
+
+		public function auction_request($user_id,$auction_id)
+		{
+			$response = array();
+			try {
+				$isRequestExist = $this->conn->query("SELECT COUNT(*) FROM `request` WHERE auction_id=".$auction_id." AND user_id=".$user_id)->fetchColumn();
+				if($isRequestExist > 0)
+				{
+					$response["status"] = "failed";
+					$response["message"] = "request already exist";
+ 				}
+				else
+				{
+					$stmt = $this->conn->prepare("INSERT INTO `request` (auction_id,user_id,accepted) VALUES (:auction , :user , 0)");
+
+					$stmt->bindParam(':auction' , $auction_id);
+					$stmt->bindParam(':user' , $user_id);
+
+					$res = $stmt->execute();
+					if($res != NULL)
+					{
+						$response["status"] = "success";
+						$response["message"] = "request submitted successfully";
+					}
+					else
+					{
+						$response["status"] = "failed";
+						$response["message"] = "Error in submitting request";
+					}
+				}
+				return $response;
+			} catch (Exception $e) {
+				return "Error: ".$e->getMessage();
+			}
+		}
 	}
+	
+	$var = new RegisteredUser();
+	print_r($var->auction_request(1,1));
 
 	// $s = new RegisteredUser();
 	// print_r($s->islogged());
