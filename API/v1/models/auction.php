@@ -295,6 +295,48 @@
 			}
 			return $response;
 		}
-}
+
+
+		public function submit_rating($user_id,$auction_id,$description,$stars)
+		{
+			$response = array();
+			try {
+				$isRatingExist = $this->conn->query("SELECT COUNT(*) FROM `auctionrating` WHERE user_id=".$user_id." AND auction_id=".$auction_id)->fetchColumn();
+				if($isRatingExist > 0)
+				{
+					$response["status"] = "failed";
+					$response["message"] = "rating already exist";
+				}
+				else
+				{
+					$stmt = $this->conn->prepare("INSERT INTO `auctionrating` (auction_id,user_id,description,numofstars) VALUES (:auction , :user , :description , :stars)");
+					$stmt->bindParam(':auction',$auction_id);
+					$stmt->bindParam(':user',$user_id);
+					$stmt->bindParam(':description',$description);
+					$stmt->bindParam(':stars',$stars);
+
+					$res = $stmt->execute();
+					if($res != NULL)
+					{
+						$response["status"] = "success";
+						$response["message"] = "rating submitted successfully";
+					}
+					else
+					{
+						$response["status"] = "failed";
+						$response["message"] = "Error in submitting rating";
+					}
+				}
+				return $response;
+			} catch (Exception $e) {
+				return "Error: ".$e->getMessage();
+			}
+		}
+
+	}
+	/*
+	$var = new Auction();
+	print_r($var->submit_rating(2,1,"amazing",5));
+	*/
 ?>
 	

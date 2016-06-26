@@ -55,6 +55,19 @@
         return $response->write(json_encode($result) );
     });
 
+    $app->post('/submitAuctionRating',function($request,$response) use ($app){
+        global $auction;
+
+        $header = json_decode($request->getBody());
+
+        $user_id = $header->auction->user_id;
+        $auction_id = $header->auction->auction_id;
+        $description = $header->auction->description;
+        $stars = $header->auction->stars;
+
+        $result = $auction->submit_rating($user_id,$auction_id,$description,$stars);
+        return $response->write(json_encode($result));
+    });
 
 
     $app->run();
