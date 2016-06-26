@@ -186,6 +186,127 @@
 		    }
 		    return $msg;
 		}
+		public function getUser($user_id){
+			$response = array();
+			try {
+				$stmt = $this->conn->prepare("SELECT * FROM `user` WHERE id=:user_id");
+			    $stmt->bindParam(':user_id',$user_id);
+
+			    $stmt->execute();
+
+			    $isUserExists = $stmt->fetch(PDO::FETCH_ASSOC);
+			    if ($isUserExists != NULL) {
+				    $user = array('first_name' => $isUserExists["first_name"],
+				    			  'last_name' => $isUserExists["last_name"],
+				    			  'user_name' => $isUserExists["username"],
+				    			  'email' => $isUserExists["email"],
+				    			  'password' => $isUserExists["password"],
+				    			  'phone_number' => $isUserExists["phone_number"]);
+				    $response["status"] = "success";
+				    $response["message"] = "user is retrived successfully";
+				    $response["user"] = $user;
+			    }
+
+			} catch (PDOException $e) {
+				$response["status"] = "Failed";
+				$response["message"] = $e->getMessage();
+			}
+			return $response;
+		}
+
+		public function updateUser($user_id,$first_name,$last_name,$username,$email,$phone_number,$new_password,$old_password)
+		{
+			$response = array();
+			// INSERT INTO user (first_name, last_name, username,email,phone_number,password)
+			// 	    						VALUES (:first_name, :last_name,:username, :email, :phone_number,:password)"
+			try {
+				$stmt = $this->conn->prepare("SELECT 1 FROM `user` WHERE username=:username and id != :id" );
+				// or email=:email or phone_number=:phone_number 
+			    $stmt->bindParam(':id',$user_id);
+			    $stmt->bindParam(':username',$username);
+			    $stmt->execute();
+
+			    $isUserExists = $stmt->fetch(PDO::FETCH_ASSOC);
+			    if ($isUserExists != NULL) {
+			    	$response["status"] = "Failed";
+			    	$response["message"] = "username already exists";
+			    	return $response;
+			    }
+
+				$stmt = $this->conn->prepare("SELECT 1 FROM `user` WHERE email=:email and id != :id");
+				// or phone_number=:phone_number 
+			    $stmt->bindParam(':id',$user_id);
+			    $stmt->bindParam(':email',$email);
+			    $stmt->execute();
+
+			    $isUserExists = $stmt->fetch(PDO::FETCH_ASSOC);
+			    if ($isUserExists != NULL) {
+			    	$response["status"] = "Failed";
+			    	$response["message"] = "email already exists";
+			    	return $response;
+			    }
+
+				$stmt = $this->conn->prepare("SELECT 1 FROM `user` WHERE phone_number=:phone_number and id != :id");
+				//  
+
+			    $stmt->bindParam(':id',$user_id);
+			    $stmt->bindParam(':phone_number',$phone_number);
+			    $stmt->execute();
+
+			    $isUserExists = $stmt->fetch(PDO::FETCH_ASSOC);
+			    if ($isUserExists != NULL) {
+			    	$response["status"] = "Failed";
+			    	$response["message"] = "username or email or phone_number already exists";
+			    	return $response;
+			    }
+			    $stmt = $this->conn->prepare("SELECT * FROM `user` WHERE id=".$user_id);
+			    $stmt->execute();
+
+			    $isUserExists = $stmt->fetch(PDO::FETCH_ASSOC);
+
+			    if ($isUserExists != NULL) {
+			    	if (passwordHash::check_password($isUserExists['password'],$old_password)) {
+			    		if ($new_password != "") {
+			    			$new_password = passwordHash::hash($new_password);
+			    		$stmt = $this->conn->prepare("UPDATE user SET first_name=:first_name , last_name=:last_name , username=:username, email=:email, phone_number=:phone_number ,password=:password WHERE id=:id");
+						    $stmt->bindParam(':first_name',$first_name);
+						    $stmt->bindParam(':last_name',$last_name);
+						    $stmt->bindParam(':username',$username);
+						    $stmt->bindParam(':email',$email);
+						    $stmt->bindParam(':phone_number',$phone_number);
+						    $stmt->bindParam(':password',$new_password);
+			 				$stmt->bindParam(':id',$user_id);
+			    		}else{
+			    			$stmt = $this->conn->prepare("UPDATE user SET first_name=:first_name , last_name=:last_name , username=:username, email=:email, phone_number=:phone_number WHERE id=:id");
+						    $stmt->bindParam(':first_name',$first_name);
+						    $stmt->bindParam(':last_name',$last_name);
+						    $stmt->bindParam(':username',$username);
+						    $stmt->bindParam(':email',$email);
+						    $stmt->bindParam(':phone_number',$phone_number);
+			    			$stmt->bindParam(':id',$user_id);
+			    		}
+
+			    			// execute the query
+						if ($stmt->execute()) {
+			    			$response["status"] = "success";
+			    			$response["message"] =" records UPDATED successfully";
+						}
+			    	}else{
+			    			$response["status"] = "Failed";
+			    			$response["message"] ="Wrong old password";
+						
+			    	}
+			    }
+				    // Prepare statement
+
+
+			} catch (PDOException $e) {
+				$response["status"] = "Failed";
+				$response["message"] = $e->getMessage();
+			}
+			# code...
+			return $response;
+		}
 
 	}
 

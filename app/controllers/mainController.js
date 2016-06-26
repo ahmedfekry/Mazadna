@@ -11,4 +11,10 @@ app.controller('MainController', ['$scope', '$rootScope','sessionService','$loca
         return connected;
     }
 
+    $rootScope.go = function(path) {
+        // alert("fek");
+        // alert(path);
+        $location.path(path);
+    }
+
 }]);

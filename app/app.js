@@ -46,6 +46,11 @@ var app = angular.module('mazadna', ['ngRoute'])
                 controller : 'auctionController'
             })
 
+            .when('/editAccount',{
+                templateUrl : 'app/partials/editAccount.html',
+                controller : 'userController'
+            })
+            
             .otherwise({
                 redirectTo:'signIn'
             });

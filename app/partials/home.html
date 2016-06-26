@@ -43,7 +43,7 @@
   <div class="topbar" > 
     <!-- LOGO -->
     <div class="topbar-left" style="background-color:#92e7f6;">
-      <div class="text-center" style="background-color:#92e7f6;"> <a href="index.html" class="logo"><span   style="background-color:#92e7f6;"><img id="brand-image pull-left" style="margin-top:-11px;" src="assets/images/logo_i.png" width="120" alt="logo"></span> </a> </div>
+      <div class="text-center" style="background-color:#92e7f6;"> <a ng-click="go('/home')" class="logo"><span   style="background-color:#92e7f6;"><img id="brand-image pull-left" style="margin-top:-11px;" src="assets/images/logo_i.png" width="120" alt="logo"></span> </a> </div>
 </div>
     <!-- Button mobile view to collapse sidebar menu -->
     <div class="navbar navbar-default" role="navigation"  >
@@ -125,7 +125,7 @@
             <li class="dropdown"> <a href="" class="dropdown-toggle profile" data-toggle="dropdown" aria-expanded="true"><img src="assets/images/avatar-1.jpg" alt="user-img" class="img-circle"> </a>
               <ul class="dropdown-menu">
                 <li><a href="javascript:void(0)"><i class="md md-face-unlock"></i> Profile</a></li>
-                <li><a href="javascript:void(0)"><i class="md md-settings"></i> Edit</a></li>
+                <li><a href="javascript:void(0)" ng-click="go('/editAccount')"><i class="md md-settings"></i> Edit</a></li>
                 <li><a href="javascript:void(0)" ng-click="logOut()"><i class="md md-settings-power"></i> Logout</a></li>
               </ul>
             </li>
@@ -159,7 +159,7 @@
       <!--- Divider -->
       <div id="sidebar-menu">
         <ul>
-          <li> <a href="index.html" class="waves-effect"><i class="md md-home active"></i><span> Home </span></a> </li>
+          <li> <a ng-click="go('/home')" class="waves-effect"><i class="md md-home active"></i><span> Home </span></a> </li>
           <li> <a href="calendar.html" class="waves-effect"><i class="md md-event"></i><span> Calendar </span></a> </li>
           
                     <!-- Auctions Stuff --> 
@@ -172,6 +172,7 @@
                 </ul>
               </li>
               <li> <a href="javascript:void(0);"><span>My Auctions</span></a> </li>
+              <li> <a href="javascript:void(0);" ng-click="go('/crateAuction')"><span>Create Auction</span></a> </li>
             </ul>
           </li>
           
