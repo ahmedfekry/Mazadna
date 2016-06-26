@@ -308,7 +308,27 @@
 			return $response;
 		}
 		/*
-			
+			author: Eslam Ebrahim
+
+			description:
+				this function handles the operation of replying an invitation
+				assuming that the invitee_username is valid from submitting the invitation, the owner of the auction
+				submits his reply either "accept" or "reject"
+
+				in either cases the record of the invitation is deleted
+				but in the accept state, the user joins the auction by inserting an initital bid for the user with initial
+				price 0.0 that can be changed when user submits his bid in the auction
+
+				there is a case that the reply is neither "accept" nor "reject"
+				at this case, the record of the invitaton is not dropped and return in the message that the reply was not valid
+			input:
+				 $inviter_id : the id of the user who invites the invitee to the auction
+				 $invitee_username : the username of the invitee
+				 $auction_id : the id of the auction on which the inviter sent the invitation to the invitee
+				 $reply : the auction's owner reply on the invitation
+			output:
+				$response["status"] : the status of the operation
+				$response["message"] : describes the status further more
 		*/
 		public function reply_invitation($inviter_id,$invitee_username,$auction_id,$reply)
 		{
