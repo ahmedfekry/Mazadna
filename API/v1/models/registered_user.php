@@ -187,7 +187,19 @@
 		    return $msg;
 		}
 
+		/*
+			author: Eslam Ebrahim
 
+			description:
+				this function is for making a request for private auctions 
+				the request will be on hold until the auction's owner accept or reject the request
+			input:
+				$user_id -> the id of the user who makes the request
+				$auction_id -> the id of the auction that the request is made for
+			output:
+				$response["status"] -> returns the status of the request
+				$response["message"] -> returns a message that descripes the status
+		*/
 		public function auction_request($user_id,$auction_id)
 		{
 			$response = array();
