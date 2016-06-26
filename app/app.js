@@ -24,7 +24,7 @@ var app = angular.module('mazadna', ['ngRoute'])
             })
 
             .when('/viewAuction',{
-                templateUrl : 'app/partials/viewAuction.html',
+                templateUrl : 'app/partials/auction_item.html',
                 controller : 'auctionController'
             })
 

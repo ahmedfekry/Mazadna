@@ -6,6 +6,15 @@
     $app = new \Slim\App;
     $auction = new Auction();
 
+    $app->post('/viewAuction', function ($request, $response) use ($app){
+        global $auction;
+        $header = json_decode($request->getBody());
+        $auction_id = $header->temp->auction_id;
+        $result = $auction -> viewAuction($auction_id);
+        return $response-> write(json_encode($result));
+
+    });
+
     // $user_id,$description,$title,$starting_price,$privacy,$end_time,$on_site,$category_id
     $app->post('/createAuction',function ($request,$response) use ($app){
         # code...

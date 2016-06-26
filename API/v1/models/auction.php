@@ -107,78 +107,69 @@
 		
 	}
 
-	function viewAuction($auctionId){
+	function viewAuction($auction_id){
 			//do the code here
-			$response1 = array();
-			
+			$response = array();
 			try {
+				$stmt = $this->conn->prepare("SELECT * FROM `auction` WHERE id=:auction_id");
+			    $stmt->bindParam(':auction_id',$auction_id);
 
-				$sql = "SELECT * FROM `auction` WHERE id = '$auctionId' ";				
+			    $stmt->execute();
 
-				$result = $this->conn->query($sql);
-				$i=0;
+			    $temp = $stmt->fetch(PDO::FETCH_ASSOC);
+			    if ($temp != NULL) {
+				    $response["status"] = "success";
+				    $response["message"] = "auction is retrived successfully";
+				    $response["auction"] = $temp;
+	
+					$stmt = $this->conn->prepare("SELECT * FROM `bid` WHERE auction_id=:auction_id ORDER BY price DESC");
+				    $stmt->bindParam(':auction_id',$auction_id);
 
-				if ($result) {
+				    $stmt->execute();
+			    	$response["bid"] = array();
+					while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+					 	array_push($response["bid"], $row);
+					 } 
+			    	
+			    	$stmt = $this->conn->prepare("SELECT * FROM `auctionrating` WHERE auction_id=:auction_id ORDER BY numofstars DESC");
+				    $stmt->bindParam(':auction_id',$auction_id);
 
-				    while($row = $result->fetch(PDO::FETCH_ASSOC)) {
-				    	$category_id = $row['category_id'];
-				 		$private="public";
+				    $stmt->execute();
+			    	$response["ratings"] = array();
+					while($temp = $stmt->fetch(PDO::FETCH_ASSOC)){
+						array_push($response["ratings"], $temp);
+					}
+			    	//=====================================
+			    	$res = $this->conn->query("SELECT count(*) FROM `auctionrating` WHERE id=".$auction_id." and numofstars = 5")->fetchColumn();;
+				    $response["number_of_five_stars"] = $res;
 
-				         if($row['privacy'] == 1)
-				                             $private="private";
-				        $id = $row['id'];
-				        $user_id = $row['user_id'];
-				        //get the username
-				        $stmt ="select username from user where id ='". str_replace('\\','\\\\',$user_id) . "'";
-				        $result1 =$this->conn->query($stmt);
-				        $temp = $result1->fetch(PDO::FETCH_ASSOC);
-				        $name =$temp['username'];
-				        //get the item name
+			    	//=====================================
+					$res = $this->conn->query("SELECT count(*) FROM `auctionrating` WHERE id=".$auction_id." and numofstars = 4")->fetchColumn();;
+				    $response["number_of_four_stars"] = $res;
 
-				        $stmt ="select name from item where auction_id ='". str_replace('\\','\\\\',$id) . "'";
-				        $result2=$this->conn->query($stmt);
-				        $temp2 = $result2->fetch(PDO::FETCH_ASSOC);
-				        $item_name =$temp2['name'];
-						//get the item name				        
-				        $stmt ="select name from category where id ='". str_replace('\\','\\\\',$category_id) . "'";
-				        $result3=$this->conn->query($stmt);
-				        $temp3 = $result3->fetch(PDO::FETCH_ASSOC);
-				        $category_name =$temp3['name'];
-				        //add the results to the an array
-				        $auction = array(
-				        'id'=>$id,	
-				        'username'=>$name,
-				        'description'=>$row['description'],
-				        'item' => $item_name,
-				        'start_time' => $row['start_time'],
-				        'end_time' => $row['end_time'],
-				        'title' => $row['title'],
-				        'starting_price'=>$row['starting_price'],
-				        'active' =>$row['active'],
-				        'status' => "success",
-				        'highest_bid_id'=>$row['highest_bid_id'],
-				        'highest_bider_id'=>$row['highest_bider_id'],
-				        'category_name'=>$category_name,
-				        'privacy'=>$private);
-				        //create 2D array
+			    	//=====================================
+					$res = $this->conn->query("SELECT count(*) FROM `auctionrating` WHERE id=".$auction_id." and numofstars = 3")->fetchColumn();;
+				    $response["number_of_three_stars"] = $res;
 
-				        $response1[$i] = $auction;
-        				$i++; 
-				    }
-				    return $response1;
-				    
-				} else {
-				    $Auction->setstatus = "error";
-		            $Auction->setmassege = "empty!";
-		            $response1[$i] = $Auction;
-		            return $response1;
-				}
+			    	//=====================================
+					$res = $this->conn->query("SELECT count(*) FROM `auctionrating` WHERE id=".$auction_id." and numofstars = 2")->fetchColumn();;
+				    $response["number_of_two_stars"] = $res;
+			    	//=====================================
+					$res = $this->conn->query("SELECT count(*) FROM `auctionrating` WHERE id=".$auction_id." and numofstars = 1")->fetchColumn();;
+				    $response["number_of_one_stars"] = $res;
+			    	//=====================================
+					$res = $this->conn->query("SELECT count(*) FROM `auctionrating` WHERE id=".$auction_id)->fetchColumn();;
+			    	$response["number_of_users"] = $res;
+			    }else{
+			    	$response['status'] = "Failed";
+			    	$response['message'] = "auction not found";
+			    }
 
+			}catch(PDOException $e) {
+			   $response['status'] = 'Failed';
+			   $response['message'] = $e->getMessage();   
 			}
-			 catch(PDOException $e) {
-			    echo "Error: " . $e->getMessage();   
-			}
-		
+		return $response;
 	}
 
 	function joinAuction($auctionID,$userID){
@@ -296,5 +287,9 @@
 			return $response;
 		}
 }
+
+
+	$var = new Auction();
+	print_r($var->viewAuction(1));
 ?>
 	

@@ -3,36 +3,45 @@ app.controller('auctionController', function ($scope, $rootScope, $routeParams, 
     $scope.initial = function() {
       
     };
+    $scope.auction = {};
+    $scope.viewAuction= function (auction_id) {
+        // body...
+        var postObject = new Object();
+        postObject.auction_id = auction_id;
 
-    $scope.getdata = function(auction_id) {
-        // $location.path('/viewCategory');
-        var temp = new Object();
-        temp.auction_id = auction_id; 
-        // $scope.fekry = "Fekry";
-        myService.post('viewAuction.php/viewAuction',{
-            temp: temp
-        }).then(function (results) {
-         var auctiondata = new Array(results.length);
+        myService.post('auction.php/viewAuction',{
+            temp : postObject
+        }).then(function(results) {
+            // body...
+            if (results.status == 'success') {
+                $scope.auction.description = results.auction.description;
+                $scope.auction.start_time = results.auction.start_time;
+                $scope.auction.end_time = results.auction.end_time;
+                $scope.auction.privacy = results.auction.privacy;
+                $scope.auction.title = results.auction.title;
+                $scope.auction.description = results.auction.description;
+                $scope.auction.category_id = results.auction.category_id;
+                $scope.auction. = results.auction.description;
+                
 
-          auctiondata[0]=new Array(9);
-         
-
-         var j=0;
-          auctiondata[j][0]=results[j].username;
-          auctiondata[j][5]=results[j].massege;
-          auctiondata[j][1]=results[j].item;
-          auctiondata[j][2]=results[j].start_time;
-          auctiondata[j][3]=results[j].duration;
-          auctiondata[j][4]=results[j].success;
-          auctiondata[j][6]=results[j].highest_bid_id;
-          auctiondata[j][7]=results[j].highest_bider_id;
-          auctiondata[j][8]=results[j].category_name;
-
-         $scope.auction=auctiondata;
-            
-    	});
-    };
-
+            }
+        });
+    }
+// [auction] => Array
+//         (
+//             [id] => 1
+//             [user_id] => 1
+//             [description] => fekry
+//             [start_time] => 2016-06-17 00:40:00
+//             [end_time] => 2016-06-25 01:01:00
+//             [privacy] => Private
+//             [title] => AhmedAuction
+//             [category_id] => 1
+//             [starting_price] => 4
+//             [active] => 1
+//             [highest_bid_id] => 
+//             [highest_bider_id] => 
+//         )
 
     $scope._auction = {};
     $scope._auction = {
