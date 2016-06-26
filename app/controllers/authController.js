@@ -27,6 +27,7 @@ app.controller('authController', function ($scope, $rootScope, $routeParams, $lo
         }).then(function (results) {
             if (results.status == "success") {
                 alert(results.message);
+                sessionService.set("uid",results.uid);
                 $location.path('/home');
             }
         });

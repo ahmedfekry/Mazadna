@@ -31,6 +31,8 @@ app.controller('homeController', function ($scope, $rootScope, $routeParams, $lo
     $scope.join = function (id){
         var postObject = new Object();
         postObject.auctionID = id;
+        postObject.userID = sessionStorage.getItem('uid');
+        alert(id + " " + sessionStorage.getItem('uid'));
 
         myService.post('home.php/join',{
         postObject:postObject

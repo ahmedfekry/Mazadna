@@ -181,9 +181,9 @@
 		
 	}
 
-	function joinAuction($auctionID){
+	function joinAuction($auctionID,$userID){
          $response = array();	
-         $userID = 1;
+         // $userID = 1;
         try{
 			    $stmt = "SELECT id FROM `bid` WHERE auction_id = '$auctionID' and user_id = '$userID' ";
 			    $temp = $this->conn->query($stmt);

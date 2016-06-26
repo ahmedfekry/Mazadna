@@ -22,7 +22,8 @@
         global $home;
         $header = json_decode($request->getBody());
         $auctionID = $header->postObject->auctionID;
-        $result = $home -> joinAuction($auctionID);
+        $userID = $header->postObject->userID;
+        $result = $home -> joinAuction($auctionID,$userID);
         return $response-> write(json_encode($result));
 
     });
