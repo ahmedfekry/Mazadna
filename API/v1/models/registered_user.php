@@ -307,9 +307,66 @@
 			# code...
 			return $response;
 		}
+		/*
+			author: Eslam Ebrahim
+
+			description: 
+				this function handles the operation of submitting a bid from a user into an auction
+				assuming that any user that in an auction has an initial bid
+				this function just updates the user's bid
+
+				if there is no bid exist for the user in the auction, he's considered that he's not
+				registered for the auction
+
+			input:
+				$user_id : the id of the user who submits the bid the auction
+				$auction_id : the id of the auction that the bid is submitted for
+				$price : the amount of money that the user offers in his bid for the auction
+			output
+				$response["status"] : contains the status of the operation
+				$response["message"] : contains the details for the status of the operation
+		*/
+		public function submit_bid($user_id,$auction_id,$price)
+		{
+			$response = array();
+			try {
+				$isBidExist = $this->conn->query("SELECT COUNT(*) FROM `bid` WHERE user_id=".$user_id." AND auction_id=".$auction_id)->fetchColumn();
+				if($isBidExist > 0)
+				{
+					$stmt = $this->conn->prepare("UPDATE `bid` SET price=:price WHERE user_id=:user AND $auction_id=:auction");
+					$stmt->bindParam(':price',$price);
+					$stmt->bindParam(':user',$user_id);
+					$stmt->bindParam(':auction',$auction_id);
+
+					$res = $stmt->execute();
+
+					if($res != NULL)
+					{
+						$response["status"] = "success";
+						$response["message"] = "bid submitted successfully";
+					}
+					else
+					{
+						$response["status"] = "failed";
+						$response["message"] = "Error in submitting bid";
+					}
+				}
+				else
+				{
+					$response["status"] = "failed";
+					$response["message"] = "user is not registered in the auction";
+				}
+				return $response;
+			} catch (Exception $e) {
+				return "Error".$e->getMessage();
+			}
+		}
 
 	}
 
+	$var = new RegisteredUser();
+	print_r($var->submit_bid(2,1,999.9));
+	
 	// $s = new RegisteredUser();
 	// print_r($s->islogged());
 	// // session_start();

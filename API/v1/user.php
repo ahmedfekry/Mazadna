@@ -93,6 +93,31 @@
         return $response->write(json_encode($result) );
     });
 
+    /*
+        author: Eslam Ebrahim
+
+        description:
+            this function handles the request & response for submitting a bid to an auction
+        request:
+            user->user_id : the id of the user who submits the bid the auction
+            user->auction_id : the id of the auction that the bid is submitted for
+            user->price : the amount of money that the user offers in his bid for the auction
+        response:
+            returns the status of the operation and a message that describe the status further more
+    */
+    $app->post('submitBid',function($request,$response) use ($app){
+        global $registerdUser;
+
+        $header = json_decode($request->getBody());
+
+        $user_id = $header->user->user_id;
+        $auction_id = $header->user->auction_id;
+        $price = $header->user->price;
+
+        $result = $registerdUser->submit_bid($user_id,$auction_id,$price);
+        return $response->write(json_encode($result));
+    });
+
 
     $app->run();
 
