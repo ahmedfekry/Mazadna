@@ -24,7 +24,7 @@
 			$this->facebook_key = $facebook_key;
 			$this->followers = $followers;
 			$this->following = $following;
-			$this->conn = new PDO("mysql:host=localhost;dbname=mazadna", "root", "");
+			$this->conn = new PDO("mysql:host=localhost;dbname=mazadna", "root", "Ahmed2512011");
 			$this->conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 			if (!isset($_SESSION)) {
 				session_start();
@@ -185,8 +185,45 @@
 		    return $msg;
 		}
 
+		public function report_user($reporterID,$reportedID)
+		{
+			$response = array();
+			try {
+				$isReportExist = $this->conn->query("SELECT COUNT(*) FROM `userreport` WHERE user_reporter_id=".$reporterID." AND user_reported_id=".$reportedID)->fetchColumn();
+				if($isReportExist > 0)
+				{
+					$response["status"] = "failed";
+					$response["message"] = "report already exist";
+				}
+				else
+				{
+					$stmt = $this->conn->prepare("INSERT INTO `userreport` (user_reporter_id , user_reported_id) VALUES (:reporter , :reported)");
+					$stmt->bindParam(':reporter',$reporterID);
+					$stmt->bindParam(':reported',$reportedID);
+
+					$res = $stmt->execute();
+					if($res > 0)
+					{
+						$response["status"] = "success";
+						$response["message"] = "report submitted successfully";
+					}
+					else
+					{
+						$response["status"] = "failed";
+						$response["message"] = "failed to submit report";
+					}
+				}
+				return $response;
+			} catch (Exception $e) {
+				return "Error: ".$e->getMessage();
+			}
+		}
+
 	}
 
+	
+	$var = new RegisteredUser();
+	print_r($var->report_user(1,2));
 	// $s = new RegisteredUser();
 	// print_r($s->islogged());
 	// // session_start();

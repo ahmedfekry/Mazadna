@@ -60,6 +60,18 @@
         return $response->write(json_encode($result));
     });
 
+    $app->post('/reportUser',function($request,$response) use ($app){
+        global $registerdUser;
+
+        $header = json_decode($request->getBody());
+
+        $reporterID = $header->user->reporterID;
+        $reportedID = $header->user->reportedID;
+
+        $result = $registerdUser->report_user($reporterID,$reportedID);
+        return $response->write(json_encode($result));
+    });
+
     $app->run();
 
 ?>
