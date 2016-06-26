@@ -307,9 +307,71 @@
 			# code...
 			return $response;
 		}
+		/*
+        author: Eslam Ebrahim
+
+        description:
+            this function handles inviting another user to a private auction
+            it takes the inviter's id and invitee id and the auction id to create
+            an invitation for the invitee to the auction
+
+        input:
+            $inviter_id : id of the user who invites the other to the auction
+            $invitee_id : id of the user who is invited to the auction
+            $auction_id : id of the auction that the invitee user is invited to
+        output:
+            $response["status"] : the status of the request
+            $response["message"] : discripes the status further more
+    */
+		public function invite_user($inviter_id,$invitee_id,$auction_id)
+		{
+			$response = array();
+			try {
+				$isInviteExist = $this->conn->query("SELECT COUNT(*) FROM `auctioninvitation` WHERE inviter_id= ".$inviter_id." AND invitee_id=".$invitee_id." AND auction_id=".$auction_id)->fetchColumn();
+				if($isInviteExist > 0)
+				{
+					$response["status"] = "failed";
+					$response["message"] = "invitation already exists";
+				}
+				else
+				{
+					$checkInviter = $this->conn->query("SELECT COUNT(*) FROM `auction` WHERE user_id=".$inviter_id)->fetchColumn();
+					if($checkInviter > 0)
+					{
+						$stmt = $this->conn->prepare("INSERT INTO `auctioninvitation` (inviter_id,invitee_id,auction_id) VALUES (:inviter,:invitee,:auction)");
+						$stmt->bindParam(':inviter',$inviter_id);
+						$stmt->bindParam(':invitee',$invitee_id);
+						$stmt->bindParam(':auction',$auction_id);
+
+						$res = $stmt->execute();
+						if($res != NULL)
+						{
+							$response["status"] = "success";
+							$response["message"] = "invite submitted successfully";
+						}
+						else
+						{
+							$response["status"] = "failed";
+							$response["message"] = "Error in submitting invitation";
+						}
+					}
+					else
+					{
+						$response["status"] = "failed";
+						$response["message"] = "inviter is not the owner of the auction";
+					}
+				}
+				return $response;
+			} catch (Exception $e) {
+				return "Error: ".$e->getMessage();
+			}
+		}
 
 	}
-
+	/*
+	$var = new RegisteredUser();
+	print_r($var->invite_user(2,1,1));
+	*/
 	// $s = new RegisteredUser();
 	// print_r($s->islogged());
 	// // session_start();

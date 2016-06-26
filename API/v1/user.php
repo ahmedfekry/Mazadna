@@ -93,6 +93,33 @@
         return $response->write(json_encode($result) );
     });
 
+    /*
+        author: Eslam Ebrahim
+
+        description:
+            this function handles inviting another user to a private auction request and response
+
+        request:
+            user->inviter_id : id of the user who invites the other to the auction
+            user->invitee_id : id of the user who is invited to the auction
+            user->auction_id : id of the auction that the invitee user is invited to
+        response:
+            status : the status of the request
+            message : discripes the status further more
+    */
+    $app->post('/inviteUser',function ($request,$response) use ($app){
+        global $registerdUser;
+
+        $header = json_decode($request->getBody());
+
+        $inviter_id = $header->user->inviter_id;
+        $invitee_id = $header->user->invitee_id;
+        $auction_id = $header->user->auction_id;
+
+        $result = $registerdUser->invite_user($inviter_id,$invitee_id,$auction_id);
+
+        return $response->write(json_encode($result));
+    });
 
     $app->run();
 
