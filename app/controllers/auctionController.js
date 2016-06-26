@@ -36,14 +36,13 @@ app.controller('auctionController', function ($scope, $rootScope, $routeParams, 
 
     $scope._auction = {};
     $scope._auction = {
-        user_id:1,
+        user_id:0,
         title:'',
         starting_price:'',
         privacy:'',
         start_time:'',
         end_time:'',
         description:'',
-        on_site:1,
         category_id:0
     };
     
@@ -59,7 +58,7 @@ app.controller('auctionController', function ($scope, $rootScope, $routeParams, 
         }
 
 
-        postObject.user_id = _auction['user_id'];
+        postObject.user_id = sessionStorage.getItem('uid');
         postObject.title = _auction['title'];
         postObject.starting_price = _auction['starting_price'];
         postObject.privacy = _auction['privacy'];
