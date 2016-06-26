@@ -223,8 +223,8 @@
 		}
 
 	}
-	$var = new RegisteredUser();
-	print_r($var->review_user(1,2,"fair man",5));
+	/*$var = new RegisteredUser();
+	print_r($var->review_user(1,2,"fair man",5));*/
 	// $s = new RegisteredUser();
 	// print_r($s->islogged());
 	// // session_start();
