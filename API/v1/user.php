@@ -101,7 +101,7 @@
 
         request:
             user->inviter_id : id of the user who invites the other to the auction
-            user->invitee_id : id of the user who is invited to the auction
+            user->invitee_username : username of the user who is invited to the auction
             user->auction_id : id of the auction that the invitee user is invited to
         response:
             status : the status of the request
@@ -113,10 +113,10 @@
         $header = json_decode($request->getBody());
 
         $inviter_id = $header->user->inviter_id;
-        $invitee_id = $header->user->invitee_id;
+        $invitee_id = $header->user->invitee_username;
         $auction_id = $header->user->auction_id;
 
-        $result = $registerdUser->invite_user($inviter_id,$invitee_id,$auction_id);
+        $result = $registerdUser->invite_user($inviter_id,$invitee_username,$auction_id);
 
         return $response->write(json_encode($result));
     });

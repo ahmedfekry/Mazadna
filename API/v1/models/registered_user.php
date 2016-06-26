@@ -317,49 +317,62 @@
 
         input:
             $inviter_id : id of the user who invites the other to the auction
-            $invitee_id : id of the user who is invited to the auction
+            $invitee_username : id of the user who is invited to the auction
             $auction_id : id of the auction that the invitee user is invited to
         output:
             $response["status"] : the status of the request
             $response["message"] : discripes the status further more
     */
-		public function invite_user($inviter_id,$invitee_id,$auction_id)
+		public function invite_user($inviter_id,$invitee_username,$auction_id)
 		{
 			$response = array();
 			try {
-				$isInviteExist = $this->conn->query("SELECT COUNT(*) FROM `auctioninvitation` WHERE inviter_id= ".$inviter_id." AND invitee_id=".$invitee_id." AND auction_id=".$auction_id)->fetchColumn();
-				if($isInviteExist > 0)
+				$statement = $this->conn->prepare("SELECT * FROM `user` WHERE username=:uname");
+				$statement->bindParam(':uname',$invitee_username);
+				$statement->execute();
+				$isUserExists = $statement->fetch(PDO::FETCH_ASSOC);
+				if($isUserExists != NULL)
 				{
-					$response["status"] = "failed";
-					$response["message"] = "invitation already exists";
-				}
-				else
-				{
-					$checkInviter = $this->conn->query("SELECT COUNT(*) FROM `auction` WHERE user_id=".$inviter_id)->fetchColumn();
-					if($checkInviter > 0)
+					$invitee_id = $isUserExists['id'];
+					$isInviteExist = $this->conn->query("SELECT COUNT(*) FROM `auctioninvitation` WHERE inviter_id= ".$inviter_id." AND invitee_id=".$invitee_id." AND auction_id=".$auction_id." ")->fetchColumn();
+					if($isInviteExist > 0)
 					{
-						$stmt = $this->conn->prepare("INSERT INTO `auctioninvitation` (inviter_id,invitee_id,auction_id) VALUES (:inviter,:invitee,:auction)");
-						$stmt->bindParam(':inviter',$inviter_id);
-						$stmt->bindParam(':invitee',$invitee_id);
-						$stmt->bindParam(':auction',$auction_id);
-
-						$res = $stmt->execute();
-						if($res != NULL)
+						$response["status"] = "failed";
+						$response["message"] = "invitation already exists";
+					}
+					else
+					{
+						$checkInviter = $this->conn->query("SELECT COUNT(*) FROM `auction` WHERE user_id=".$inviter_id)->fetchColumn();
+						if($checkInviter > 0)
 						{
-							$response["status"] = "success";
-							$response["message"] = "invite submitted successfully";
+							$stmt = $this->conn->prepare("INSERT INTO `auctioninvitation` (inviter_id,invitee_id,auction_id) VALUES (:inviter,:invitee,:auction)");
+							$stmt->bindParam(':inviter',$inviter_id);
+							$stmt->bindParam(':invitee',$invitee_id);
+							$stmt->bindParam(':auction',$auction_id);
+
+							$res = $stmt->execute();
+							if($res != NULL)
+							{
+								$response["status"] = "success";
+								$response["message"] = "invite submitted successfully";
+							}
+							else
+							{
+								$response["status"] = "failed";
+								$response["message"] = "Error in submitting invitation";
+							}
 						}
 						else
 						{
 							$response["status"] = "failed";
-							$response["message"] = "Error in submitting invitation";
+							$response["message"] = "inviter is not the owner of the auction";
 						}
 					}
-					else
-					{
-						$response["status"] = "failed";
-						$response["message"] = "inviter is not the owner of the auction";
-					}
+				}
+				else
+				{
+					$response["status"] = "failed";
+					$response["message"] = "username not found";
 				}
 				return $response;
 			} catch (Exception $e) {
@@ -370,7 +383,7 @@
 	}
 	/*
 	$var = new RegisteredUser();
-	print_r($var->invite_user(2,1,1));
+	print_r($var->invite_user(1,"Ali",1));
 	*/
 	// $s = new RegisteredUser();
 	// print_r($s->islogged());
