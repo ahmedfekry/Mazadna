@@ -223,10 +223,10 @@
 			}
 		}
 	}
-	
+	/*
 	$var = new RegisteredUser();
 	print_r($var->auction_request(1,1));
-
+	*/
 	// $s = new RegisteredUser();
 	// print_r($s->islogged());
 	// // session_start();
