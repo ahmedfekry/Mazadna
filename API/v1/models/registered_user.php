@@ -307,9 +307,102 @@
 			# code...
 			return $response;
 		}
+		/*
+			
+		*/
+		public function reply_invitation($inviter_id,$invitee_username,$auction_id,$reply)
+		{
+			$response = array();
+			try {
+				$statement = $this->conn->prepare("SELECT * FROM `user` WHERE username=:uname");
+				$statement->bindParam(':uname',$invitee_username);
+				$statement->execute();
+
+				$user_data = $statement->fetch(PDO::FETCH_ASSOC);
+
+				$invitee_id = $user_data['id'];
+
+				echo $user_data['id'];
+
+				$isInvitationExist = $this->conn->query("SELECT COUNT(*) FROM `auctioninvitation` WHERE inviter_id=".$inviter_id." AND invitee_id=".$invitee_id." AND auction_id=".$auction_id)->fetchColumn();
+				if($isInvitationExist > 0)
+				{
+					if($reply == "accept")
+					{
+						$drop_invitation = $this->conn->prepare("DELETE FROM `auctioninvitation` WHERE inviter_id=:inviter AND invitee_id=:invitee AND auction_id=:auction");
+						$drop_invitation->bindParam(':inviter',$inviter_id);
+						$drop_invitation->bindParam(':invitee',$invitee_id);
+						$drop_invitation->bindParam(':auction',$auction_id);
+
+						$res = $drop_invitation->execute();
+
+						if($res != NULL)
+						{
+							$stmt = $this->conn->prepare("INSERT INTO `bid` ( auction_id, user_id, price) VALUES (:auction , :invitee , 0.0)");
+							$stmt->bindParam(':auction',$auction_id);
+							$stmt->bindParam(':invitee',$invitee_id);
+
+							$output = $stmt->execute();
+							if($output != NULL)
+							{
+								$response["status"] = "success";
+								$response["message"] = "invitation accepted successfully";
+							}
+							else
+							{
+								$response["status"] = "failed";
+								$response["message"] = "Error in accepting invitation";
+							}
+						}
+						else
+						{
+							$response["status"] = "failed";
+							$response["message"] = "Error in deleting the invitation after accepting";
+						}
+					}
+					elseif($reply == "reject") 
+					{
+						$drop_invitation = $this->conn->prepare("DELETE FROM `auctioninvitation` WHERE inviter_id=:inviter AND invitee_id=:invitee AND auction_id=:auction");
+						$drop_invitation->bindParam(':inviter',$inviter_id);
+						$drop_invitation->bindParam(':invitee',$invitee_id);
+						$drop_invitation->bindParam(':auction',$auction_id);
+
+						$res = $drop_invitation->execute();
+
+						if($res != NULL)
+						{
+							$response["status"] = "success";
+							$response["message"] = "invitation rejected successfully";
+						}
+						else
+						{
+							$response["status"] = "failed";
+							$response["message"] = "Error in deleting the invitation after rejecting";
+						}
+					}
+					else
+					{
+						$response["status"] = "failed";
+						$response["message"] = "Error in the sent reply";
+	 				}
+
+				}
+				else
+				{
+					$response["status"] = "failed";
+					$response["message"] = "auction invitation not found";
+				}
+				return $response;
+			} catch (Exception $e) {
+				return "Error: ".$e->getMessage();
+			}
+		}
 
 	}
-
+	/*
+	$var = new RegisteredUser();
+	print_r($var->reply_invitation(1,"Ali",1,"reject"));
+	*/
 	// $s = new RegisteredUser();
 	// print_r($s->islogged());
 	// // session_start();

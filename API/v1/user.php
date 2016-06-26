@@ -93,6 +93,26 @@
         return $response->write(json_encode($result) );
     });
 
+    /*
+        author: Eslam Ebrahim
+
+        description: 
+            thisfunction handles the request & response for replying auction invitation 
+    */
+    $app->post('replyInvitation',function($request,$response) use ($app){
+        global $registerdUser;
+
+        $header = json_decode($request->getBody());
+        $inviter_id = $header->user->inviter_id;
+        $invitee_username = $header->user->invitee_username;
+        $auction_id = $header->user->auction_id;
+        $reply = $header->user->reply;
+
+        $result = $registerdUser->reply_invitation($inviter_id,$invitee_username,$auction_id,$reply);
+
+        $return $response->write(json_encode($result));
+    });
+
 
     $app->run();
 
