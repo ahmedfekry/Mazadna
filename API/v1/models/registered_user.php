@@ -131,7 +131,20 @@
 				return "Error: ".$e->getMessage();
 			}
 		}
+		/*
+			author: Eslam Ebrahim
 
+			description:
+				this function handles the operation of viewing user's profile
+				it takes the id of the user whose account will be viewed
+				it returns the user info and his auction (if exist)
+
+			input:
+				$id : the id of the user whose account will be viewed
+
+			output:
+				
+		*/
 		public function view_user_profile($id)
 		{
 			$response =array();
