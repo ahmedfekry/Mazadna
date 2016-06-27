@@ -338,70 +338,24 @@
 				$isBidExist = $this->conn->query("SELECT COUNT(*) FROM `bid` WHERE user_id=".$user_id." AND auction_id=".$auction_id)->fetchColumn();
 				if($isBidExist > 0)
 				{
-					$stmt = $this->conn->prepare("UPDATE `bid` SET price=:price WHERE user_id=:user AND $auction_id=:auction");
-					$stmt->bindParam(':price',$price);
-					$stmt->bindParam(':user',$user_id);
-					$stmt->bindParam(':auction',$auction_id);
-					$res = $stmt->execute();
 
-					if($res != NULL)
+					$auctionInfo = $this->conn->prepare("SELECT * FROM `auction` WHERE id=:auction");
+					$auctionInfo->bindParam(':auction',$auction_id);
+					$auctionInfo->execute();
+
+					$auctionRecord = $auctionInfo->fetch(PDO::FETCH_ASSOC);
+					$highest_bid_id = $auctionRecord['highest_bid_id'];
+
+					if($highest_bid_id != NULL)
 					{
+						$highestBidInfo = $this->conn->prepare("SELECT * FROM `bid` WHERE id=:highest");
+						$highestBidInfo->bindParam(':highest',$highest_bid_id);
+						$highestBidInfo->execute();
 
-						$auctionInfo = $this->conn->prepare("SELECT * FROM `auction` WHERE id=:auction");
-						$auctionInfo->bindParam(':auction',$auction_id);
-						$auctionInfo->execute();
+						$highestBidRecord = $highestBidInfo->fetch(PDO::FETCH_ASSOC);
+						$highest_bid_price = $highestBidRecord['price'];
 
-						$auctionRecord = $auctionInfo->fetch(PDO::FETCH_ASSOC);
-						$highest_bid_id = $auctionRecord['highest_bid_id'];
-
-						if($highest_bid_id != NULL)
-						{
-							$highestBidInfo = $this->conn->prepare("SELECT * FROM `bid` WHERE id=:highest");
-							$highestBidInfo->bindParam(':highest',$highest_bid_id);
-							$highestBidInfo->execute();
-
-							$highestBidRecord = $highestBidInfo->fetch(PDO::FETCH_ASSOC);
-							$highest_bid_price = $highestBidRecord['price'];
-							echo $highest_bid_price;
-							if($price > $highest_bid_price)
-							{
-								$userBidInfo = $this->conn->prepare("SELECT * FROM `bid` WHERE auction_id=:auction AND user_id=:user");
-								$userBidInfo->bindParam(':auction',$auction_id);
-								$userBidInfo->bindParam(':user',$user_id);
-								$userBidInfo->execute();
-								$userBidRecord = $userBidInfo->fetch(PDO::FETCH_ASSOC);
-
-								$user_bid_id = $userBidRecord['id'];
-
-								$update = $this->conn->prepare("UPDATE `auction` SET highest_bid_id = :bid_id , highest_bider_id=:bider_id WHERE id=:auction_id");
-								$update->bindParam(':bid_id',$user_bid_id);
-								$update->bindParam(':bider_id',$user_id);
-								$update->bindParam(':auction_id',$auction_id);
-
-								$output = $update->execute();
-								if($output != NULL)
-								{
-									$response["status"] = "success";
-									$response["message"] = "bid submitted successfully and you are the highest bidder";
-								}
-								else
-								{
-									$response["status"] = "failed";
-									$response["message"] = "bid submittes successfully and Error in submitting you as the highest bidder";
-								}
-							}
-							elseif($price == $highest_bid_price)
-							{
-								$response["status"] = "failed";
-								$response["message"] = "you submitted a bid equal to the highest bid";
-							}
-							else
-							{
-								$response["status"] = "failed";
-								$response["message"] = "you submitted a bid less than the highest bid";
-							}
-						}
-						else
+						if($price > $highest_bid_price)
 						{
 							$userBidInfo = $this->conn->prepare("SELECT * FROM `bid` WHERE auction_id=:auction AND user_id=:user");
 							$userBidInfo->bindParam(':auction',$auction_id);
@@ -428,6 +382,55 @@
 								$response["message"] = "bid submittes successfully and Error in submitting you as the highest bidder";
 							}
 						}
+						elseif($price == $highest_bid_price)
+						{
+							$response["status"] = "failed";
+							$response["message"] = "you submitted a bid equal to the highest bid";
+						}
+						else
+						{
+							$response["status"] = "failed";
+							$response["message"] = "you submitted a bid less than the highest bid";
+						}
+					}
+					else
+					{
+						$userBidInfo = $this->conn->prepare("SELECT * FROM `bid` WHERE auction_id=:auction AND user_id=:user");
+						$userBidInfo->bindParam(':auction',$auction_id);
+						$userBidInfo->bindParam(':user',$user_id);
+						$userBidInfo->execute();
+						$userBidRecord = $userBidInfo->fetch(PDO::FETCH_ASSOC);
+
+						$user_bid_id = $userBidRecord['id'];
+
+						$update = $this->conn->prepare("UPDATE `auction` SET highest_bid_id = :bid_id , highest_bider_id=:bider_id WHERE id=:auction_id");
+						$update->bindParam(':bid_id',$user_bid_id);
+						$update->bindParam(':bider_id',$user_id);
+						$update->bindParam(':auction_id',$auction_id);
+
+						$output = $update->execute();
+						if($output != NULL)
+						{
+							$response["status"] = "success";
+							$response["message"] = "bid submitted successfully and you are the highest bidder";
+						}
+						else
+						{
+							$response["status"] = "failed";
+							$response["message"] = "bid submittes successfully and Error in submitting you as the highest bidder";
+						}
+					}
+
+
+					$stmt = $this->conn->prepare("UPDATE `bid` SET price=:price WHERE user_id=:user AND $auction_id=:auction");
+					$stmt->bindParam(':price',$price);
+					$stmt->bindParam(':user',$user_id);
+					$stmt->bindParam(':auction',$auction_id);
+					$res = $stmt->execute();
+
+					if($res != NULL)
+					{
+							//the success status are written up there
 					}
 					else
 					{
@@ -449,7 +452,7 @@
 	}
 	
 	$var = new RegisteredUser();
-	print_r($var->submit_bid(2,1,9.9));
+	print_r($var->submit_bid(2,1,1.9));
 	
 	// $s = new RegisteredUser();
 	// print_r($s->islogged());
