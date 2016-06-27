@@ -6,6 +6,7 @@
     require_once 'passwordHash.php';
     $app = new \Slim\App;
 	$home = new Auction(); 
+    header("Access-Control-Allow-Origin: *");
 
 	$app->post('/home', function ($request, $response) use ($app){
         global $home;

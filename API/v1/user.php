@@ -3,8 +3,16 @@
     require 'models/registered_user.php';
     require_once 'passwordHash.php';
 
-    $app = new \Slim\App;
+    $settings =  [
+        'settings' => [
+            'displayErrorDetails' => true,
+        ],
+    ];
+
+    $app = new \Slim\App($settings);
     $registerdUser = new RegisteredUser();
+    header("Access-Control-Allow-Origin: *");
+    
 
     $app->post('/signUp', function ($request, $response) use ($app){
 
@@ -22,6 +30,20 @@
         $result = $registerdUser->sign_up($first_name,$last_name,$username,$email,$phone_number,$password);
 
         return $response->write( json_encode($result) );
+    });
+
+
+    $app->post('/signIn2',function ($request,$response) use ($app){
+        # code...
+        global $registerdUser;
+        $allGetVars = $request->getQueryParams();
+        $username = $allGetVars['username'];
+        $password = $allGetVars['password'];
+        
+        $result = $registerdUser->sign_in($username,$password);
+        
+        return $response->write(json_encode($result) );
+
     });
 
     $app->post('/signIn',function ($request,$response) use ($app){

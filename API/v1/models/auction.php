@@ -289,7 +289,7 @@
 }
 
 
-	$var = new Auction();
-	print_r($var->viewAuction(1));
+	// $var = new Auction();
+	// print_r($var->viewAuction(1));
 ?>
 	

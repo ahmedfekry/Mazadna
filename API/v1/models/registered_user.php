@@ -131,6 +131,37 @@
 				return "Error: ".$e->getMessage();
 			}
 		}
+
+		public function sign_in2()
+		{
+			$response = array();
+			try {
+				$stmt = $this->conn->query("SELECT LAST(*) FROM `user` ");
+			    $stmt->execute();
+
+			    $isUserExists = $stmt->fetch(PDO::FETCH_ASSOC);
+			    if ($isUserExists != NULL) {
+			    		# code...
+				    	$response["status"] = "success";
+				    	$response["message"] = "Loging successfully";
+				    	$response["uid"] = $isUserExists['id'];
+				    	$response["first_name"] = $isUserExists['first_name'];
+				    	
+			            $_SESSION['uid'] = $isUserExists["id"];
+			            $_SESSION['name'] = $isUserExists["first_name"]." ".$isUserExists["last_name"];
+			            $_SESSION['email'] = $isUserExists["email"];
+			            session_commit();
+			            $response['session'] = $_SESSION['uid'];
+			            return $response;
+			    } else {
+			    	$response["status"] = "Failed";
+			    	$response["message"] = "No such user exists";
+			    	return $response;
+			    }
+			} catch (PDOException $e) {
+				return "Error: ".$e->getMessage();
+			}
+		}
 		
 		public function islogged()
 		{
