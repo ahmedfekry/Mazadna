@@ -186,6 +186,26 @@
 		    }
 		    return $msg;
 		}
+		/*
+			author : Eslam Ebrahim
+
+			description:
+				this function handles the operation of submitting user review
+
+				it takes the reviewer id and the reviewee id and checks if there is an existing review
+				if there is, the function respond that there is a review already exist
+				if not, the function submits the reivew
+
+			input:
+				$reviewer_id : the id of the user who submits the review
+				$reviewee_id : the id of the user who is being reviewed
+				$comment : the comment of the reviewer on the reviewee
+				$stars : a star rating submitted by the reviewer on the reviewee
+
+			output:
+				$response["status"] : the status of the review operation
+				$response["message"] = describes the status further more
+		*/
 		public function review_user($reviewer_id,$reviewee_id,$comment,$stars)
 		{
 			$response = array();
