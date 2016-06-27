@@ -57,6 +57,17 @@
 			}
 		}
 
+
+		/*
+			author: Eslam Ebrahm
+
+			description:
+				this functions returns the total number of users in the site
+			input:
+				NONE
+			output:
+				$response["usersNum"] : returns the total number of users in the site
+		*/
 		public function get_users_num()
 		{
 			$response = array();
@@ -68,6 +79,16 @@
 			}
 		}
 
+		/*
+			author: Eslam Ebrahm
+
+			description:
+				this functions returns the total number of auctions in the site
+			input:
+				NONE
+			output:
+				$response["auctionsNum"] : returns the total number of auctions in the site
+		*/
 		public function get_auctions_num()
 		{
 			$response = array();
@@ -79,6 +100,16 @@
 			}
 		}
 
+		/*
+			author: Eslam Ebrahm
+
+			description:
+				this functions returns the total number of active auctions in the site
+			input:
+				NONE
+			output:
+				$response["auctionsNum"] : returns the total number of active auctions in the site
+		*/
 		public function get_active_auctions()
 		{
 			$response = array();
@@ -91,6 +122,16 @@
 			}		
 		}
 
+		/*
+			author: Eslam Ebrahm
+
+			description:
+				this functions returns the total number of completed auctions in the site
+			input:
+				NONE
+			output:
+				$response["auctionsNum"] : returns the total number of completed auctions in the site
+		*/
 		public function get_complete_auctions()
 		{
 			$response = array();
@@ -103,6 +144,16 @@
 			}		
 		}
 
+		/*
+			author: Eslam Ebrahm
+
+			description:
+				this functions returns the total sum of prices that has been paid for auctions in the site
+			input:
+				NONE
+			output:
+				$response["auctionsNum"] : returns the total sum of prices that has been paid for auctions in the site
+		*/
 		public function auction_prices_sum()
 		{
 			$response = array();
