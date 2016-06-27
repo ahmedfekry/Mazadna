@@ -6,11 +6,21 @@
     $app = new \Slim\App;
     $auction = new Auction();
 
+    header("Access-Control-Allow-Origin: *");
     $app->post('/viewAuction', function ($request, $response) use ($app){
         global $auction;
         $header = json_decode($request->getBody());
         $auction_id = $header->temp->auction_id;
         $result = $auction -> viewAuction($auction_id);
+        return $response-> write(json_encode($result));
+
+    });
+
+    $app->post('/getMyAuctions', function ($request, $response) use ($app){
+        global $auction;
+        $allGetVars = $request->getQueryParams();
+        $user_id = $allGetVars['user_id'];
+        $result = $auction -> getMyAuctions($user_id);
         return $response-> write(json_encode($result));
 
     });

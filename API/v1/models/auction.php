@@ -33,17 +33,16 @@
 			$this->conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);			
 		}
 
-		function searchByCategory($categoryId){
+	function searchByCategory($categoryId){
 			//do the code here
 			$response1 = array();
 			
 			try {
-
 				if($categoryId != 0){
-					$sql = "SELECT * FROM `auction` WHERE category_id = '$categoryId' ";
+					$sql = "SELECT * FROM `auction` WHERE category_id = '$categoryId' and privacy = 'Public' ";
 				}
 				else{
-					$sql = "SELECT * FROM `auction` ";
+					$sql = "SELECT * FROM `auction` WHERE  privacy = 'Public' ";
 				}
 
 				$result = $this->conn->query($sql);
@@ -53,10 +52,8 @@
 
 				    while($row = $result->fetch(PDO::FETCH_ASSOC)) {
 				    	$auction_id = $row['id'];
-				 		$private="public";
+				 		$private=$row['privacy'];
 
-				         if($row['privacy'] == 1)
-				                             $private="private";
 				        $id = $row['id'];
 				        $user_id = $row['user_id'];
 				        //get the username
@@ -90,7 +87,8 @@
 				        $response1[$i] = $auction;
         				$i++; 
 				    }
-				    return $response1;
+				   
+				    	return $response1;
 				    
 				} else {
 				    $Auction->setstatus = "error";
@@ -102,9 +100,7 @@
 			}
 			 catch(PDOException $e) {
 			    echo "Error: " . $e->getMessage();   
-			}
-
-		
+			}	
 	}
 
 	function viewAuction($auction_id){
@@ -286,10 +282,77 @@
 			}
 			return $response;
 		}
+
+		function getMyAuctions($user_id){
+			//do the code here
+			$response1 = array();
+			
+			try {
+				$sql = "SELECT * FROM `auction` WHERE user_id = '$user_id' ";
+				
+				$result = $this->conn->query($sql);
+				$i=0;
+
+				if ($result) {
+
+				    while($row = $result->fetch(PDO::FETCH_ASSOC)) {
+				    	$auction_id = $row['id'];
+				 		$private=$row['privacy'];
+
+				        $id = $row['id'];
+				        $user_id = $row['user_id'];
+				        //get the username
+				        $stmt ="select username from user where id ='". str_replace('\\','\\\\',$user_id) . "'";
+				        $result1 =$this->conn->query($stmt);
+				        $temp = $result1->fetch(PDO::FETCH_ASSOC);
+				        $name =$temp['username'];
+				        //get the item name
+				        $stmt ="select name from item where auction_id ='". str_replace('\\','\\\\',$id) . "'";
+				        $result2=$this->conn->query($stmt);
+				        $temp2 = $result2->fetch(PDO::FETCH_ASSOC);
+				        $item_name =$temp2['name'];
+				        //add the results to the an array
+				        $auction = array(
+				        'id'=>$id,	
+				        'username'=>$name,
+				        'description'=>$row['description'],
+				        'item' => $item_name,
+				        'start_time' => $row['start_time'],
+				        'end_time' => $row['end_time'],
+				        'title' => $row['title'],
+				        'starting_price'=>$row['starting_price'],
+				        'active' =>$row['active'],
+				        'status' => "success",
+				        'highest_bid_id'=>$row['highest_bid_id'],
+				        'highest_bider_id'=>$row['highest_bider_id'],
+				        
+				        'privacy'=>$private);
+				        //create 2D array
+
+				        $response1[$i] = $auction;
+        				$i++; 
+				    }
+				   
+				    	return $response1;
+				    
+				} else {
+				    $Auction->setstatus = "error";
+		            $Auction->setmassege = "empty!";
+		            $response1[$i] = $Auction;
+		            return $response1;
+				}
+
+			}
+			 catch(PDOException $e) {
+			    echo "Error: " . $e->getMessage();   
+			}
+
+		
+	}
 }
 
 
 	// $var = new Auction();
-	// print_r($var->viewAuction(1));
+	// print_r($var->searchByCategory(1));
 ?>
 	
