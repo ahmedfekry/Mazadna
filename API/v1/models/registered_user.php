@@ -143,7 +143,11 @@
 				$id : the id of the user whose account will be viewed
 
 			output:
-				
+				$response["userStatus"] : the status of the user -> success if exist, failed otherwise
+				$response["userInfo"] : the data of the user whose profile is being viewed (if exist)
+				$response["auctionStatus"] : the status of the user's auction -> success if any exist, failed otherwise
+				$response["auctions"] : the data of the user's auctions (if exist)
+				$response["message"] : describes the status of the user and auction further more
 		*/
 		public function view_user_profile($id)
 		{
