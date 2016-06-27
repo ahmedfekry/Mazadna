@@ -271,6 +271,24 @@
 			}
 		}
 
+		/*
+			author: Eslam Ebrahim
+
+			description:
+				this function handles the operation of following a user
+				first we check if the follow already exists. if so, we respond that the follower already
+				following the followed user
+
+				if not, a record in `following` table is inserted to submit the following operation
+
+			input:
+				$followerId : the id of the user who submits the follow
+				$followedId	th id of the user who is beibg followed
+
+			output:
+				$response["status"] : returns the status of the follow operation
+				$response["message"] : describes the status further more
+		*/
 		public function follow_user($followerId,$followedId)
 		{
 			$response = array();
