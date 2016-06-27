@@ -296,7 +296,26 @@
 			return $response;
 		}
 
+		/*
+			author : Eslam Ebrahim
 
+			description:
+				this function handles the operation of submitting rating for an auction by a user
+				first it checks if there is a submitted rating from this user on that auction
+
+				if exist, the function responds that the rating already exists
+				otherwise, the rating is submitted
+
+			input:
+				$user_id : the id of the user who submits the rating
+				$auction_id : the id of the auction that the rating is submitted for
+				$description : the description of rating written by user
+				$stars : the star rating submitted by user
+
+			output:
+				$response["status"] : returns the status of the operation
+				$response["message"] : describes the status further more
+		*/
 		public function submit_rating($user_id,$auction_id,$description,$stars)
 		{
 			$response = array();
