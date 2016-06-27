@@ -450,10 +450,10 @@
 		}
 
 	}
-	
+	/*
 	$var = new RegisteredUser();
 	print_r($var->submit_bid(2,1,1.9));
-	
+	*/
 	// $s = new RegisteredUser();
 	// print_r($s->islogged());
 	// // session_start();
