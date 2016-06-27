@@ -184,7 +184,24 @@
 		    }
 		    return $msg;
 		}
+		
+		/*
+			author: Eslam Ebrahim
 
+			description:
+				this function handles the operation of submitting a report on a user
+				the function takes the id of both the reporter and the reported and checks 
+				if there is an existing report. if so, the function respond that the report already exist
+				if not, the reprot is submitted
+
+			input:
+				$reporterID : the id of the user who submits the report
+				$reportedID : the id of the user who is being reported
+
+			output:
+				$response["status"] : returns the status of the operation
+				$response["message"] = describes the status further more
+		*/
 		public function report_user($reporterID,$reportedID)
 		{
 			$response = array();
@@ -221,9 +238,10 @@
 
 	}
 
-	
+	/*
 	$var = new RegisteredUser();
 	print_r($var->report_user(1,2));
+	*/
 	// $s = new RegisteredUser();
 	// print_r($s->islogged());
 	// // session_start();
