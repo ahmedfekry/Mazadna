@@ -15,7 +15,7 @@
 			$this->id = $id;
 			$this->username = $username;
 			$this->password = $password;
-			$this->conn = new PDO("mysql:host=localhost;dbname=Mazadna", "root", "Ahmed2512011");
+			$this->conn = new PDO("mysql:host=localhost;dbname=Mazadna", "root", "");
 			$this->conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 		}
 

@@ -5,6 +5,7 @@
 
     $app = new \Slim\App;
     $auction = new Auction();
+    $User = new Auction();
 
     header("Access-Control-Allow-Origin: *");
     $app->post('/viewAuction', function ($request, $response) use ($app){
@@ -25,6 +26,31 @@
 
     });
 
+    $app->post('/submitBid',function($request,$response) use ($app){
+        global $auction;
+
+        $header = json_decode($request->getBody());
+
+        $user_id = $header->user->user_id;
+        $auction_id = $header->user->auction_id;
+        $price = $header->user->price;
+        // $result = array('meww' => $auction_id );
+        // $result = $registerdUser -> submit_bid($user_id,$auction_id,$price);
+        $result = $auction -> submit_bid($user_id,$auction_id,$price);
+        return $response->write(json_encode($result));
+    });
+
+    $app->post('/submitAuctionRating',function($request,$response) use ($app){
+        global $auction;
+        $header = json_decode($request->getBody());
+        $user_id = $header->auction->user_id;
+        $auction_id = $header->auction->auction_id;
+        $description = $header->auction->description;
+        $stars = $header->auction->stars;
+        $result = $auction->submit_rating($user_id,$auction_id,$description,$stars);
+        return $response->write(json_encode($result));
+    });
+ 
     // $user_id,$description,$title,$starting_price,$privacy,$end_time,$on_site,$category_id
     $app->post('/createAuction',function ($request,$response) use ($app){
         # code...
