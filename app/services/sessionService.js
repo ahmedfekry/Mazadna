@@ -4,7 +4,7 @@ app.factory('sessionService', ['$http', function($http) {
 	return{
 		set:function(key , value) {
 			// body...
-			return sessionStorage.setItem(key,value);
+			return localStorage.setItem(key,value);
 		},
 		get:function() {
 			// body...
@@ -14,7 +14,7 @@ app.factory('sessionService', ['$http', function($http) {
 		destroy:function(key) {
 			// body...
 			$http.get('API/v1/user.php/logout');
-			return sessionStorage.removeItem(key);
+			return localStorage.removeItem(key);
 		}
 
 	};

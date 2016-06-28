@@ -1,48 +1,5 @@
 app.controller('auctionController', function ($scope, $rootScope, $routeParams, $location, $http, myService) {
-    //initially set those objects to null to avoid undefined error
-    $scope.initial = function() {
-      
-    };
-    $scope.auction = {};
-    $scope.viewAuction= function (auction_id) {
-        // body...
-        var postObject = new Object();
-        postObject.auction_id = auction_id;
-
-        myService.post('auction.php/viewAuction',{
-            temp : postObject
-        }).then(function(results) {
-            // body...
-            if (results.status == 'success') {
-                $scope.auction.description = results.auction.description;
-                $scope.auction.start_time = results.auction.start_time;
-                $scope.auction.end_time = results.auction.end_time;
-                $scope.auction.privacy = results.auction.privacy;
-                $scope.auction.title = results.auction.title;
-                $scope.auction.description = results.auction.description;
-                $scope.auction.category_id = results.auction.category_id;
-                $scope.auction. = results.auction.description;
-                
-
-            }
-        });
-    }
-// [auction] => Array
-//         (
-//             [id] => 1
-//             [user_id] => 1
-//             [description] => fekry
-//             [start_time] => 2016-06-17 00:40:00
-//             [end_time] => 2016-06-25 01:01:00
-//             [privacy] => Private
-//             [title] => AhmedAuction
-//             [category_id] => 1
-//             [starting_price] => 4
-//             [active] => 1
-//             [highest_bid_id] => 
-//             [highest_bider_id] => 
-//         )
-
+    
     $scope._auction = {};
     $scope._auction = {
         user_id:0,
@@ -54,7 +11,98 @@ app.controller('auctionController', function ($scope, $rootScope, $routeParams, 
         description:'',
         category_id:0
     };
+
+    $scope.auction={};
+    $scope.bid={};
+    $scope.ratings={};
+    $scope.names={};
+    $scope.description="";
+    $scope.price=0.0;
     
+   $scope.submit_bid = function (auctionId,price) {
+        
+        var postObject = new Object();
+        alert(auctionId);
+        postObject.user_id = localStorage.getItem('uid');
+        postObject.auction_id = auctionId;
+        postObject.price = price;
+        alert(price);
+        myService.post('auction.php/submitBid', {
+            user: postObject
+        }).then(function (results) {
+
+            if (results.status == "success") {
+                $location.path('/viewAuction');
+            }
+            alert(results.message);
+
+        });
+
+    };
+
+   $scope.submitRating = function (description,auctionId) {
+        
+        var postObject = new Object();
+        alert(auctionId);
+
+        postObject.user_id = localStorage.getItem('uid');
+        postObject.auction_id = auctionId;
+        postObject.description = description;
+        postObject.stars = parseInt($('input[name=rating]:checked', '.form').val());
+
+        myService.post('auction.php/submitAuctionRating', {
+            auction: postObject
+        }).then(function (results) {
+
+            if (results.status == "success") {
+                alert(results.message);
+                $location.path('/viewAuction');
+            }
+
+        });
+
+    };
+
+    $scope.viewAuction2= function (auction_id) {
+    // body...
+        var postObject = new Object();
+        postObject.auction_id = auction_id;
+
+        myService.post('auction.php/viewAuction',{
+            temp : postObject
+        }).then(function(results) {
+    // body...
+
+            if (results.status == 'success') {
+                $location.path('/viewAuction'); 
+                $scope.auction.description = results.auction.description;
+                $scope.auction.start_time = results.auction.start_time;
+                $scope.auction.end_time = results.auction.end_time;
+                $scope.auction.start_price = results.auction.starting_price;
+                $scope.auction.privacy = results.auction.privacy;
+                $scope.auction.title = results.auction.title;
+                $scope.auction.category_id = results.auction.category_id; 
+                $scope.number_of_one_stars = results.number_of_one_stars; 
+                $scope.number_of_two_stars = results.number_of_two_stars;
+                $scope.number_of_three_stars = results.number_of_three_stars;
+                $scope.number_of_four_stars = results.number_of_four_stars;
+                $scope.number_of_five_stars = results.number_of_five_stars;
+                var j=0;
+
+                for(;j<results.bid.length;j++){
+                    $scope.bid[j]=results.bid[j];
+                }
+                var i=0;
+                for(;i<results.ratings.length;i++){
+                    $scope.ratings[i]=results.ratings[i];
+                }
+                
+                    $scope.names=results.userNames;
+
+            }
+
+        });
+    };
     // $scope.fekry="fekryas";
     $scope.create = function (_auction) {
         var postObject = new Object();
@@ -67,7 +115,7 @@ app.controller('auctionController', function ($scope, $rootScope, $routeParams, 
         }
 
 
-        postObject.user_id = sessionStorage.getItem('uid');
+        postObject.user_id = localStorage.getItem('uid');
         postObject.title = _auction['title'];
         postObject.starting_price = _auction['starting_price'];
         postObject.privacy = _auction['privacy'];
@@ -82,7 +130,7 @@ app.controller('auctionController', function ($scope, $rootScope, $routeParams, 
         }).then(function (results) {
             if (results.status == "success") {
                 alert(results.message);
-                $location.path('/home');
+                // $location.path('/home');
             }
         });
     };

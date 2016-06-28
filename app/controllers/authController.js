@@ -28,7 +28,7 @@ app.controller('authController', function ($scope, $rootScope, $routeParams, $lo
             if (results.status == "success") {
                 alert(results.message);
                 sessionService.set("uid",results.uid);
-                $location.path('/home');
+                // $location.path('/home');
             }
         });
     };
@@ -48,6 +48,8 @@ app.controller('authController', function ($scope, $rootScope, $routeParams, $lo
             if (results.status == "success") {
                 alert(results.message);
                 sessionService.set("uid",results.uid);
+                localStorage.setItem('image',results.image);
+                localStorage.setItem('name',results.first_name);
                 $location.path('/home')
             }else{
                 alert(results.message);

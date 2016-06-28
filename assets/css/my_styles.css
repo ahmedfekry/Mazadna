@@ -23,19 +23,19 @@
 		
 		/*position: fixed;*/	
 .navbar-default {
-	height:53px;
+	height: 70px;
   background-color: #bef0f9;
   border-color: #37dffd;
   
 }
 .navbar-default .navbar-brand {
   color: #55a4b8;
-  height:53px;
+  height: 70px;
 }
 .navbar-default .navbar-brand:hover,
 .navbar-default .navbar-brand:focus {
   color: #42838e;
-  height:53px;
+  height: 70px;
 }
 .navbar-default .navbar-text {
   color: #55a4b8;
@@ -43,7 +43,7 @@
 }
 .navbar-default .navbar-nav > li > a {
   color: #55a4b8;
-  height:52px;
+  height:70px;
 }
 .navbar-default .navbar-nav > li > a:hover,
 .navbar-default .navbar-nav > li > a:focus {

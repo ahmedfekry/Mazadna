@@ -23,9 +23,9 @@ var app = angular.module('mazadna', ['ngRoute'])
                 controller  : 'admin_homeController'
             })
 
-            .when('/viewAuction',{
-                templateUrl : 'app/partials/auction_item.html',
-                controller : 'auctionController'
+            .when('/viewAuction', {
+                templateUrl : 'app/partials/test.html',
+                controller  : 'auctionController'
             })
 
             .when('/signIn',{

@@ -29,7 +29,7 @@
 			$this->starting_price = $starting_price;
 
 
-			$this->conn = new PDO("mysql:host=localhost;dbname=Mazadna", "root", "Ahmed2512011");
+			$this->conn = new PDO("mysql:host=localhost;dbname=Mazadna", "root", "");
 			$this->conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);			
 		}
 
@@ -38,12 +38,11 @@
 			$response1 = array();
 			
 			try {
-
 				if($categoryId != 0){
-					$sql = "SELECT * FROM `auction` WHERE category_id = '$categoryId' ";
+					$sql = "SELECT * FROM `auction` WHERE category_id = '$categoryId' and privacy = 'Public' ";
 				}
 				else{
-					$sql = "SELECT * FROM `auction` ";
+					$sql = "SELECT * FROM `auction` WHERE  privacy = 'Public' ";
 				}
 
 				$result = $this->conn->query($sql);
@@ -53,10 +52,8 @@
 
 				    while($row = $result->fetch(PDO::FETCH_ASSOC)) {
 				    	$auction_id = $row['id'];
-				 		$private="public";
+				 		$private=$row['privacy'];
 
-				         if($row['privacy'] == 1)
-				                             $private="private";
 				        $id = $row['id'];
 				        $user_id = $row['user_id'];
 				        //get the username
@@ -75,6 +72,7 @@
 				        'username'=>$name,
 				        'description'=>$row['description'],
 				        'item' => $item_name,
+				        'image' => $row['image'],
 				        'start_time' => $row['start_time'],
 				        'end_time' => $row['end_time'],
 				        'title' => $row['title'],
@@ -90,7 +88,8 @@
 				        $response1[$i] = $auction;
         				$i++; 
 				    }
-				    return $response1;
+				   
+				    	return $response1;
 				    
 				} else {
 				    $Auction->setstatus = "error";
@@ -106,6 +105,45 @@
 
 		
 	}
+
+	public function submit_rating($user_id,$auction_id,$description,$stars)
+		{
+			$response = array();
+			try {
+				$isRatingExist = $this->conn->query("SELECT count(*) FROM `auctionrating` WHERE auction_id= ".$auction_id." and user_id = ".$user_id." ")->fetchColumn();
+				$response["count"]=$isRatingExist;
+ 				if($isRatingExist > 1)
+ 				{
+ 					$response["status"] = "failed";
+ 					$response["message"] = "rating already exist";
+				}
+ 				else
+ 				{
+ 					$stmt = $this->conn->prepare("INSERT INTO `auctionrating` (auction_id,user_id,description,numofstars) VALUES (:auction , :user , :description , :stars)");
+ 					$stmt->bindParam(':auction',$auction_id);
+ 					$stmt->bindParam(':user',$user_id);
+ 					$stmt->bindParam(':description',$description);
+ 					$stmt->bindParam(':stars',$stars);
+ 
+ 					$res = $stmt->execute();
+ 					if($res != NULL)
+ 					{
+ 						$response["status"] = "success";
+ 						$response["message"] = "rating submitted successfully";
+ 					}
+ 					else
+ 					{
+ 						$response["status"] = "failed";
+ 						$response["message"] = "Error in submitting rating";
+ 					}
+ 				}
+ 				return $response;
+
+ 			} catch (Exception $e) {
+ 				return "Error: ".$e->getMessage();
+ 			}
+ 		}
+ 
 
 	function viewAuction($auction_id){
 			//do the code here
@@ -127,12 +165,19 @@
 
 				    $stmt->execute();
 			    	$response["bid"] = array();
+			    	$response["userNames"] = array();
 					while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
-					 	array_push($response["bid"], $row);
+						$userId = $row['user_id'];
+						array_push($response["bid"], $row);
+				    $res2 = $this->conn->query("SELECT username FROM `user` WHERE id=".$userId." ")->fetchColumn();;
+				    	array_push($response["userNames"],$res2);
+					 	
 					 } 
 			    	
 			    	$stmt = $this->conn->prepare("SELECT * FROM `auctionrating` WHERE auction_id=:auction_id ORDER BY numofstars DESC");
 				    $stmt->bindParam(':auction_id',$auction_id);
+
+				    
 
 				    $stmt->execute();
 			    	$response["ratings"] = array();
@@ -140,25 +185,25 @@
 						array_push($response["ratings"], $temp);
 					}
 			    	//=====================================
-			    	$res = $this->conn->query("SELECT count(*) FROM `auctionrating` WHERE id=".$auction_id." and numofstars = 5")->fetchColumn();;
+			    	$res = $this->conn->query("SELECT count(*) FROM `auctionrating` WHERE auction_id= '.$auction_id.' and numofstars = 5")->fetchColumn();;
 				    $response["number_of_five_stars"] = $res;
 
 			    	//=====================================
-					$res = $this->conn->query("SELECT count(*) FROM `auctionrating` WHERE id=".$auction_id." and numofstars = 4")->fetchColumn();;
+					$res = $this->conn->query("SELECT count(*) FROM `auctionrating` WHERE auction_id=".$auction_id." and numofstars = 4")->fetchColumn();;
 				    $response["number_of_four_stars"] = $res;
 
 			    	//=====================================
-					$res = $this->conn->query("SELECT count(*) FROM `auctionrating` WHERE id=".$auction_id." and numofstars = 3")->fetchColumn();;
+					$res = $this->conn->query("SELECT count(*) FROM `auctionrating` WHERE auction_id=".$auction_id." and numofstars = 3")->fetchColumn();;
 				    $response["number_of_three_stars"] = $res;
 
 			    	//=====================================
-					$res = $this->conn->query("SELECT count(*) FROM `auctionrating` WHERE id=".$auction_id." and numofstars = 2")->fetchColumn();;
+					$res = $this->conn->query("SELECT count(*) FROM `auctionrating` WHERE auction_id=".$auction_id." and numofstars = 2")->fetchColumn();;
 				    $response["number_of_two_stars"] = $res;
 			    	//=====================================
-					$res = $this->conn->query("SELECT count(*) FROM `auctionrating` WHERE id=".$auction_id." and numofstars = 1")->fetchColumn();;
+					$res = $this->conn->query("SELECT count(*) FROM `auctionrating` WHERE auction_id=".$auction_id." and numofstars = 1")->fetchColumn();;
 				    $response["number_of_one_stars"] = $res;
 			    	//=====================================
-					$res = $this->conn->query("SELECT count(*) FROM `auctionrating` WHERE id=".$auction_id)->fetchColumn();;
+					$res = $this->conn->query("SELECT count(*) FROM `auctionrating` WHERE auction_id=".$auction_id)->fetchColumn();;
 			    	$response["number_of_users"] = $res;
 			    }else{
 			    	$response['status'] = "Failed";
@@ -176,10 +221,12 @@
          $response = array();	
          // $userID = 1;
         try{
-			    $stmt = "SELECT id FROM `bid` WHERE auction_id = '$auctionID' and user_id = '$userID' ";
+			    $stmt = "SELECT COUNT(*) FROM `bid` WHERE auction_id = ".$auctionID." and user_id = ".$userID." ";
+
 			    $temp = $this->conn->query($stmt);
                 $exist = $temp->fetch(PDO::FETCH_ASSOC);
-
+                $response['id']=$exist;
+                $response['id1']=$userID;
                 if(!$exist){
                 	$stmt = "INSERT INTO bid (user_id, auction_id) VALUES ('$auctionID', '$userID')";
                     $result = $this->conn->query($stmt);
@@ -286,10 +333,129 @@
 			}
 			return $response;
 		}
+		
+		public function submit_bid($user_id,$auction_id,$price)
+		{
+			$response = array();
+			try {
+				$isBidExist = $this->conn->query("SELECT COUNT(*) FROM `bid` WHERE user_id=".$user_id." AND auction_id=".$auction_id." ")->fetchColumn();
+				if($isBidExist > 1)
+				{
+
+					$auctionInfo = $this->conn->prepare("SELECT * FROM `auction` WHERE id=:auction");
+					$auctionInfo->bindParam(':auction',$auction_id);
+					$auctionInfo->execute();
+
+					$auctionRecord = $auctionInfo->fetch(PDO::FETCH_ASSOC);
+					$highest_bid_id = $auctionRecord['highest_bid_id'];
+
+					if($highest_bid_id != NULL)
+					{
+						$highestBidInfo = $this->conn->prepare("SELECT * FROM `bid` WHERE id=:highest");
+						$highestBidInfo->bindParam(':highest',$highest_bid_id);
+						$highestBidInfo->execute();
+
+						$highestBidRecord = $highestBidInfo->fetch(PDO::FETCH_ASSOC);
+						$highest_bid_price = $highestBidRecord['price'];
+
+						if($price > $highest_bid_price)
+						{
+							$userBidInfo = $this->conn->prepare("SELECT * FROM `bid` WHERE auction_id=:auction AND user_id=:user");
+							$userBidInfo->bindParam(':auction',$auction_id);
+							$userBidInfo->bindParam(':user',$user_id);
+							$userBidInfo->execute();
+							$userBidRecord = $userBidInfo->fetch(PDO::FETCH_ASSOC);
+
+							$user_bid_id = $userBidRecord['id'];
+
+							$update = $this->conn->prepare("UPDATE `auction` SET highest_bid_id = :bid_id , highest_bider_id=:bider_id WHERE id=:auction_id");
+							$update->bindParam(':bid_id',$user_bid_id);
+							$update->bindParam(':bider_id',$user_id);
+							$update->bindParam(':auction_id',$auction_id);
+
+							$output = $update->execute();
+							if($output != NULL)
+							{
+								$response["status"] = "success";
+								$response["message"] = "bid submitted successfully and you are the highest bidder";
+							}
+							else
+							{
+								$response["status"] = "failed";
+								$response["message"] = "bid submittes successfully and Error in submitting you as the highest bidder";
+							}
+						}
+						elseif($price == $highest_bid_price)
+						{
+							$response["status"] = "failed";
+							$response["message"] = "you submitted a bid equal to the highest bid";
+						}
+						else
+						{
+							$response["status"] = "failed";
+							$response["message"] = "you submitted a bid less than the highest bid";
+						}
+					}
+					else
+					{
+						$userBidInfo = $this->conn->prepare("SELECT * FROM `bid` WHERE auction_id=:auction AND user_id=:user");
+						$userBidInfo->bindParam(':auction',$auction_id);
+						$userBidInfo->bindParam(':user',$user_id);
+						$userBidInfo->execute();
+						$userBidRecord = $userBidInfo->fetch(PDO::FETCH_ASSOC);
+
+						$user_bid_id = $userBidRecord['id'];
+
+						$update = $this->conn->prepare("UPDATE `auction` SET highest_bid_id = :bid_id , highest_bider_id=:bider_id WHERE id=:auction_id");
+						$update->bindParam(':bid_id',$user_bid_id);
+						$update->bindParam(':bider_id',$user_id);
+						$update->bindParam(':auction_id',$auction_id);
+
+						$output = $update->execute();
+						if($output != NULL)
+						{
+							$response["status"] = "success";
+							$response["message"] = "bid submitted successfully and you are the highest bidder";
+						}
+						else
+						{
+							$response["status"] = "failed";
+							$response["message"] = "bid submittes successfully and Error in submitting you as the highest bidder";
+						}
+					}
+
+
+					$stmt = $this->conn->prepare("UPDATE `bid` SET price=:price WHERE user_id=:user AND $auction_id=:auction");
+					$stmt->bindParam(':price',$price);
+					$stmt->bindParam(':user',$user_id);
+					$stmt->bindParam(':auction',$auction_id);
+					$res = $stmt->execute();
+
+					if($res != NULL)
+					{
+							//the success status are written up there
+					}
+					else
+					{
+						$response["status"] = "failed";
+						$response["message"] = "Error in submitting bid";
+					}
+				}
+				else
+				{
+					$response["status"] = "failed";
+					$response["message"] = "user is not registered in the auction";
+				}
+				return $response;
+			} catch (Exception $e) {
+				return "Error".$e->getMessage();
+			}
+		}
+		
+
 }
 
-
-	$var = new Auction();
-	print_r($var->viewAuction(1));
+	       // $var = new Auction();
+	       // print_r($var->joinAuction(1,5));
 ?>
 	
