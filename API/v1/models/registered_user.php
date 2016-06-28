@@ -429,6 +429,41 @@
 			return $response;
 		}
 
+		public function follow_user($followerId,$followedId)
+		{
+			$response = array();
+			try {
+
+				$isFollowExist = $this->conn->query("SELECT COUNT(*) FROM `following` WHERE follower_id=".$followerId." AND being_followd_id=".$followedId)->fetchColumn();
+				if($isFollowExist > 0)
+				{
+					$response["status"] = "fail";
+					$response["message"] = "follow already exists";
+				}
+				else
+				{
+					$stmt = $this->conn->prepare("INSERT INTO `following` (follower_id , being_followd_id) VALUES (:follower,:followed)");
+					$stmt->bindParam(':follower',$followerId);
+					$stmt->bindParam(':followed',$followedId);
+
+					$result = $stmt->execute();
+					if($result != NULL)
+					{
+						$response["status"] = "success";
+						$response["message"] = "follow is done";
+					}
+					else
+					{
+						$response["status"] = "fail";
+						$response["message"] = "ERROR";
+					}
+				}
+				return $response;
+			} catch (Exception $e) {
+				return "Error: ".$e->getMessage();
+			}
+		}
+
 	}
 
 	// $s = new RegisteredUser();

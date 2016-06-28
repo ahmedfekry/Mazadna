@@ -57,6 +57,8 @@ $scope.viewProfile = function()
 
     $scope.follow = function(user_id) {
       // body...
+      var postObject = new Object();
+      postObject.user_id = user_id;
     }
 
 });

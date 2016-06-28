@@ -135,7 +135,18 @@
 
     });
 
+    $app->post('/followUser',function($request,$response) use ($app){
+        global $registerdUser;
 
+        $header = json_decode($request->getBody());
+        $followerId = $header->user->followerId;
+        $followedId = $header->user->followedId;
+
+        $result = $registerdUser->follow_user($followerId,$followedId);
+
+        return $response->write( json_encode($result) );
+    });
+    
     $app->run();
 
 ?>
