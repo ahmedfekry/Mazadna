@@ -17,6 +17,12 @@ var app = angular.module('mazadna', ['ngRoute'])
                 templateUrl : 'app/partials/home.html',
                 controller  : 'homeController'
             })
+
+             .when('/profile', {
+                templateUrl : 'app/partials/profile.html',
+                controller  : 'profileController'
+            })
+            
             
             .when('/adminView', {
                 templateUrl : 'app/partials/admin_view_auctions.html',

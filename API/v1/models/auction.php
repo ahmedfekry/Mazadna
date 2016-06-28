@@ -29,7 +29,7 @@
 			$this->starting_price = $starting_price;
 
 
-			$this->conn = new PDO("mysql:host=localhost;dbname=Mazadna", "root", "Ahmed2512011");
+			$this->conn = new PDO("mysql:host=localhost;dbname=Mazadna", "root", "91013");
 			$this->conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);			
 		}
 
@@ -103,7 +103,6 @@
 			 catch(PDOException $e) {
 			    echo "Error: " . $e->getMessage();   
 			}
-
 		
 	}
 

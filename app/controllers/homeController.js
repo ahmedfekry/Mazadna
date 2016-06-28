@@ -28,6 +28,8 @@ app.controller('homeController', function ($scope, $rootScope, $routeParams, $lo
     	});
     };
 
+    
+
     $scope.join = function (id){
         var postObject = new Object();
         postObject.auctionID = id;

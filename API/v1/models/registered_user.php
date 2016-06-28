@@ -25,12 +25,140 @@
 			$this->facebook_key = $facebook_key;
 			$this->followers = $followers;
 			$this->following = $following;
-			$this->conn = new PDO("mysql:host=localhost;dbname=Mazadna", "root", "Ahmed2512011");
+			$this->conn = new PDO("mysql:host=localhost;dbname=Mazadna", "root", "91013");
 			$this->conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 			if (!isset($_SESSION)) {
 				session_start();
 			    }
 		}
+         
+public function view_user_profile($id)
+		{
+			$response =array();
+			try {
+
+				$stmt = $this->conn->prepare("SELECT * FROM `user` WHERE id=:uid");
+			    $stmt->bindParam(':uid',$id);
+
+			    $stmt->execute();
+
+			    $userInfo = $stmt->fetch(PDO::FETCH_ASSOC);
+
+			    if($userInfo != NULL)
+			    {
+			    	$response["userStatus"] = "success";
+			    	$response["userInfo"]["id"] = $userInfo['id'];
+			    	$response["userInfo"]["username"] = $userInfo['username'];
+			    	$response["userInfo"]["email"] = $userInfo['email'];
+			    	$response["userInfo"]["phoneNumber"] = $userInfo['phone_number'];
+			    	$response["userInfo"]["firstName"] = $userInfo['first_name'];
+			    	$response["userInfo"]["lastName"] = $userInfo['last_name'];
+			    	$response["userInfo"]["image"] = $userInfo['image'];
+			    	$response["userInfo"]["commuliteveStars"] = $userInfo['commuliteve_stars'];
+
+			    	$numOfRows = $this->conn->query("SELECT COUNT(*) FROM `auction` WHERE user_id=".$id)->fetchColumn();
+
+					if($numOfRows > 0)
+					{
+						$response["auctionStatus"] = "success";
+						$response["message"] = "user found auctions found";
+						$stmt = $this->conn->prepare("SELECT * FROM `auction` WHERE user_id=:userid");
+						$stmt->bindParam(':userid' , $id);
+
+						$stmt->execute();
+
+						$response["auctions"] = array();
+						while($row = $stmt->fetch(PDO::FETCH_ASSOC))
+						{
+							//print_r($row);
+
+							array_push($response["auctions"], $row);
+						}
+						return $response;
+					}
+					else
+					{
+						$response["auctionStatus"] = "failed";
+						$response["message"] = "No auction(s) found";
+						return $response;
+					}
+			    }
+			    else{
+			    	$response["userStatus"] = "failed";
+			    	$response["message"] = "No user found";
+			    	return $response;
+			    }
+				
+			} catch (Exception $e) {
+				return "Error: ".$e->getMessage();
+			}
+		}
+		
+	// 	function view_my_Profile($userId){
+	// 		//do the code here
+	// 		$response1 = array();
+			
+	// 		try {
+				
+	// 			$sql = "SELECT * FROM `bid` where user_id = '$userId' ";
+	// 			$result = $this->conn->query($sql);
+	// 			$i=0;
+
+	// 			if ($result) {
+
+	// 			    while($row = $result->fetch(PDO::FETCH_ASSOC)) {
+	// 			    	$auction_id = $row['auction_id'];
+	// 			        //get the item name
+	// 			        $stmt ="select * from Auction where id ='". str_replace('\\','\\\\',$auction_id) . "'";
+	// 			        $result2=$this->conn->query($stmt);
+	// 			        $row2 = $result2->fetch(PDO::FETCH_ASSOC);
+				        
+	// 					$stmt3 = "SELECT * FROM `user` WHERE id = '$userId' ";
+	// 				    $result3=$this->conn->query($stmt3);
+	// 			        $row3 = $result3->fetch(PDO::FETCH_ASSOC);
+					    
+
+	// 			        //add the results to the an array
+	// 			        $profile = array(
+	// 			        'id'=>$row2['id'],	
+	// 			        'description'=>$row2['description'],
+	// 			        'start_time' => $row2['start_time'],
+	// 			        'end_time' => $row2['end_time'],
+	// 			        'title' => $row2['title'],
+	// 			        'starting_price'=>$row2['starting_price'],
+	// 			        'active' =>$row2['active'],
+	// 			        'status' => "success",
+	// 			        'Message' => "Profile is Correct",
+	// 			        'highest_bid_id'=>$row2['highest_bid_id'],
+	// 			        'highest_bider_id'=>$row2['highest_bider_id'],
+	// 			        'privacy'=>$row2['privacy'],
+ //                        'first_name' => $row3['first_name'],
+	// 			    	'last_name' => $row3['last_name'],
+	// 			    	'user_name' => $row3['username'],
+	// 			    	'email' => $row3["email"],
+	// 			    	'password' => $row3["password"],
+	// 			    	'phone_number' => $row3["phone_number"]
+
+	// 			        );
+	// 			        //create 2D array
+	// 			        $response1[$i] = $profile;
+ //        				$i++; 
+	// 			    }
+	// 			    return $response1;
+				    
+	// 			} else {
+	// 			    $user["status"] = "error";
+	// 	            $user["Maaege"] = "empty!";
+	// 	            $response1[$i] = $user;
+	// 	            return $response1;
+	// 			}
+
+	// 		}
+	// 		 catch(PDOException $e) {
+	// 		    echo "Error: " . $e->getMessage();   
+	// 		}
+	
+	// }
 
 		// first_name:'',
         // last_name:'',
