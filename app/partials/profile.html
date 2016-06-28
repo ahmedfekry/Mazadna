@@ -122,7 +122,8 @@
             </li>
             <li class="hidden-xs"> <a href="#" id="btn-fullscreen" class="waves-effect waves-light"><i class="md md-crop-free"></i></a> </li>
             <li class="hidden-xs"> <a href="#" class="right-bar-toggle waves-effect waves-light"><i  class="ion-plus-circled"></i></a> </li>
-            <li class="dropdown"> <a href="" class="dropdown-toggle profile" data-toggle="dropdown" aria-expanded="true"><img src="assets/images/avatar-1.jpg" alt="user-img" class="img-circle"> </a>
+            <li class="dropdown"> <a href="#" class="dropdown-toggle profile" data-toggle="dropdown" aria-expanded="true">
+            <img src="assets/images/avatar-1.jpg" alt="user-img" class="img-circle"> </a>
               <ul class="dropdown-menu">
                 <li><a href="javascript:void(0)"><i class="md md-face-unlock"></i> Profile</a></li>
                 <li><a href="javascript:void(0)"><i class="md md-settings"></i> Edit</a></li>
@@ -203,7 +204,7 @@
   <!-- ============================================================== --> 
   <!-- Start right Content here --> 
   <!-- ============================================================== -->
-  <div class="content-page"> 
+  <div class="content-page" ng-init="viewProfile()"> 
     <!-- Start content -->
     <div class="content">
       <div class="container">
@@ -221,7 +222,7 @@
                   <img src="assets/images/users/avatar-1.jpg" class="thumb-lg img-circle img-thumbnail" 
                   alt="auction Photo"> </section>
                   <!-- follow button -->
-                     <div class="pull-right">
+                            <div class="pull-right" id = "followww">
                                 <div class="dropdown">
                                     <a data-toggle="dropdown" class="dropdown-toggle btn-rounded btn btn-success waves-effect waves-light" href="#"> Following <span class="caret"></span></a>
                                     <ul class="dropdown-menu dropdown-menu-right" role="menu">
@@ -235,7 +236,7 @@
                   <!-- end follow button -->
                   
                      <!-- follow button -->
-                     <div class="pull-right">
+                     <div class="pull-right" id="folowww2">
                                 <a  class="btn-rounded btn btn-primary waves-effect waves-light" href="#"> Follow </a>
                                 </div>
                   <!-- end follow butto -->
@@ -244,7 +245,7 @@
                 
                 <!-- INFO -->
                          <div class="col-xs-3"></div>
-            <section class="col-xs-6">
+            <section class="col-xs-6" >
               
                <form class="form-horizontal">
                   <fieldset >
@@ -254,7 +255,7 @@
                            for="firstName">First Name</label>
                         <div class="col-sm-9 input-group">
                           <input class="form-control" type="text"
-                              id="firstName" placeholder="First Name" ng-model="signup.first_name" disabled>
+                              id="firstName" placeholder="{{userInfo.firstName}}" ng-model="signup.first_name" disabled>
                         </div>
                      </div>
                      <div class="form-group">
@@ -262,7 +263,7 @@
                            for="lastName">Last Name</label>
                         <div class="col-sm-9 input-group">
                           <input class="form-control" type="text"
-                              id="lastName" placeholder="Last Name" ng-model="signup.last_name" disabled>
+                              id="lastName" placeholder="{{userInfo.lastName}}" ng-model="signup.last_name" disabled>
                         </div>
                      </div>
                      <div class="form-group">
@@ -270,43 +271,11 @@
                            for="inputName">Username</label>
                         <div class="col-sm-9 input-group">
                           <input class="form-control" type="text"
-                              id="inputName" placeholder="Username" ng-model="signup.username" disabled>
+                              id="inputName" placeholder="{{userInfo.username}}" ng-model="signup.username" disabled>
                         </div>
                      </div>
 
-                     <!-- <div class="form-group">
-                        <label class="col-sm-3 control-label"
-                           for="inputName">Confirm Password</label>
-                        <div class="col-sm-9 input-group">
-                           <input class="form-control" type="password"
-                              placeholder="Password">
-                        </div>
-                     </div> -->
-                     <!-- <div class="form-group">
-                        <label class="col-sm-3 control-label" 
-                           for="NationalID">National ID</label>
-                        <div class="col-sm-9 input-group">
-                           <input class="form-control" type="text"
-                              id="NationalID" placeholder="National ID Number">
-                        </div>
-                     </div> -->
-                     <!-- <div class="form-group">
-                        <label class="col-sm-3 control-label"
-                           for="selectSite">Gender</label>
-                        <div class="col-sm-9 input-group">
-                           <select class="form-control" id="selectSite">
-                              <option>Male</option>
-                              <option>Female</option>
-                           </select>
-                        </div>
-                     </div> -->
-                     <!-- <div class="form-group">
-                        <label class="col-sm-3 control-label" for="selectSite">Birtyday</label>
-                        <div class="col-sm-9 input-group date" id="datetimepicker1">
-                           <input type="text" class="form-control" />
-                           <span class="input-group-addon"> <span class="glyphicon glyphicon-calendar"></span> </span> 
-                        </div>
-                     </div> -->
+                    
                   </fieldset>
                   <fieldset >
                      <legend>Contact Info.</legend>
@@ -315,7 +284,7 @@
                            for="Email">Email</label>
                         <div class="col-sm-9 input-group">
                           <input class="form-control" type="text"
-                              id="Email" placeholder="Email" ng-model="signup.email" disabled>
+                              id="Email" placeholder="{{userInfo.email}}" ng-model="signup.email" disabled>
                         </div>
                      </div>
                      <div class="form-group">
@@ -323,7 +292,7 @@
                            for="Phone">Phone</label>
                         <div class="col-sm-9 input-group">
                           <input class="form-control" type="text"
-                              id="Phone" placeholder="Phone" ng-model="signup.phone_number" disabled>
+                              id="Phone" placeholder="{{userInfo.phoneNumber}}" ng-model="signup.phone_number" disabled>
                         </div>
                      </div>
                    
@@ -333,69 +302,23 @@
          
                 <!-- END INFO -->
                 
-                <legend style="margin-top:500px">(Username)'s Auctions.</legend>
+                <legend style="margin-top:500px">{{userInfo.username}}'s Auctions.</legend>
                 <!-- USERS AUCTIONS -->
-                <div class="panel panel-default panel-fill">
-                    <div class="panel-body">
-                <section class="col-sm-2"> <img src="assets/images/products/furn.jpg" class="img-thumbnail img-responsive center-block"
+                <div class="panel panel-default panel-fill" >
+                    <div class="panel-body" >
+                <section class="col-sm-2" ng-repeat ="row in userInfo.auctions"> 
+                {{row.title}}
+                <img src="assets/images/products/furn.jpg" class="img-thumbnail img-responsive center-block"
     alt="Dr Chase Photo">
-                  <h3>pottery barn</h3>
-                  <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Culpa, numquam, laborum, excepturi.</p>
+                 
                 </section>
-                <section class="col-sm-2"> <img src="assets/images/products/cam2.jpg" class="img-thumbnail img-responsive center-block"
-    alt="Dr Chase Photo">
-                  <h3>Nikon</h3>
-                  <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Culpa, numquam, laborum, excepturi.</p>
-                </section>
-                <section class="col-sm-2"> <img src="assets/images/products/mab.jpg" class="img-thumbnail img-responsive center-block"
-    alt="Dr Chase Photo">
-                  <h3>IPhone 6s</h3>
-                  <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Culpa, numquam, laborum, excepturi.</p>
-                </section>
-                <section class="col-sm-2"> <img src="assets/images/products/lap.jpg" class="img-thumbnail img-responsive center-block"
-    alt="Dr Chase Photo">
-                  <h3>Dell 5052</h3>
-                  <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Culpa, numquam, laborum, excepturi.</p>
-                </section>
-                <section class="col-sm-2"> <img src="assets/images/products/cam5.jpg" class="img-thumbnail img-responsive center-block"
-    alt="Dr Chase Photo">
-                  <h3>Swatch E60</h3>
-                  <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Culpa, numquam, laborum, excepturi.</p>
-                </section>
-                <section class="col-sm-2"> <img src="assets/images/products/watch.jpg" class="img-thumbnail img-responsive center-block"
-    alt="Dr Chase Photo">
-                  <h3>Canon</h3>
-                  <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Culpa, numquam, laborum, excepturi.</p>
-                </section>
+                
+
               </div>
                 </div>
                 <!-- END USERS AUCTIONS --> 
-           
-         
-            
-                
-              </div>
-              <!-- panel-body --> 
-              
-            </div>
-            <!-- panel --> 
-          </div>
-          <!-- col --> 
-          
-        </div>
-        <!-- End row --> 
-        
-      </div>
-      <!-- container --> 
       
-    </div>
-    <!-- content --> 
-    
-    <!--  
-                <footer class="footer text-right">
-                    2016 © Mazadna.
-                </footer>
---> 
+ 
     
     <!-- Footer -->
     
@@ -480,3 +403,36 @@
 <script src="assets/other_assets/jquery.validate/form-validation-init.js"></script>
 </body>
 </html>
+ <!-- <div class="form-group">
+                        <label class="col-sm-3 control-label"
+                           for="inputName">Confirm Password</label>
+                        <div class="col-sm-9 input-group">
+                           <input class="form-control" type="password"
+                              placeholder="Password">
+                        </div>
+                     </div> -->
+                     <!-- <div class="form-group">
+                        <label class="col-sm-3 control-label" 
+                           for="NationalID">National ID</label>
+                        <div class="col-sm-9 input-group">
+                           <input class="form-control" type="text"
+                              id="NationalID" placeholder="National ID Number">
+                        </div>
+                     </div> -->
+                     <!-- <div class="form-group">
+                        <label class="col-sm-3 control-label"
+                           for="selectSite">Gender</label>
+                        <div class="col-sm-9 input-group">
+                           <select class="form-control" id="selectSite">
+                              <option>Male</option>
+                              <option>Female</option>
+                           </select>
+                        </div>
+                     </div> -->
+                     <!-- <div class="form-group">
+                        <label class="col-sm-3 control-label" for="selectSite">Birtyday</label>
+                        <div class="col-sm-9 input-group date" id="datetimepicker1">
+                           <input type="text" class="form-control" />
+                           <span class="input-group-addon"> <span class="glyphicon glyphicon-calendar"></span> </span> 
+                        </div>
+                     </div> -->

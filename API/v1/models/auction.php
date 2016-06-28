@@ -209,6 +209,15 @@
 
 			    return $response;
 			}
+			$now = date_create();
+			$now = date_create($now,"Y-m-d H:i:s");
+			if ($end_time < $now || $start_time < $now) {
+				# code...
+				$response["status"] = "failed";
+			    $response["message"] = "Failed to create auction. the end_time or start_time is old";
+
+			    return $response;
+			}
 
 			try {
 					$stmt = $this->conn->prepare("INSERT INTO auction (user_id, description, title,starting_price,privacy,end_time,start_time,category_id,active)
@@ -246,16 +255,15 @@
 			$response = array();
 			try {
 				
-				$sql = "DELETE FROM auction WHERE id=".$auction_id;
-				if ($this->conn->exec($sql)) {
-					$sql = "DELETE FROM item WHERE auction_id=".$auction_id;	
-					$this->conn->exec($sql);
-					$response["status"] = "success";
-				    $response["message"] = "Auction deleted successfully";
-				}else{
-					$response["status"] = "failed";
-				    $response["message"] = "Failed to delete auction. Please try again";
-				}
+				$sql = "DELETE FROM auctionrating WHERE auction_id=".$auction_id;
+				$this->conn->exec($sql);
+				$sql = "DELETE FROM bid WHERE auction_id=".$auction_id;	
+				$this->conn->exec($sql);
+				$sql = "DELETE FROM auction WHERE id=".$auction_id;	
+				$this->conn->exec($sql);
+				$response["status"] = "success";
+				$response["message"] = "Auction deleted successfully";
+				
 			} catch (PDOException $e) {
 				$response["status"] = "failed";
 				$response["message"] = $e->getMessage();

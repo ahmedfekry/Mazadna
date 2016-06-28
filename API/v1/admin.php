@@ -17,6 +17,36 @@
         return $response->write(json_encode($result) );
     });
 
+     $app->post('/users',function($request,$response) use ($app){
+        global $admin;
+
+        $result = $admin->get_users_num();
+        return $response->write( json_encode($result) );
+    });
+
+    $app->post('/auctions',function($request,$response) use ($app){
+        global $admin;
+
+        $result = $admin->get_auctions_num();
+
+        return $response->write(json_encode($result));
+    });
+
+    $app->post('/activeAuctions',function($request,$response) use ($app){
+        global $admin;
+
+        $result = $admin->get_active_auctions();
+
+        return $response->write(json_encode($result));
+    });
+
+    $app->post('/auctionPricesSum',function($request,$response) use ($app){
+        global $admin;
+
+        $result = $admin->auction_prices_sum();
+
+        return $response->write(json_encode($result));
+    });
     $app->run();
 
 ?>

@@ -124,7 +124,7 @@
             <li class="hidden-xs"> <a href="#" class="right-bar-toggle waves-effect waves-light"><i  class="ion-plus-circled"></i></a> </li>
             <li class="dropdown"> <a href="" class="dropdown-toggle profile" data-toggle="dropdown" aria-expanded="true"><img src="assets/images/avatar-1.jpg" alt="user-img" class="img-circle"> </a>
               <ul class="dropdown-menu">
-                <li><a href="javascript:void(0)"><i class="md md-face-unlock"></i> Profile</a></li>
+                <li><a href="javascript:void(0)" ng-click="go('/profile')"><i class="md md-face-unlock"></i> Profile</a></li>
                 <li><a href="javascript:void(0)" ng-click="go('/editAccount')"><i class="md md-settings"></i> Edit</a></li>
                 <li><a href="javascript:void(0)" ng-click="logOut()"><i class="md md-settings-power"></i> Logout</a></li>
               </ul>
@@ -165,12 +165,12 @@
                     <!-- Auctions Stuff --> 
           <li class="has_sub"> <a href="javascript:void(0);" class="waves-effect"><i class="fa fa-gavel"></i><!-- <i class="ion-hammer"></i> --><span>Auctions </span><span class="pull-right"><i class="md md-add"></i></span></a>
             <ul>
-              <li class="has_sub"> <a href="javascript:void(0);" class="waves-effect"><span>Followed Auctions</span> <span class="pull-right"><i class="md md-add"></i></span></a>
+              <!-- <li class="has_sub"> <a href="javascript:void(0);" class="waves-effect"><span>Followed Auctions</span> <span class="pull-right"><i class="md md-add"></i></span></a>
                 <ul style="">
                   <li><a href="javascript:void(0);"><span>Public</span></a></li>
                   <li><a href="javascript:void(0);"><span>Private</span></a></li>
                 </ul>
-              </li>
+              </li> -->
               <li> <a href="javascript:void(0);"><span>My Auctions</span></a> </li>
               <li> <a href="javascript:void(0);" ng-click="go('/createAuction')"><span>Create Auction</span></a> </li>
             </ul>

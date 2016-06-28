@@ -115,6 +115,26 @@
         return $response->write(json_encode($result) );
     });
 
+      
+   $app->post('/viewUserProfile', function ($request, $response) use ($app){
+         global $registerdUser;
+        $header = json_decode($request->getBody());
+        $id1 = $header->user->id;
+        $result = $registerdUser ->view_user_profile($id1);
+        return $response-> write(json_encode($result));
+
+    });
+    
+    $app->post('/checkIfFollowers', function ($request, $response) use ($app){
+         global $registerdUser;
+        $header = json_decode($request->getBody());
+        $id1 = $header->user->id1;
+        $id2 = $header->user->id2;
+        $result = $registerdUser ->checkIfFollow($id1,$id2);
+        return $response-> write(json_encode($result));
+
+    });
+
 
     $app->run();
 

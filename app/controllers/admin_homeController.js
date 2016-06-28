@@ -1,4 +1,4 @@
-app.controller('admin_homeController', function ($scope, $rootScope, $routeParams, $location, $http, myService) {
+app.controller('admin_homeController', function ($scope, $rootScope, $routeParams, $location, $http, myService,$window) {
     //initially set those objects to null to avoid undefined error
     $scope.fekry = "Fekry";
     $scope.init = function() {
@@ -30,4 +30,75 @@ app.controller('admin_homeController', function ($scope, $rootScope, $routeParam
             
         });
     };
+    $scope.numberOfUsers = 0;
+    $scope.numberOfAuctions = 0;
+    $scope.activeAuctions = 0;
+    $scope.auctionPricesSum = 0;
+    
+    function users() {
+      var temp = new Object();
+      myService.post('admin.php/users',{
+        temp : temp
+      }).then(function(results) {
+        if (results.usersNum) {
+          $scope.numberOfUsers = results.usersNum;
+        }
+      });
+    }
+
+    function auctions() {
+      var temp = new Object();
+      myService.post('admin.php/auctions',{
+        temp : temp
+      }).then(function(results) {
+        if (results.auctionsNum) {
+          $scope.numberOfAuctions = results.auctionsNum;
+        }
+      });
+    }
+
+    function activeAuctions() {
+      var temp = new Object();
+      myService.post('admin.php/activeAuctions',{
+        temp : temp
+      }).then(function(results) {
+        if (results.auctionsNum) {
+          $scope.activeAuctions = results.auctionsNum;
+        }
+      });
+    }
+
+    function auctionPricesSum() {
+      // alert("fekry");
+      var temp = new Object();
+      myService.post('admin.php/auctionPricesSum',{
+        temp : temp
+      }).then(function(results) {
+        if (results.auctionsSum) {
+          $scope.auctionPricesSum = results.auctionsSum;
+        }
+      });
+    }
+
+    $scope.adminStat = function () {
+      users();
+      auctions();
+      activeAuctions();
+      auctionPricesSum();
+    }
+    
+    $scope.delete = function (auction_id) {
+        var postObject = new Object();
+
+        postObject.auction_id = auction_id;
+        alert(auction_id);
+        myService.post('auction.php/deleteAuction', {
+            auction: postObject
+        }).then(function (results) {
+            if (results.status == "success") {
+                alert(results.message);
+                $window.location.reload();
+            }
+        });
+    }
 });

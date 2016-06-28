@@ -13,7 +13,7 @@ app.controller('userController', function ($scope, $rootScope, $routeParams, $lo
     $scope.init = function() {
 
         var postObject = new Object();
-        postObject.user_id = sessionStorage.getItem("uid");
+        postObject.user_id = localStorage.getItem("uid");
         myService.post('user.php/getUser',{
             user: postObject
         }).then(function(results) {
@@ -30,7 +30,7 @@ app.controller('userController', function ($scope, $rootScope, $routeParams, $lo
     $scope.editAccount = function(user) {
         var postObject = new Object();
         
-        postObject.user_id = sessionStorage.getItem("uid");
+        postObject.user_id = localStorage.getItem("uid");
         postObject.first_name = user['first_name'];
         postObject.last_name = user['last_name'];
         postObject.user_name = user['user_name'];

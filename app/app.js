@@ -20,7 +20,19 @@ var app = angular.module('mazadna', ['ngRoute'])
             
             .when('/adminView', {
                 templateUrl : 'app/partials/admin_view_auctions.html',
-                controller  : 'admin_homeController'
+                controller  : 'admin_homeController',
+                isAdminView : true
+            })
+
+            .when('/adminViewReports', {
+                templateUrl : 'app/partials/admin_view_reports.html',
+                controller  : 'admin_homeController',
+                isAdminViewReports : true
+            })
+            .when('/adminHome', {
+                templateUrl : 'app/partials/admin_home.html',
+                controller  : 'admin_homeController',
+                isAdminHome : true
             })
 
             .when('/viewAuction',{
@@ -46,11 +58,17 @@ var app = angular.module('mazadna', ['ngRoute'])
                 controller : 'auctionController'
             })
 
+            .when('/profile', {
+                templateUrl : 'app/partials/profile.html',
+                controller  : 'profileController'
+            })
+
             .when('/editAccount',{
                 templateUrl : 'app/partials/editAccount.html',
                 controller : 'userController'
             })
             
+
             .otherwise({
                 redirectTo:'signIn'
             });
@@ -73,6 +91,13 @@ app.run(function($rootScope,$location) {
                     // alert('11'+msg.data.uid);
                     if (next.isSignUp) {
                         $location.path("/signUp");
+                    }else if (next.isAdminView){
+                        // alert("fekry");
+                        $location.path("/adminView");
+                    }else if (next.isAdminViewReports){
+                        $location.path("/adminViewReports");
+                    }else if(next.isAdminHome){
+                        $location.path("/adminHome");
                     }else if (next.isAdminSignIn){
                         $location.path("/AdminSignIn");
                     }else{

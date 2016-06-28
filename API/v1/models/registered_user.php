@@ -338,11 +338,101 @@
 			# code...
 			return $response;
 		}
+		
+		public function view_user_profile($id)
+		{
+			$response =array();
+			try {
+
+				$stmt = $this->conn->prepare("SELECT * FROM `user` WHERE id=:uid");
+			    $stmt->bindParam(':uid',$id);
+
+			    $stmt->execute();
+
+			    $userInfo = $stmt->fetch(PDO::FETCH_ASSOC);
+
+			    if($userInfo != NULL)
+			    {
+			    	$response["userStatus"] = "success";
+			    	$response["userInfo"]["id"] = $userInfo['id'];
+			    	$response["userInfo"]["username"] = $userInfo['username'];
+			    	$response["userInfo"]["email"] = $userInfo['email'];
+			    	$response["userInfo"]["phoneNumber"] = $userInfo['phone_number'];
+			    	$response["userInfo"]["firstName"] = $userInfo['first_name'];
+			    	$response["userInfo"]["lastName"] = $userInfo['last_name'];
+			    	$response["userInfo"]["image"] = $userInfo['image'];
+			    	$response["userInfo"]["commuliteveStars"] = $userInfo['commuliteve_stars'];
+
+			    	$numOfRows = $this->conn->query("SELECT COUNT(*) FROM `auction` WHERE user_id=".$id)->fetchColumn();
+
+					if($numOfRows > 0)
+					{
+						$response["auctionStatus"] = "success";
+						$response["message"] = "user found auctions found";
+						$stmt = $this->conn->prepare("SELECT * FROM `auction` WHERE user_id=:userid");
+						$stmt->bindParam(':userid' , $id);
+
+						$stmt->execute();
+
+						$response["auctions"] = array();
+						while($row = $stmt->fetch(PDO::FETCH_ASSOC))
+						{
+							//print_r($row);
+
+							array_push($response["auctions"], $row);
+						}
+						return $response;
+					}
+					else
+					{
+						$response["auctionStatus"] = "failed";
+						$response["message"] = "No auction(s) found";
+						return $response;
+					}
+			    }
+			    else{
+			    	$response["userStatus"] = "failed";
+			    	$response["message"] = "No user found";
+			    	return $response;
+			    }
+				
+			} catch (Exception $e) {
+				return "Error: ".$e->getMessage();
+			}
+		}
+
+		public function checkIfFollow($user1_id,$user2_id)
+		{
+			$response = array();
+			try {
+				$stmt = $this->conn->prepare("SELECT * FROM `following` WHERE being_followd_id=:user1_id and follower_id=:user2_id");
+			    $stmt->bindParam(':user1_id',$user1_id);
+			    $stmt->bindParam(':user2_id',$user2_id);
+
+			    $stmt->execute();
+
+			    $userInfo = $stmt->fetch(PDO::FETCH_ASSOC);
+			    if ($userInfo != null) {
+			    	# code...
+			    	$response['status'] = 'success';
+			    	$response['message'] = 'isfollowers';
+			    }else{
+			    	$response['status'] = 'success';
+			    	$response['message'] = 'isnotfollowers';
+
+			    }
+			} catch (PDOException $e) {
+				$response['status'] = "Failed";
+				$response['message'] = $e->getMessage();
+			}
+			# code...
+			return $response;
+		}
 
 	}
 
 	// $s = new RegisteredUser();
-	// print_r($s->islogged());
+	// print_r($s->checkIfFollow(1,2));
 	// // session_start();
 	// if (isset($_SESSION['uid'])) {
 	// 	echo "stringvvvvvvvvvvvvvvvvvvvvvvvv";

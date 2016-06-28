@@ -22,7 +22,7 @@ app.controller('auctionController', function ($scope, $rootScope, $routeParams, 
         }
 
 
-        postObject.user_id = sessionStorage.getItem('uid');
+        postObject.user_id = localStorage.getItem('uid');
         postObject.title = _auction['title'];
         postObject.starting_price = _auction['starting_price'];
         postObject.privacy = _auction['privacy'];
@@ -38,6 +38,8 @@ app.controller('auctionController', function ($scope, $rootScope, $routeParams, 
             if (results.status == "success") {
                 alert(results.message);
                 $location.path('/home');
+            }else{
+                alert(results.message);
             }
         });
     };
