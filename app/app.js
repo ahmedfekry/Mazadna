@@ -7,7 +7,7 @@ var app = angular.module('mazadna', ['ngRoute'])
 
             // route for the signup page
             .when('/signUp', {
-                templateUrl : 'app/partials/sign_up2.html',
+                templateUrl : 'app/partials/sign_up.html',
                 controller  : 'authController',
                 isSignUp : true
             })
