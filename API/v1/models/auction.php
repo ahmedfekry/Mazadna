@@ -219,7 +219,7 @@
          $response = array();	
          // $userID = 1;
         try{
-			    $stmt = "SELECT COUNT(*) FROM `bid` WHERE auction_id = ".$auctionID." and user_id = ".$userID." ";
+			    $stmt = "SELECT id FROM `bid` WHERE auction_id = ".$auctionID." and user_id = ".$userID." ";
 
 			    $temp = $this->conn->query($stmt);
                 $exist = $temp->fetch(PDO::FETCH_ASSOC);
