@@ -27,9 +27,11 @@ app.controller('authController', function ($scope, $rootScope, $routeParams, $lo
         }).then(function (results) {
             if (results.status == "success") {
                 alert(results.message);
-                localStorage.set("uid",results.uid);
-                $location.path('/home');
-                // sessionService.set("uid",results.uid);
+                alert(results.uid);
+                alert(results.username);
+                // $location.path('/home');
+                sessionService.set("uid",results.uid);
+                sessionService.set("username",results.username);
                 // $location.path('/home');
             }
         });
@@ -50,8 +52,8 @@ app.controller('authController', function ($scope, $rootScope, $routeParams, $lo
             if (results.status == "success") {
                 alert(results.message);
                 sessionService.set("uid",results.uid);
-                localStorage.setItem('image',results.image);
-                localStorage.setItem('name',results.first_name);
+                sessionService.set('image',results.image);
+                sessionService.set('username',results.first_name);
                 $location.path('/home')
             }else{
                 alert(results.message);

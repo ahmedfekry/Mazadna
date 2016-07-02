@@ -2,6 +2,8 @@ app.controller('MainController', ['$scope', '$rootScope','sessionService','$loca
     // $rootScope.text = "Fekry";
     $rootScope.logOut = function() {
         sessionService.destroy('uid');
+        sessionService.destroy('username');
+        sessionService.destroy('image');
         $location.path('/signIn');
     }
 

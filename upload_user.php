@@ -43,7 +43,7 @@ if ($uploadOk == 0) {
 
                 $servername = "localhost";
                 $username = "root";
-                $password = "";
+                $password = "91013";
                 $dbname = "mazadna";
 
                 // Create connection
@@ -71,7 +71,7 @@ if ($uploadOk == 0) {
 
 <!--
 
-        parent.location = "http://localhost:8080/mazadna/#/home" ;
+        parent.location = "http://localhost:1234/Mazadna/#/home" ;
 
 //-->
 

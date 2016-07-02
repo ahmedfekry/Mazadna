@@ -4,7 +4,7 @@ app.controller('homeController', function ($scope, $rootScope, $routeParams, $lo
         $('#category').hide();
     };
     $scope.userImage = localStorage.getItem('image');
-    $scope.userName= localStorage.getItem('name');
+    $scope.userName= localStorage.getItem('username');
     $scope.getdata = function(category_id) {
         // $location.path('/viewCategory');
         var temp = new Object();
