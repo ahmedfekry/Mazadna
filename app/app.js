@@ -92,7 +92,6 @@ app.run(function($rootScope,$location) {
                     if (next.isSignUp) {
                         $location.path("/signUp");
                     }else if (next.isAdminView){
-                        // alert("fekry");
                         $location.path("/adminView");
                     }else if (next.isAdminViewReports){
                         $location.path("/adminViewReports");

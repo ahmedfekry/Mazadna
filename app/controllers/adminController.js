@@ -15,7 +15,7 @@ app.controller('adminController', function ($scope, $rootScope, $routeParams, $l
             user: postObject
         }).then(function (results) {
             if (results.status == "success") {
-                $location.path('/home')
+                $location.path('/adminView')
             }
         });
     }
